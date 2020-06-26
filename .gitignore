@@ -23,12 +23,13 @@
 *.lai
 *.la
 *.a
-*.lib
+# *.lib
 
 # Executables
 *.exe
 *.out
 *.app
+
 
 # Ignore thumbnails created by windows
 Thumbs.db
@@ -54,7 +55,16 @@ Thumbs.db
 *.cache
 *.ilk
 *.log
-.vs
+
+# New ignored files
+*.vs
+*.idb
+*.iobj
+*.ipdb
+*.pdb
+*.tlog
+*.exe
+Source\Game\Motor 2D.tlog.*
 
 [Bb]in
 [Dd]ebug/
@@ -69,3 +79,5 @@ ipch/
 *.db
 *.opendb
 packages/
+Release/Motor2D.vcxproj.FileListAbsolute.txt
+
