@@ -105,6 +105,9 @@
     <ClInclude Include="Dependencies\PugiXml\src\pugiconfig.hpp" />
     <ClInclude Include="Dependencies\PugiXml\src\pugixml.hpp" />
   </ItemGroup>
+  <ItemGroup>
+    <Xml Include="..\Game\config.xml" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
