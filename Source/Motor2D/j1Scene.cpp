@@ -29,7 +29,7 @@ bool j1Scene::Awake()
 // Called before the first frame
 bool j1Scene::Start()
 {
-	img = App->tex->Load("Assets/textures/test.png");
+	img = App->tex->Load("Assets/textures/test1.jpeg");
 	App->audio->PlayMusic("Assets/audio/music/music_sadpiano.ogg");
 	return true;
 }
