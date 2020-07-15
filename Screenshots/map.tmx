@@ -3,9 +3,12 @@
  <tileset firstgid="1" name="tileset" tilewidth="64" tileheight="64" tilecount="132" columns="12">
   <image source="tileset.png" width="768" height="704"/>
  </tileset>
+ <tileset firstgid="133" name="tileset2" tilewidth="64" tileheight="64" tilecount="30" columns="5">
+  <image source="tileset2.png" width="320" height="384"/>
+ </tileset>
  <layer id="1" name="Capa de Patrones 1" width="50" height="25">
   <data encoding="base64" compression="zlib">
-   eJztzzEKwCAUBFGDRivRPrn/OWOXxUYQifwwD6bfdQ4AAOB1tmJX2rpojpeCZE2RqmTNJd3SF/KijkFWfoziBz/4se8HgP97AOoxCMg=
+   eJztlzEKgDAQBO/1WsRCwSjqZ01hJaYIx+YW2YGpc9PkkmRmyekMsgVvw9R4Hgp1qAOBOrg6vHfj0n9kSo7i+XgFz/LFHj2AqLIW88stdCJeBqBjxw7v/mDZLepQhzr+34H6W+sNKQQPN+XqxVo=
   </data>
  </layer>
 </map>
