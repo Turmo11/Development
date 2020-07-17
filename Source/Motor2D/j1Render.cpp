@@ -44,8 +44,11 @@ bool j1Render::Awake(pugi::xml_node& config)
 	{
 		camera.w = App->win->screen_surface->w;
 		camera.h = App->win->screen_surface->h;
-		camera.x = 0;
-		camera.y = 0;
+		camera.x = config.child("camera").attribute("x").as_int();
+		camera.y = config.child("camera").attribute("y").as_int();
+		starting_cam_pos.x = camera.x;
+		starting_cam_pos.y = camera.y;
+		LOG("Successfully rendered, camera position = (%d, %d)", camera.x, camera.y);
 	}
 
 	return ret;
@@ -87,10 +90,25 @@ bool j1Render::CleanUp()
 	return true;
 }
 
-// TODO 6: Create the load method on the renderer. For now load camera's x and y
+// Load Game State
+bool j1Render::Load(pugi::xml_node& data)
+{
+	camera.x = data.child("camera").attribute("x").as_int();
+	camera.y = data.child("camera").attribute("y").as_int();
 
-// TODO 8: Create the save method on the renderer. Fill the camera's data
-// using append_child and append_attribute
+	return true;
+}
+
+// Save Game State
+bool j1Render::Save(pugi::xml_node& data) const
+{
+	pugi::xml_node cam = data.append_child("camera");
+
+	cam.append_attribute("x") = camera.x;
+	cam.append_attribute("y") = camera.y;
+
+	return true;
+}
 
 void j1Render::SetBackgroundColor(SDL_Color color)
 {

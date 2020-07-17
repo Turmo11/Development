@@ -2,6 +2,8 @@
 #define __j1AUDIO_H__
 
 #include "j1Module.h"
+#include "Dependencies/SDL_mixer\include\SDL_mixer.h"
+#include "p2List.h"
 
 #define DEFAULT_MUSIC_FADE_TIME 2.0f
 

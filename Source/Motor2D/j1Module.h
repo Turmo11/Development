@@ -11,6 +11,8 @@
 
 class j1App;
 
+struct Collider;
+
 class j1Module
 {
 public:
@@ -59,7 +61,17 @@ public:
 		return true;
 	}
 
-	// TODO 3: Create new virtual methods to Load and Save
+	virtual bool Load(pugi::xml_node&)
+	{
+		return true;
+	}
+
+	virtual bool Save(pugi::xml_node&) const
+	{
+		return true;
+	}
+
+	virtual void OnCollision(Collider*, Collider*) {}
 
 public:
 

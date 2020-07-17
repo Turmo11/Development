@@ -2,12 +2,13 @@
 
 <config>
   <app>
-    <title>Handout 2</title>
+    <title>Development</title>
     <organization>UPC</organization>
   </app>
 	
   <renderer>
     <vsync value="false"/>
+    <camera x="0" y="-200"/>
   </renderer>
 
   <window>
@@ -18,4 +19,7 @@
     <fullscreen_window value="false"/>
   </window>
 
+  <map>
+    <folder>Assets/maps/</folder>
+  </map>
 </config>
