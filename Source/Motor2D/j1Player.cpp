@@ -37,16 +37,17 @@ bool j1Player::Awake(pugi::xml_node& config)
 
 bool j1Player::Start()
 {
+
+	p_texture = App->tex->Load("textures/test1.jpeg");
+
 	srand(time(NULL));
 	is_dead = false;
 	score = 0;
 	c_state = STOP;
 
-	pos.x = ((rand() % 11) * 32) + 34;
-	pos.y = ((rand() % 11) * 32) + 34;
+	hitbox = { pos.x, pos.y, 28, 55 };
 
-
-	hitbox = { pos.x, pos.y, 28, 28 };
+	//gravity = 2;
 
 	return true;
 }
@@ -58,75 +59,45 @@ bool j1Player::PreUpdate()
 	{
 		is_dead = false;
 		LOG("REVIVE");
-
 	}
-	if (!is_dead)
+
+	/*if (!is_dead && camera_pos)
 	{
-		if (App->input->GetKey(SDL_SCANCODE_W) == KEY_DOWN || (App->input->GetKey(SDL_SCANCODE_UP) == KEY_DOWN))
-		{
-			c_state = UP;
-		}
-		if (App->input->GetKey(SDL_SCANCODE_S) == KEY_DOWN || (App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_DOWN))
-		{
-			c_state = DOWN;
-		}
-		if (App->input->GetKey(SDL_SCANCODE_A) == KEY_DOWN || (App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_DOWN))
+
+		if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
 		{
 			c_state = LEFT;
 		}
-		if (App->input->GetKey(SDL_SCANCODE_D) == KEY_DOWN || (App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_DOWN))
+
+		if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
 		{
 			c_state = RIGHT;
 		}
-		if (pos.x < 34 || pos.x > 768 || pos.y < 34 || pos.y > 768)
+
+		if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
 		{
-			is_dead = true;
+			c_state = JUMP;
 		}
 	}
+
 	else
 	{
 		c_state = STOP;
-	}
+	}*/
 
 	return true;
 }
 
 bool j1Player::Update(float dt)
 {
-	switch (c_state)
-	{
-	case STOP:
-		
-		pos = pos;
-		break;
-	case UP:
-		LOG("UP");
-		MoveU();
-		break;
-	case DOWN:
-		LOG("DOWN");
-		MoveD();
-		break;
-	case LEFT:
-		LOG("LEFT");
-		MoveL();
-		break;
-	case RIGHT:
-		LOG("RIGHT");
-		MoveR();
-		break;
-	case DEBUG:
-		LOG("DEBUG");
-		pos = pos;
-		break;
-	}
-
+	
 	hitbox.x = pos.x;
 	hitbox.y = pos.y;
 
-	App->render->DrawQuad(hitbox, 255, 255, 0, 255);
+	MovePlayer(dt);
 
-	
+	App->render->DrawQuad(hitbox, 255, 255, 0, 255);
+	//App->render->Blit(p_texture, );
 
 	return true;
 }
@@ -140,31 +111,91 @@ bool j1Player::PostUpdate()
 
 bool j1Player::CleanUp()
 {
+
+	App->tex->UnLoad(p_texture);
+
 	return true;
 }
 
+void j1Player::MovePlayer(float dt)
+{
 
+	if (!is_dead && camera_pos)
+	{
+		if (App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT)
+		{
+			pos.y -= speed;
+			hitbox.x = pos.x; hitbox.y = pos.y;
+			std::this_thread::sleep_for(std::chrono::milliseconds(speed));
+		}
+		if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT)
+		{
+			pos.y += speed;
+			hitbox.x = pos.x; hitbox.y = pos.y;
+			std::this_thread::sleep_for(std::chrono::milliseconds(speed));
+		}
+		if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
+		{
+			pos.x -= speed;
+			hitbox.x = pos.x; hitbox.y = pos.y;
 
+			if (App->render->camera.x < 0 && App->render->camera.x + pos.x >= 300)
+			{
+				App->render->camera.x = -(pos.x - 500);
+			}
+			
+			std::this_thread::sleep_for(std::chrono::milliseconds(speed));
+		}
+		if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
+		{
+			pos.x += speed;
+			hitbox.x = pos.x; hitbox.y = pos.y;
 
-void j1Player::MoveU()
-{
-	pos.y -= 32;
-	std::this_thread::sleep_for(std::chrono::milliseconds(speed));
-}
-void j1Player::MoveD()
-{
-	pos.y += 32;
-	std::this_thread::sleep_for(std::chrono::milliseconds(speed));
-}
-void j1Player::MoveL()
-{
-	pos.x -= 32;
-	std::this_thread::sleep_for(std::chrono::milliseconds(speed));
-}
-void j1Player::MoveR()
-{
-	pos.x += 32;
-	std::this_thread::sleep_for(std::chrono::milliseconds(speed));
+			if (App->render->camera.x <= 0 && App->render->camera.x + pos.x > 500)
+			{
+				App->render->camera.x = -(pos.x - 500);
+			}		
+
+			std::this_thread::sleep_for(std::chrono::milliseconds(speed));
+		}
+		if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && jumping == false)
+		{
+			p_pos_y = pos.y;
+			jumping = true;
+			std::this_thread::sleep_for(std::chrono::milliseconds(speed));
+		}
+	}
+
+	else
+	{
+		c_state = STOP;
+	}
+
+	if (jumping)
+	{
+		if (jumpF > -2)
+		{
+			pos.y += jumpF;
+			jumpF += 0.05f;
+			std::this_thread::sleep_for(std::chrono::milliseconds(speed));
+		}
+
+		else if(jumpF < 2)
+		{
+			pos.y += jumpF;
+			jumpF += 0.05f;
+			std::this_thread::sleep_for(std::chrono::milliseconds(speed));
+		}
+
+		if (pos.y == p_pos_y) 
+		{
+			jumpF = -2.5f;
+			jumping = false;
+			LOG("%f", jumpF);
+		}
+
+	}
+
 }
 
 p2Point<int> j1Player::getPos() const 

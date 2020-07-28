@@ -35,6 +35,9 @@
       <Filter>Desenvolupament  ========\Tools\Timers</Filter>
     </ClCompile>
     <ClCompile Include="Dependencies\PugiXml\src\pugixml.cpp" />
+    <ClCompile Include="j1Player.cpp">
+      <Filter>Desenvolupament  ========\Player</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="j1Window.h">
@@ -87,6 +90,9 @@
     </ClInclude>
     <ClInclude Include="Dependencies\PugiXml\src\pugiconfig.hpp" />
     <ClInclude Include="Dependencies\PugiXml\src\pugixml.hpp" />
+    <ClInclude Include="j1Player.h">
+      <Filter>Desenvolupament  ========\Player</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Programacio 2 ===========">
@@ -109,6 +115,9 @@
     </Filter>
     <Filter Include="Desenvolupament  ========\Tools\Timers">
       <UniqueIdentifier>{b4ddeef7-b2bd-4abe-9120-f686c0272e95}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Desenvolupament  ========\Player">
+      <UniqueIdentifier>{5a779f0d-932c-4fd6-9cf0-40e262674dac}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

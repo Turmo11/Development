@@ -18,6 +18,7 @@ enum p_states {
 	DOWN,
 	LEFT,
 	RIGHT,
+	JUMP,
 	DEBUG
 };
 
@@ -51,30 +52,46 @@ public:
 	bool Load(pugi::xml_node&);
 	bool Save(pugi::xml_node&) const;*/
 
-	void MoveU();
-	void MoveD();
 	void MoveL();
 	void MoveR();
+
+	void MovePlayer(float dt);
 
 
 	// Called before quitting
 	bool CleanUp();
 
 	bool is_dead = false;
+	bool camera_pos = false;
+	bool jumping = false;
+
+public:
+
 
 
 private:
 
 	p_states c_state;
 
-	p2Point<int> pos;
+	
 
 	SDL_Rect hitbox = {};
 
+	SDL_Texture* p_texture;
+
+
 	int score = 0;
 	int snake = 0;
-	int speed;
+	//int velocity = 30;
+	
 
+public:
+
+	//int gravity;
+	int speed;
+	float jumpF = -2.5f;
+	int p_pos_y;
+	p2Point<int> pos;
 	
 };
 
