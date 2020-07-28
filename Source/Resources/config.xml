@@ -19,6 +19,11 @@
     <fullscreen_window value="false"/>
   </window>
 
+  <player>
+    <position x="300" y="700"/>
+    <speed value="2"/>
+  </player>
+
   <map>
     <folder>Assets/maps/</folder>
   </map>
