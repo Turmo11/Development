@@ -11,10 +11,10 @@ struct Properties;
 
 struct Collider
 {
-	SDL_Rect rect;
-	bool to_delete = false;
-	object_type type;
-	j1Module* callback = nullptr;
+	SDL_Rect rect;					//Collider box
+	bool to_delete = false;			//deletes collider if true
+	object_type type;				//enum class collider type defined in map.h
+	j1Module* callback = nullptr;	
 	Properties* userdata;
 
 	Collider(SDL_Rect rectangle, object_type type, j1Module* callback = nullptr) :
@@ -39,12 +39,12 @@ struct Collider
 
 
 class j1Collisions : public j1Module {
-	//Methods
+	
 public:
 	j1Collisions();
 
 	bool Init();
-	// Destructor
+
 	virtual ~j1Collisions() {};
 
 	// Called before render is available
@@ -62,13 +62,13 @@ public:
 	bool CleanUp();
 
 	Collider* AddCollider(SDL_Rect rect, object_type type, j1Module* callback, Properties* userdata = nullptr);
-	void LoadFromMap();
+	void LoadFromMap(); //Loads colliders from tiled map
+	
 
 private:
 
-	void DebugDraw();
-
-	//Variables
+	void DebugDraw(); //Draws the collider pressing F9
+	
 public:
 
 	p2List<Collider*> colliders;

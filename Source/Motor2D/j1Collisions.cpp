@@ -30,6 +30,7 @@ bool j1Collisions::Start() {
 
 bool j1Collisions::PreUpdate() {
 
+	//Deletes any collider waiting to be destroyed (to_delete == true)
 	p2List_item<Collider*>* collider_iterator = colliders.start;
 	while (collider_iterator != nullptr) {
 
@@ -41,7 +42,7 @@ bool j1Collisions::PreUpdate() {
 		collider_iterator = collider_iterator->next;
 	}
 
-	// Calculate collisions
+	// Calculates collisions
 	Collider* c1;
 	Collider* c2;
 
@@ -150,7 +151,8 @@ Collider* j1Collisions::AddCollider(SDL_Rect rect, object_type type, j1Module* c
 	return ret;
 }
 
-//Add Colliders to the list from the map
+
+//Loads colliders from tiled map
 void j1Collisions::LoadFromMap() {
 	p2List_item<ObjectGroup*>* list_i = App->map->data.object_groups.start;
 	while (list_i != nullptr) {

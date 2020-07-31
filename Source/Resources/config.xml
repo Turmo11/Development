@@ -2,7 +2,7 @@
 
 <config>
   <app>
-    <title>Development</title>
+    <title>Metamorphosis</title>
     <organization>UPC</organization>
   </app>
 	
@@ -20,9 +20,18 @@
   </window>
 
   <player>
-    <position x="900" y="700"/>
-    <speed value="2"/>
+    <acceleration x="2" y="15"/>
+    <gravity value="0.75" />
+    <speed x="0" y="0" />
+    <max_speed x="6" y="15"/>
+    <hitbox w="100" h="100"/>
   </player>
+
+  <file_system>
+    <path>data.zip</path>
+    <loadTo>save_game.xml</loadTo>
+    <saveTo>save_game.xml</saveTo>
+  </file_system>
 
   <map>
     <folder>Assets/maps/</folder>

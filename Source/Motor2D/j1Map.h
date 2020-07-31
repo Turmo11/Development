@@ -129,6 +129,9 @@ struct MapData
 	int						height;
 	int						tile_width;
 	int						tile_height;
+
+	p2Point<float>			starting_position;
+
 	SDL_Color				background_color;
 	map_types				type;
 	p2List<TileSet*>		tilesets;
