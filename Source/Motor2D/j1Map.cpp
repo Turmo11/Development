@@ -165,6 +165,22 @@ bool j1Map::CleanUp()
 	}
 	data.layers.clear();
 
+	//Object cleanup
+	p2List_item<ObjectGroup*>* item3;
+	item3 = App->map->data.object_groups.start;
+
+	while (item3 != NULL)
+	{
+		if (item3->data->objects != NULL)
+			delete[] item3->data->objects;
+
+		delete item3->data;
+
+		item3 = item3->next;
+	}
+
+	App->map->data.object_groups.clear();
+
 	// Clean up the pugui tree
 	map_file.reset();
 
@@ -214,12 +230,12 @@ bool j1Map::Load(const char* file_name)
 	pugi::xml_node layer;
 	for (layer = map_file.child("map").child("layer"); layer && ret; layer = layer.next_sibling("layer"))
 	{
-		MapLayer* lay = new MapLayer();
+		MapLayer* map_layer = new MapLayer();
 
-		ret = LoadLayer(layer, lay);
+		ret = LoadLayer(layer, map_layer);
 
 		if (ret == true)
-			data.layers.add(lay);
+			data.layers.add(map_layer);
 	}
 
 	// Load Collider info
