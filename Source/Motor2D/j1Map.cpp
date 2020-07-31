@@ -82,12 +82,12 @@ iPoint j1Map::MapToWorld(int x, int y) const
 {
 	iPoint ret;
 
-	if (data.type == MAPTYPE_ORTHOGONAL)
+	if (data.type == map_types::ORTHOGONAL)
 	{
 		ret.x = x * data.tile_width;
 		ret.y = y * data.tile_height;
 	}
-	else if (data.type == MAPTYPE_ISOMETRIC)
+	else if (data.type == map_types::ISOMETRIC)
 	{
 		ret.x = (x - y) * (data.tile_width * 0.5f);
 		ret.y = (x + y) * (data.tile_height * 0.5f);
@@ -105,12 +105,12 @@ iPoint j1Map::WorldToMap(int x, int y) const
 {
 	iPoint ret(0, 0);
 
-	if (data.type == MAPTYPE_ORTHOGONAL)
+	if (data.type == map_types::ORTHOGONAL)
 	{
 		ret.x = x / data.tile_width;
 		ret.y = y / data.tile_height;
 	}
-	else if (data.type == MAPTYPE_ISOMETRIC)
+	else if (data.type == map_types::ISOMETRIC)
 	{
 
 		float half_width = data.tile_width * 0.5f;
@@ -302,19 +302,19 @@ bool j1Map::LoadMap()
 
 		if (orientation == "orthogonal")
 		{
-			data.type = MAPTYPE_ORTHOGONAL;
+			data.type = map_types::ORTHOGONAL;
 		}
 		else if (orientation == "isometric")
 		{
-			data.type = MAPTYPE_ISOMETRIC;
+			data.type = map_types::ISOMETRIC;
 		}
 		else if (orientation == "staggered")
 		{
-			data.type = MAPTYPE_STAGGERED;
+			data.type = map_types::STAGGERED;
 		}
 		else
 		{
-			data.type = MAPTYPE_UNKNOWN;
+			data.type = map_types::UNKNOWN;
 		}
 	}
 
@@ -413,30 +413,115 @@ bool j1Map::LoadLayer(pugi::xml_node& node, MapLayer* layer)
 	return ret;
 }
 
+
+bool j1Map::LoadObjectLayers(pugi::xml_node& node, ObjectGroup* object_group)
+{
+	object_group->name = node.attribute("name").as_string();
+	object_group->id = node.attribute("id").as_uint();
+
+	int AmountObjects = 0;
+	for (pugi::xml_node iterator_node = node.child("object"); iterator_node; iterator_node = iterator_node.next_sibling("object"), AmountObjects++) {}
+
+	object_group->objects_size = AmountObjects;
+	object_group->objects = new Object[AmountObjects];
+	memset(object_group->objects, 0, AmountObjects * sizeof(Object));
+
+	int i = 0;
+	for (pugi::xml_node iterator_node = node.child("object"); iterator_node; iterator_node = iterator_node.next_sibling("object"), i++) {
+		SDL_Rect* collider = new SDL_Rect;
+
+		collider->x = iterator_node.attribute("x").as_uint();
+		collider->y = iterator_node.attribute("y").as_uint();
+		collider->w = iterator_node.attribute("width").as_uint();
+		collider->h = iterator_node.attribute("height").as_uint();
+
+		object_group->objects[i].collider = collider;
+		object_group->objects[i].id = iterator_node.attribute("id").as_uint();
+		object_group->objects[i].name = iterator_node.attribute("name").as_string();
+
+		p2SString type(iterator_node.attribute("type").as_string());
+
+		if (type == "ground")
+		{
+		object_group->objects[i].type = object_type::GROUND;
+		}
+		else if (type == "platform")
+		{
+			object_group->objects[i].type = object_type::PLATFORM;
+		}
+		else if (type == "letter")
+		{
+			object_group->objects[i].type = object_type::LETTER;
+
+			Properties::Property* temp = new Properties::Property;
+			temp->name = iterator_node.child("properties").child("property").attribute("name").as_string();
+			temp->data.v_string = iterator_node.child("properties").child("property").attribute("value").as_string();
+			object_group->objects[i].properties.property_list.add(temp);
+		}
+		else if (type == "death")
+		{
+			object_group->objects[i].type = object_type::DEATH;
+			Properties::Property* temp = new Properties::Property;
+			temp->name = iterator_node.child("properties").child("property").attribute("name").as_string();
+			temp->data.v_string = iterator_node.child("properties").child("property").attribute("value").as_string();
+			object_group->objects[i].properties.property_list.add(temp);
+		}
+		else if (type == "goal")
+		{
+			object_group->objects[i].type = object_type::GOAL;
+
+			Properties::Property* temp = new Properties::Property;
+			temp->name = iterator_node.child("properties").child("property").attribute("name").as_string();
+			temp->data.v_string = iterator_node.child("properties").child("property").attribute("value").as_string();
+			object_group->objects[i].properties.property_list.add(temp);
+		}
+		
+		else
+		{
+			object_group->objects[i].type = object_type::UNKNOWN;
+		}
+
+	}
+
+	return true;
+}
+
 // Load a group of properties from a node and fill a list with it
-bool j1Map::LoadProperties(pugi::xml_node& node, Properties& properties)
+
+
+bool j1Map::LoadProperties(pugi::xml_node& node, Properties& properties)							//REVISE THIS HERE. Check why it crashes the game at exit time.
 {
 	bool ret = false;
 
-	// TODO 6: Fill in the method to fill the custom properties from 
-	// an xml_node
-	pugi::xml_node property_node = node.child("properties").child("property");
-	while (property_node != nullptr) {
-		properties.name = node.attribute("name").as_string();
+	pugi::xml_node data = node.child("properties");
 
-		if (node.attribute("type").as_string() == "bool") {
-			properties.v_type = TYPE_BOOL;
-			properties.value.v_bool = node.attribute("value").as_bool();
+	if (data != nullptr)
+	{
+		pugi::xml_node property;
+
+		for (property = data.child("property"); property; property = property.next_sibling("property"))
+		{
+			Properties::Property* p = new Properties::Property();
+
+			p->name = property.attribute("name").as_string();
+
+			properties.property_list.add(p);
 		}
-		else if (node.attribute("type").as_string() == "float") {
-			properties.v_type = TYPE_FLOAT;
-			properties.value.v_float = node.attribute("value").as_float();
-		}
-		else if (node.attribute("type").as_string() == "int") {
-			properties.v_type = TYPE_INT;
-			properties.value.v_int = node.attribute("value").as_int();
-		}
-		property_node = property_node.next_sibling();
 	}
+
 	return ret;
+}
+
+value Properties::Get(const char* name, value* default_value) const
+{
+	p2List_item<Property*>* item = property_list.start;
+
+	while (item)
+	{
+		if (item->data->name == name)
+			return item->data->data;
+		item = item->next;
+	}
+
+	return *default_value;
 }

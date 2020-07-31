@@ -1,40 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.2.4" orientation="orthogonal" renderorder="right-down" width="50" height="25" tilewidth="64" tileheight="64" infinite="0" nextlayerid="5" nextobjectid="15">
+<map version="1.2" tiledversion="1.2.4" orientation="orthogonal" renderorder="right-down" width="50" height="25" tilewidth="64" tileheight="64" infinite="0" nextlayerid="5" nextobjectid="16">
  <tileset firstgid="1" name="tileset2" tilewidth="64" tileheight="64" tilecount="36" columns="6">
   <image source="tileset2.png" width="384" height="384"/>
  </tileset>
  <tileset firstgid="37" name="letter_tileset" tilewidth="64" tileheight="64" tilecount="4" columns="2">
   <image source="letter_tileset.png" width="128" height="128"/>
  </tileset>
- <tileset firstgid="41" name="player" tilewidth="64" tileheight="64" tilecount="8" columns="4">
-  <image source="../textures/player/player.png" width="256" height="128"/>
-  <tile id="0">
-   <animation>
-    <frame tileid="0" duration="150"/>
-    <frame tileid="1" duration="150"/>
-    <frame tileid="2" duration="150"/>
-    <frame tileid="3" duration="150"/>
-    <frame tileid="4" duration="150"/>
-    <frame tileid="5" duration="150"/>
-    <frame tileid="6" duration="150"/>
-   </animation>
-  </tile>
- </tileset>
- <tileset firstgid="49" name="playerx128" tilewidth="128" tileheight="128" tilecount="8" columns="4">
-  <image source="../textures/player/playerx128.png" width="512" height="256"/>
-  <tile id="0">
-   <animation>
-    <frame tileid="0" duration="150"/>
-    <frame tileid="1" duration="150"/>
-    <frame tileid="2" duration="150"/>
-    <frame tileid="3" duration="150"/>
-    <frame tileid="4" duration="150"/>
-    <frame tileid="5" duration="150"/>
-    <frame tileid="6" duration="150"/>
-   </animation>
-  </tile>
- </tileset>
- <tileset firstgid="57" name="playerx96" tilewidth="96" tileheight="96" tilecount="8" columns="4">
+ <tileset firstgid="41" name="playerx96" tilewidth="96" tileheight="96" tilecount="8" columns="4">
   <image source="../textures/player/playerx96.png" width="384" height="192"/>
   <tile id="0">
    <animation>
@@ -575,49 +547,49 @@
    <tile/>
    <tile/>
    <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile gid="5"/>
+   <tile gid="5"/>
+   <tile gid="5"/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
    <tile gid="41"/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile gid="41"/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile gid="5"/>
-   <tile gid="5"/>
-   <tile gid="5"/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile gid="49"/>
-   <tile/>
-   <tile gid="57"/>
    <tile/>
    <tile/>
    <tile/>
@@ -669,7 +641,7 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile gid="41"/>
+   <tile/>
    <tile/>
    <tile/>
    <tile/>
@@ -2567,7 +2539,8 @@
   <object id="10" name="Eta" type="letter" x="1808" y="399.818" width="31.9091" height="31.9091"/>
   <object id="11" name="Platform" type="ground" x="1600" y="703.977" width="447.872" height="64.054"/>
   <object id="12" name="Platform" type="platform" x="1728.01" y="512.054" width="191.946" height="32.0435"/>
-  <object id="13" name="Ground" type="platform" x="2176.03" y="832.004" width="447.945" height="512.017"/>
+  <object id="13" name="Ground" type="ground" x="2176.03" y="832.004" width="447.945" height="512.017"/>
   <object id="14" name="Goal" type="goal" x="2303.67" y="639.667" width="192.333" height="192.333"/>
+  <object id="15" name="fall" type="death" x="-48" y="1240" width="3288" height="128"/>
  </objectgroup>
 </map>

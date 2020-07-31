@@ -7,28 +7,68 @@
 #include "p2SString.h"
 #include "j1Module.h"
 
-// TODO 5: Create a generic structure to hold properties
-// TODO 7: Our custom properties should have one method
-// to ask for the value of a custom property
 // ----------------------------------------------------
-enum type {
-	TYPE_BOOL,
-	TYPE_INT,
-	TYPE_FLOAT
+union value {
+	const char*		v_string;
+	int				v_int;
+	float			v_float;
 };
 
-struct Properties
+struct Properties //Properties
 {
-	p2SString	name;
-	type		v_type;
-	union {
-		bool	v_bool;
-		int		v_int;
-		float	v_float;
-	} value;
+	struct Property
+	{
+		p2SString	name;
+		value		data;
+		
+	};
+
+	Properties::~Properties()															//Deletes every property and frees all allocated memory.
+	{
+		p2List_item<Property*>* item;
+		item = property_list.start;
+		while (item != NULL)
+		{
+			RELEASE(item->data);
+			item = item->next;
+		}
+		property_list.clear();												//Clears property_list by deleting all items in the list and freeing all allocated memory.
+	}
+
+	value Get(const char* name, value* default_value = nullptr) const;
+
+	p2List<Property*>	property_list;
 };
 
 
+//Objects for collisions
+enum class object_type
+{
+	UNKNOWN = 0,
+	GROUND,
+	PLATFORM,
+	LETTER,
+	GOAL,
+	DEATH
+};
+
+struct Object
+{
+	uint				id;
+	p2SString			name;
+	object_type			type;
+	SDL_Rect*			collider;
+	SDL_Texture*		texture;
+	Properties			properties;
+};
+
+struct ObjectGroup
+{
+	uint				id;
+	p2SString			name;
+	Object*				objects;
+	uint				objects_size;
+};
 
 // ----------------------------------------------------
 struct MapLayer
@@ -47,6 +87,7 @@ struct MapLayer
 		RELEASE(data);
 	}
 
+	//Get id of tile in position x, y from data[] array
 	inline uint Get(int x, int y) const
 	{
 		return data[(y*width) + x];
@@ -60,10 +101,10 @@ struct TileSet
 
 	p2SString			name;
 	int					firstgid;
-	int					margin;
-	int					spacing;
 	int					tile_width;
 	int					tile_height;
+	int					margin;
+	int					spacing;
 	SDL_Texture*		texture;
 	int					tex_width;
 	int					tex_height;
@@ -73,24 +114,25 @@ struct TileSet
 	int					offset_y;
 };
 
-enum MapTypes
+enum class map_types
 {
-	MAPTYPE_UNKNOWN = 0,
-	MAPTYPE_ORTHOGONAL,
-	MAPTYPE_ISOMETRIC,
-	MAPTYPE_STAGGERED
+	UNKNOWN = 0,
+	ORTHOGONAL,
+	ISOMETRIC,
+	STAGGERED
 };
 // ----------------------------------------------------
 struct MapData
 {
-	int					width;
-	int					height;
-	int					tile_width;
-	int					tile_height;
-	SDL_Color			background_color;
-	MapTypes			type;
-	p2List<TileSet*>	tilesets;
-	p2List<MapLayer*>	layers;
+	int						width;
+	int						height;
+	int						tile_width;
+	int						tile_height;
+	SDL_Color				background_color;
+	map_types				type;
+	p2List<TileSet*>		tilesets;
+	p2List<MapLayer*>		layers;
+	p2List<ObjectGroup*>	object_groups;
 };
 
 // ----------------------------------------------------
@@ -124,6 +166,7 @@ private:
 	bool LoadTilesetDetails(pugi::xml_node& tileset_node, TileSet* set);
 	bool LoadTilesetImage(pugi::xml_node& tileset_node, TileSet* set);
 	bool LoadLayer(pugi::xml_node& node, MapLayer* layer);
+	bool LoadObjectLayers(pugi::xml_node& node, ObjectGroup* group);
 	bool LoadProperties(pugi::xml_node& node, Properties& properties);
 
 	TileSet* GetTilesetFromTileId(int id) const;
