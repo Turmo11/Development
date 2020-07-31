@@ -11,14 +11,13 @@
 struct SDL_Texture;
 struct Collider;
 
-enum p_states {
+enum class player_states {
 
-	STOP = 0,
-	UP,
-	DOWN,
-	LEFT,
-	RIGHT,
+	IDLE = 0,
+	RUNNING,
 	JUMP,
+	CROUCH,
+	STRIKE,
 	DEBUG
 };
 
@@ -71,7 +70,7 @@ public:
 
 private:
 
-	p_states c_state;
+	player_states current_state;
 
 	
 

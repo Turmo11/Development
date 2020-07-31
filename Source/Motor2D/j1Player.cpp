@@ -43,7 +43,7 @@ bool j1Player::Start()
 	srand(time(NULL));
 	is_dead = false;
 	score = 0;
-	c_state = STOP;
+	current_state = player_states::IDLE;
 
 	hitbox = { pos.x, pos.y, 28, 55 };
 
@@ -168,7 +168,7 @@ void j1Player::MovePlayer(float dt)
 
 	else
 	{
-		c_state = STOP;
+		current_state = player_states::IDLE;
 	}
 
 	if (jumping)
