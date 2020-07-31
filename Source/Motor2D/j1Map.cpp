@@ -222,6 +222,21 @@ bool j1Map::Load(const char* file_name)
 			data.layers.add(lay);
 	}
 
+	// Load Collider info
+	pugi::xml_node object_group;
+
+	for (object_group = map_file.child("map").child("objectgroup"); object_group && ret; object_group = object_group.next_sibling("objectgroup"))
+	{
+		ObjectGroup* new_object_group = new ObjectGroup();
+
+		if (ret == true)
+		{
+			ret = LoadObjectLayers(object_group, new_object_group);
+		}
+
+		data.object_groups.add(new_object_group);
+	}
+
 	if (ret == true)
 	{
 		LOG("Successfully parsed map XML file: %s", file_name);
@@ -254,6 +269,8 @@ bool j1Map::Load(const char* file_name)
 
 	return ret;
 }
+
+
 
 // Load map general properties
 bool j1Map::LoadMap()
