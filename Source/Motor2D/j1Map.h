@@ -45,6 +45,7 @@ struct Properties //Properties
 enum class object_type
 {
 	UNKNOWN = 0,
+	PLAYER,
 	GROUND,
 	PLATFORM,
 	LETTER,
