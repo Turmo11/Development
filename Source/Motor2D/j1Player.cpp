@@ -30,14 +30,14 @@ bool j1Player::Awake(pugi::xml_node& config)
 
 	player.speed.x = config.child("speed").attribute("x").as_float();
 	player.speed.y = config.child("speed").attribute("y").as_float();
-	player.max_speed.x = config.child("maxSpeed").attribute("x").as_float();
-	player.max_speed.y = config.child("maxSpeed").attribute("y").as_float();
+	player.max_speed.x = config.child("max_speed").attribute("x").as_float();
+	player.max_speed.y = config.child("max_speed").attribute("y").as_float();
 	player.acceleration.x = config.child("acceleration").attribute("x").as_float();
 	player.acceleration.y = config.child("acceleration").attribute("y").as_float();
 
 	player.gravity = config.child("gravity").attribute("value").as_float();
 
-	player.hitbox_width = config.child("hibox").attribute("w").as_int();
+	player.hitbox_width = config.child("hitbox").attribute("w").as_int();
 	player.hitbox_height = config.child("hitbox").attribute("h").as_int();
 
 	return true;
@@ -55,8 +55,6 @@ bool j1Player::Awake(pugi::xml_node& config)
 bool j1Player::Start()
 {
 	SummonPlayer();
-
-	
 
 	//p_texture = App->tex->Load("textures/test1.jpeg");
 
@@ -81,7 +79,7 @@ bool j1Player::PreUpdate()
 
 	player.grounded = false;
 
-	if (!CheckAirborne() && player.grounded)
+	if (!CheckAirborne())
 	{
 		player.current_state = player_states::IDLE;
 
@@ -108,7 +106,10 @@ bool j1Player::PreUpdate()
 	if (App->input->GetKey(SDL_SCANCODE_F10) == KEY_DOWN) // Able/Disable GodMode
 	{
 		GodMode();
+		
 	}
+
+	
 
 	return true;
 
@@ -165,35 +166,42 @@ bool j1Player::Update(float dt)
 		{
 		case player_states::IDLE:
 
+			LOG("Current State: IDLE");
 			player.animation = "idle";
 			player.speed.x = 0;
+			
 
 			break;
 		case player_states::RUNNING:
 
+			LOG("Current State: RUNNING");
 			player.animation = "run";
+			
 
 			break;
 		case player_states::CROUCH:
 
+			LOG("Current State: CROUCH");
 			player.animation = "crouch";
 
 			break;
 		case player_states::JUMP:
 
+			LOG("Current State: JUMP");
 			player.speed.y -= player.acceleration.y;
 			player.jumping = true;
 
 			break;
 		case player_states::FALL:
 
+			LOG("Current State: FALL");
 			player.jumping = true;
 
 			break;
 
 		}
 
-		if (!CheckAirborne() && player.grounded)
+		if (player.grounded)
 		{
 			player.jumping = false;
 			player.current_state = player_states::IDLE;
@@ -213,16 +221,17 @@ bool j1Player::Update(float dt)
 				player.speed.y = player.max_speed.y;
 			}
 
-			if (player.speed.y < 0) // If on jump is going up uses jump animation
-			{
-				player.animation = "jump";
-			}
-			else // If on jump is going down uses fall animation
-			{
-				player.animation = "fall";
-			}
+			//if (player.speed.y < 0) // If on jump is going up uses jump animation
+			//{
+			//	player.animation = "jump";
+			//}
+			//else // If on jump is going down uses fall animation
+			//{
+			//	player.animation = "fall";
+			//}
 		}
-
+		
+		
 		player.position.y += player.speed.y; //Update position y
 		player.position.x += player.speed.x;
 	}
@@ -245,11 +254,17 @@ bool j1Player::Update(float dt)
 	player.player_hitbox.x = player.position.x;
 	player.player_hitbox.y = player.position.y;
 
-	player.player_collider->SetPos(player.position.x + 20, player.position.y); //Magic Numbers
+	player.player_collider->SetPos(player.position.x, player.position.y); 
 
+	/*player.hitbox_test.x = (int)player.position.x;
+	player.hitbox_test.y = (int)player.position.y;
+	player.hitbox_test.w = 45;
+	player.hitbox_test.h = 96;
+	
+	App->render->Blit(player.tex_test, player.position.x, player.position.y, &player.hitbox_test, 1.0f);
+	App->render->DrawQuad(player.hitbox_test, 0, 0, 0, 30);*/
 
-	player.rect_test = { (int)player.position.x, (int)player.position.y, 538, 361 };
-	App->render->Blit(player.tex_test, player.position.x, player.position.y, &player.rect_test, 1.0f);
+	SetCamera();
 
 	return true;
 
@@ -262,6 +277,24 @@ bool j1Player::Update(float dt)
 	////App->render->Blit(p_texture, );
 
 	//return true;
+}
+
+void j1Player::SetCamera()
+{
+	if (App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT || 
+		App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT || 
+		App->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT || 
+		App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT)
+	{
+		return;
+	}
+	else 
+	{
+		float x_axis = (-player.position.x) + (App->win->screen_surface->w / 2);
+		float y_axis = (-player.position.y) + (App->win->screen_surface->h / 2);
+		App->render->camera.x = (int)x_axis;
+		App->render->camera.y = (int)y_axis;
+	}
 }
 
 bool j1Player::PostUpdate()
@@ -390,6 +423,13 @@ bool j1Player::SummonPlayer()
 	return true;
 }
 
+void j1Player::ResetPlayer()
+{
+
+	player.player_collider->to_delete = true;
+	SummonPlayer();
+}
+
 void j1Player::OnCollision(Collider* A, Collider* B) {
 
 	if (B->type == object_type::PLAYER) {
@@ -401,10 +441,9 @@ void j1Player::OnCollision(Collider* A, Collider* B) {
 		return;
 	}
 
-	// ------------ Player Colliding against solids ------------------
+	// ------------ Player Colliding with the ground ------------------
 	if (A->type == object_type::PLAYER && B->type == object_type::GROUND) {
 
-		//from above
 		if (player.position.y + A->rect.h - player.max_speed.y - 5 < B->rect.y
 			&& A->rect.x < B->rect.x + B->rect.w
 			&& A->rect.x + A->rect.w > B->rect.x) 
@@ -416,6 +455,24 @@ void j1Player::OnCollision(Collider* A, Collider* B) {
 
 			player.position.y = B->rect.y - player.player_collider->rect.h + 1;
 			player.grounded = true;
+			player.jumping = false;
+		}
+	}
+
+	// ------------ Player Colliding with death limit ------------------
+	if (A->type == object_type::PLAYER && B->type == object_type::DEATH) {
+
+		//from above
+		if (player.position.y + A->rect.h - player.max_speed.y - 5 < B->rect.y
+			&& A->rect.x < B->rect.x + B->rect.w
+			&& A->rect.x + A->rect.w > B->rect.x)
+		{
+			if (player.speed.y > 0)
+			{
+				player.speed.y = 0;
+			}
+
+			ResetPlayer();
 		}
 	}
 }
@@ -428,6 +485,7 @@ void j1Player::GodMode()
 	}
 	else
 	{
+		LOG("GodMode Activated!");
 		player.god_mode = true;
 	}
 }
@@ -446,13 +504,13 @@ bool j1Player::CheckAirborne()
 
 void j1Player::HorizontalMovement()
 {
-	if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT || App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
+	if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT /*|| App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT*/)
 	{
 		player.moving_right = true;
 		MoveRight();
 		player.flip = false;
 	}
-	else if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT || App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT)
+	else if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT /*|| App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT*/)
 	{
 		player.moving_left = true;
 		MoveLeft();

@@ -23,6 +23,8 @@ enum class player_states {
 
 struct Player 
 {
+	player_states		current_state;
+
 	p2Point<float>		position;
 	p2Point<float>		speed;
 	p2Point<float>		max_speed;
@@ -49,10 +51,8 @@ struct Player
 	SDL_Rect			player_hitbox;
 	Collider*			player_collider;
 	
-	player_states		current_state;
-
-	SDL_Texture*		tex_test;
-	SDL_Rect			rect_test;
+	SDL_Texture*		tex_test = nullptr;
+	SDL_Rect			hitbox_test = {};
 };
 
 // ----------------------------------------------------
@@ -94,9 +94,9 @@ public:
 	// Called before quitting
 	bool CleanUp();
 
-	bool is_dead = false;
+	/*bool is_dead = false;
 	bool camera_pos = false;
-	bool jumping = false;
+	bool jumping = false;*/
 
 public:
 
@@ -109,10 +109,13 @@ public:
 
 	void GodMode();
 	bool SummonPlayer();
+	void ResetPlayer();
 
 	bool CheckAirborne();
 
 	void j1Player::OnCollision(Collider* A, Collider* B);
+
+	void SetCamera();
 
 public:
 

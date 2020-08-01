@@ -32,7 +32,7 @@ public:
 	// Called before quitting
 	bool CleanUp();
 
-	
+	SDL_Rect* test_work_pls;
 
 private:
 };
