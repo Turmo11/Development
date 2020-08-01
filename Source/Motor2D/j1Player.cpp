@@ -26,8 +26,6 @@ j1Player::~j1Player()
 
 bool j1Player::Awake(pugi::xml_node& config)
 {
-	player.tex_test = App->tex->Load("Assets/textures/test.png");
-
 	player.speed.x = config.child("speed").attribute("x").as_float();
 	player.speed.y = config.child("speed").attribute("y").as_float();
 	player.max_speed.x = config.child("max_speed").attribute("x").as_float();
@@ -42,31 +40,11 @@ bool j1Player::Awake(pugi::xml_node& config)
 
 	return true;
 
-	/*bool ret = true;
-
-	pos.x = config.child("position").attribute("x").as_int();
-	pos.y = config.child("position").attribute("y").as_int();
-
-	speed = config.child("speed").attribute("value").as_int();
-
-	return ret;*/
 }
 
 bool j1Player::Start()
 {
 	SummonPlayer();
-
-	//p_texture = App->tex->Load("textures/test1.jpeg");
-
-	//srand(time(NULL));
-	//is_dead = false;
-	//score = 0;
-	//current_state = player_states::IDLE;
-
-	//hitbox = { pos.x, pos.y, 28, 55 };
-
-	////gravity = 2;
-
 	return true;
 }
 
@@ -79,7 +57,7 @@ bool j1Player::PreUpdate()
 
 	player.grounded = false;
 
-	if (!CheckAirborne())
+	if (!CheckAirborne()) //Setting grounded states
 	{
 		player.current_state = player_states::IDLE;
 
@@ -108,42 +86,7 @@ bool j1Player::PreUpdate()
 		GodMode();
 		
 	}
-
-	
-
 	return true;
-
-	/*if (App->input->GetKey(SDL_SCANCODE_R) == KEY_DOWN)
-	{
-		is_dead = false;
-		LOG("REVIVE");
-	}*/
-
-	/*if (!is_dead && camera_pos)
-	{
-
-		if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
-		{
-			c_state = LEFT;
-		}
-
-		if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
-		{
-			c_state = RIGHT;
-		}
-
-		if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
-		{
-			c_state = JUMP;
-		}
-	}
-
-	else
-	{
-		c_state = STOP;
-	}
-
-	return true;*/
 }
 
 bool j1Player::Update(float dt)
@@ -162,6 +105,7 @@ bool j1Player::Update(float dt)
 
 	if (!player.god_mode)
 	{
+		//State machine
 		switch (player.current_state)
 		{
 		case player_states::IDLE:
@@ -220,24 +164,15 @@ bool j1Player::Update(float dt)
 			{
 				player.speed.y = player.max_speed.y;
 			}
-
-			//if (player.speed.y < 0) // If on jump is going up uses jump animation
-			//{
-			//	player.animation = "jump";
-			//}
-			//else // If on jump is going down uses fall animation
-			//{
-			//	player.animation = "fall";
-			//}
 		}
-		
-		
-		player.position.y += player.speed.y; //Update position y
+
+		//Update position
+		player.position.y += player.speed.y; 
 		player.position.x += player.speed.x;
 	}
 	else //GodMode Activated!
 	{
-		player.animation = "idle";
+		player.animation = "godmode";
 
 		if (App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT)
 		{
@@ -253,48 +188,11 @@ bool j1Player::Update(float dt)
 	//Update player collider and position
 	player.player_hitbox.x = player.position.x;
 	player.player_hitbox.y = player.position.y;
-
 	player.player_collider->SetPos(player.position.x, player.position.y); 
-
-	/*player.hitbox_test.x = (int)player.position.x;
-	player.hitbox_test.y = (int)player.position.y;
-	player.hitbox_test.w = 45;
-	player.hitbox_test.h = 96;
-	
-	App->render->Blit(player.tex_test, player.position.x, player.position.y, &player.hitbox_test, 1.0f);
-	App->render->DrawQuad(player.hitbox_test, 0, 0, 0, 30);*/
 
 	SetCamera();
 
 	return true;
-
-	//hitbox.x = pos.x;
-	//hitbox.y = pos.y;
-
-	//MovePlayer(dt);
-
-	//App->render->DrawQuad(hitbox, 255, 255, 0, 255);
-	////App->render->Blit(p_texture, );
-
-	//return true;
-}
-
-void j1Player::SetCamera()
-{
-	if (App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT || 
-		App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT || 
-		App->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT || 
-		App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT)
-	{
-		return;
-	}
-	else 
-	{
-		float x_axis = (-player.position.x) + (App->win->screen_surface->w / 2);
-		float y_axis = (-player.position.y) + (App->win->screen_surface->h / 2);
-		App->render->camera.x = (int)x_axis;
-		App->render->camera.y = (int)y_axis;
-	}
 }
 
 bool j1Player::PostUpdate()
@@ -310,97 +208,10 @@ bool j1Player::PostUpdate()
 bool j1Player::CleanUp()
 {
 
-	/*App->tex->UnLoad(p_texture);*/
-
 	return true;
 }
 
-//void j1Player::MovePlayer(float dt)
-//{
-//
-//	if (!is_dead && camera_pos)
-//	{
-//		if (App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT)
-//		{
-//			pos.y -= speed;
-//			hitbox.x = pos.x; hitbox.y = pos.y;
-//			std::this_thread::sleep_for(std::chrono::milliseconds(speed));
-//		}
-//		if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT)
-//		{
-//			pos.y += speed;
-//			hitbox.x = pos.x; hitbox.y = pos.y;
-//			std::this_thread::sleep_for(std::chrono::milliseconds(speed));
-//		}
-//		if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
-//		{
-//			pos.x -= speed;
-//			hitbox.x = pos.x; hitbox.y = pos.y;
-//
-//			if (App->render->camera.x < 0 && App->render->camera.x + pos.x >= 300)
-//			{
-//				App->render->camera.x = -(pos.x - 500);
-//			}
-//
-//			std::this_thread::sleep_for(std::chrono::milliseconds(speed));
-//		}
-//		if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
-//		{
-//			pos.x += speed;
-//			hitbox.x = pos.x; hitbox.y = pos.y;
-//
-//			if (App->render->camera.x <= 0 && App->render->camera.x + pos.x > 500)
-//			{
-//				App->render->camera.x = -(pos.x - 500);
-//			}
-//
-//			std::this_thread::sleep_for(std::chrono::milliseconds(speed));
-//		}
-//		if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && jumping == false)
-//		{
-//			p_pos_y = pos.y;
-//			jumping = true;
-//			std::this_thread::sleep_for(std::chrono::milliseconds(speed));
-//		}
-//	}
-//
-//	else
-//	{
-//		current_state = player_states::IDLE;
-//	}
-//
-//	if (jumping)
-//	{
-//		if (jumpF > -2)
-//		{
-//			pos.y += jumpF;
-//			jumpF += 0.05f;
-//			std::this_thread::sleep_for(std::chrono::milliseconds(speed));
-//		}
-//
-//		else if (jumpF < 2)
-//		{
-//			pos.y += jumpF;
-//			jumpF += 0.05f;
-//			std::this_thread::sleep_for(std::chrono::milliseconds(speed));
-//		}
-//
-//		if (pos.y == p_pos_y)
-//		{
-//			jumpF = -2.5f;
-//			jumping = false;
-//			LOG("%f", jumpF);
-//		}
-//
-//	}
-//
-//}
-//
-//p2Point<int> j1Player::getPos() const
-//{
-//	return pos;
-//}
-
+//Setting up the player on start
 bool j1Player::SummonPlayer()
 {
 	player.position = App->map->data.starting_position;
@@ -423,6 +234,7 @@ bool j1Player::SummonPlayer()
 	return true;
 }
 
+//Setting up the player on death
 void j1Player::ResetPlayer()
 {
 
@@ -430,6 +242,7 @@ void j1Player::ResetPlayer()
 	SummonPlayer();
 }
 
+//Collisions
 void j1Player::OnCollision(Collider* A, Collider* B) {
 
 	if (B->type == object_type::PLAYER) {
@@ -477,31 +290,7 @@ void j1Player::OnCollision(Collider* A, Collider* B) {
 	}
 }
 
-void j1Player::GodMode()
-{
-	if (player.god_mode)
-	{
-		player.god_mode = false;
-	}
-	else
-	{
-		LOG("GodMode Activated!");
-		player.god_mode = true;
-	}
-}
-
-bool j1Player::CheckAirborne()
-{
-	if (player.current_state != player_states::JUMP && player.current_state != player_states::FALL)
-	{
-		return false;
-	}
-	else
-	{
-		return true;
-	}
-}
-
+//Handles movement on the x-axis and sets the proper flip
 void j1Player::HorizontalMovement()
 {
 	if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT /*|| App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT*/)
@@ -522,6 +311,7 @@ void j1Player::HorizontalMovement()
 	}
 }
 
+//Movement basic functions
 void j1Player::MoveRight() // Move Right the player at set speed
 {
 	player.speed.x += player.acceleration.x;
@@ -551,4 +341,50 @@ void j1Player::MoveDown() // Move Right the player at set speed
 void j1Player::MoveUp() // Move Right the player at set speed
 {
 	player.position.y -= player.max_speed.y;
+}
+
+//Toggles god mode
+void j1Player::GodMode()
+{
+	if (player.god_mode)
+	{
+		player.god_mode = false;
+	}
+	else
+	{
+		LOG("GodMode Activated!");
+		player.god_mode = true;
+	}
+}
+
+//Checks if the player is in the air
+bool j1Player::CheckAirborne()
+{
+	if (player.current_state != player_states::JUMP && player.current_state != player_states::FALL)
+	{
+		return false;
+	}
+	else
+	{
+		return true;
+	}
+}
+
+//Centering camera on the player
+void j1Player::SetCamera()
+{
+	if (App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT ||
+		App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT ||
+		App->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT ||
+		App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT)
+	{
+		return;
+	}
+	else
+	{
+		float x_axis = (-player.position.x) + (App->win->screen_surface->w / 2);
+		float y_axis = (-player.position.y) + (App->win->screen_surface->h / 2);
+		App->render->camera.x = (int)x_axis;
+		//App->render->camera.y = (int)y_axis;
+	}
 }

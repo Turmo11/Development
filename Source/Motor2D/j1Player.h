@@ -7,7 +7,6 @@
 #include "p2Point.h"
 #include "j1Module.h"
 
-struct SDL_Texture;
 struct Collider;
 
 enum class player_states {
@@ -34,25 +33,22 @@ struct Player
 
 	float				gravity;
 
-	//booleans
+	//Booleans
 	bool				moving_right;
 	bool				moving_left;
 	bool				jumping;
 	bool				grounded;
 
-	bool				disabled;
+	bool				disabled;		//used during screen transitions or deaths when we want to take away the control from the player
 	bool				god_mode;
 
-	bool				flip;
+	bool				flip;			//used to handle texture flips
 
 	//Collider
 	int					hitbox_width;
 	int					hitbox_height;
 	SDL_Rect			player_hitbox;
 	Collider*			player_collider;
-	
-	SDL_Texture*		tex_test = nullptr;
-	SDL_Rect			hitbox_test = {};
 };
 
 // ----------------------------------------------------
@@ -76,27 +72,9 @@ public:
 
 	bool Awake(pugi::xml_node& conf);
 
-	//p2Point<int> getPos() const;
-
-	// Called each loop iteration
-
-	/*void DrawPlayer();
-
-	bool Load(pugi::xml_node&);
-	bool Save(pugi::xml_node&) const;*/
-
-	/*void MoveL();
-	void MoveR();
-
-	void MovePlayer(float dt);*/
-
-
 	// Called before quitting
 	bool CleanUp();
 
-	/*bool is_dead = false;
-	bool camera_pos = false;
-	bool jumping = false;*/
 
 public:
 
@@ -121,30 +99,6 @@ public:
 
 	Player player;
 
-//private:
-//
-//	player_states current_state;
-//
-//	
-//
-//	SDL_Rect hitbox = {};
-//
-//	SDL_Texture* p_texture;
-//
-//
-//	int score = 0;
-//	int snake = 0;
-//	//int velocity = 30;
-//	
-//
-//public:
-//
-//	//int gravity;
-//	int speed;
-//	float jumpF = -2.5f;
-//	int p_pos_y;
-//	p2Point<int> pos;
-//	
 };
 
 

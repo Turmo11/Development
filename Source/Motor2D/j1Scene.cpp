@@ -49,10 +49,6 @@ bool j1Scene::PreUpdate()
 // Called each loop iteration
 bool j1Scene::Update(float dt)
 {
-	//App->render->DrawQuad(test_work_pls, 255, 255, 0, 80);
-
-	
-
 	/*if(App->input->GetKey(SDL_SCANCODE_L) == KEY_DOWN)
 		App->LoadGame();
 
@@ -71,25 +67,6 @@ bool j1Scene::Update(float dt)
 	if (App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
 		App->render->camera.x -= 2;
 
-	/*if (!App->player->camera_pos)
-	{
-		if (App->render->camera.x < -1)
-		{
-			App->render->camera.x += 1;		
-		}
-
-		else if (App->render->camera.x > -1)
-		{
-			App->render->camera.x -= 1;
-		}
-
-		else
-		{
-			App->player->camera_pos = true;
-		}
-	}*/
-
-	//App->render->Blit(img, 0, 0);
 	App->map->Draw();
 
 	p2SString title("Map:%dx%d Tiles:%dx%d Tilesets:%d Camera:(%d,%d) Player:(%.2f,%.2f)",
