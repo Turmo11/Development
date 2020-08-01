@@ -26,6 +26,8 @@ j1Player::~j1Player()
 
 bool j1Player::Awake(pugi::xml_node& config)
 {
+	player.tex_test = App->tex->Load("Assets/textures/test.png");
+
 	player.speed.x = config.child("speed").attribute("x").as_float();
 	player.speed.y = config.child("speed").attribute("y").as_float();
 	player.max_speed.x = config.child("maxSpeed").attribute("x").as_float();
@@ -54,7 +56,7 @@ bool j1Player::Start()
 {
 	SummonPlayer();
 
-
+	
 
 	//p_texture = App->tex->Load("textures/test1.jpeg");
 
@@ -244,6 +246,10 @@ bool j1Player::Update(float dt)
 	player.player_hitbox.y = player.position.y;
 
 	player.player_collider->SetPos(player.position.x + 20, player.position.y); //Magic Numbers
+
+
+	player.rect_test = { (int)player.position.x, (int)player.position.y, 538, 361 };
+	App->render->Blit(player.tex_test, player.position.x, player.position.y, &player.rect_test, 1.0f);
 
 	return true;
 

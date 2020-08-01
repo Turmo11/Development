@@ -46,6 +46,9 @@ bool j1Scene::PreUpdate()
 // Called each loop iteration
 bool j1Scene::Update(float dt)
 {
+	App->render->camera.x = (int)App->player->player.position.x;
+	App->render->camera.y = (int)App->player->player.position.y;
+
 	/*if(App->input->GetKey(SDL_SCANCODE_L) == KEY_DOWN)
 		App->LoadGame();
 
@@ -53,18 +56,18 @@ bool j1Scene::Update(float dt)
 		App->SaveGame();*/
 
 	if (App->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT)
-		App->render->camera.y += 1;
+		App->render->camera.y += 2;
 
 	if (App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT)
-		App->render->camera.y -= 1;
+		App->render->camera.y -= 2;
 
 	if (App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT)
-		App->render->camera.x += 1;
+		App->render->camera.x += 2;
 
 	if (App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
-		App->render->camera.x -= 1;
+		App->render->camera.x -= 2;
 
-	if (!App->player->camera_pos)
+	/*if (!App->player->camera_pos)
 	{
 		if (App->render->camera.x < -1)
 		{
@@ -80,15 +83,16 @@ bool j1Scene::Update(float dt)
 		{
 			App->player->camera_pos = true;
 		}
-	}
+	}*/
 
 	//App->render->Blit(img, 0, 0);
 	App->map->Draw();
 
-	p2SString title("Map:%dx%d Tiles:%dx%d Tilesets:%d Camera:(%d,%d)",
+	p2SString title("Map:%dx%d Tiles:%dx%d Tilesets:%d Camera:(%d,%d) Player:(%.2f,%.2f)",
 					App->map->data.width, App->map->data.height,
 					App->map->data.tile_width, App->map->data.tile_height,
-					App->map->data.tilesets.count(), App->render->camera.x, App->render->camera.y);
+					App->map->data.tilesets.count(), App->render->camera.x, App->render->camera.y,
+					App->player->player.position.x, App->player->player.position.y);
 
 	App->win->SetTitle(title.GetString());
 	return true;

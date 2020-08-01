@@ -50,6 +50,9 @@ struct Player
 	Collider*			player_collider;
 	
 	player_states		current_state;
+
+	SDL_Texture*		tex_test;
+	SDL_Rect			rect_test;
 };
 
 // ----------------------------------------------------
