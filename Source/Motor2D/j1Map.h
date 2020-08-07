@@ -71,6 +71,15 @@ struct ObjectGroup
 	uint				objects_size;
 };
 
+struct Animations
+{
+	p2SString			name;
+	uint				id;				//Tile which is animated
+	uint				frame_count;	//Number of frames of the animation
+	uint*				frames;
+	uint				speed;
+};
+
 // ----------------------------------------------------
 struct MapLayer
 {
@@ -154,6 +163,7 @@ public:
 
 	// Called each loop iteration
 	void Draw();
+	void DrawAnimation(p2SString name, const char* tileset, bool flip = false);
 
 	// Called before quitting
 	bool CleanUp();
@@ -172,6 +182,9 @@ private:
 	bool LoadLayer(pugi::xml_node& node, MapLayer* layer);
 	bool LoadObjectLayers(pugi::xml_node& node, ObjectGroup* group);
 	bool LoadProperties(pugi::xml_node& node, Properties& properties);
+	bool LoadTilesetAnimation(pugi::xml_node& tileset_node, TileSet* set);
+
+
 
 	TileSet* GetTilesetFromTileId(int id) const;
 
@@ -180,6 +193,10 @@ public:
 	MapData data;
 
 private:
+
+	int i = 0;
+
+	int frameCount = 1;
 
 	pugi::xml_document	map_file;
 	p2SString			folder;

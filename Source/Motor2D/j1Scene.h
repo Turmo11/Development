@@ -32,7 +32,10 @@ public:
 	// Called before quitting
 	bool CleanUp();
 
-	SDL_Rect* test_work_pls;
+public:
+
+	int		camera_left_limit;
+	int		camera_right_limit;
 
 private:
 };

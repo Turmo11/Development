@@ -9,6 +9,7 @@
 #include "j1Map.h"
 #include "j1Input.h"
 #include "j1Collisions.h"
+#include "j1Scene.h"
 #include <math.h>
 #include <thread>         
 #include <chrono>   
@@ -84,7 +85,7 @@ bool j1Player::PreUpdate()
 	if (App->input->GetKey(SDL_SCANCODE_F10) == KEY_DOWN) // Able/Disable GodMode
 	{
 		GodMode();
-		
+
 	}
 	return true;
 }
@@ -113,14 +114,14 @@ bool j1Player::Update(float dt)
 			LOG("Current State: IDLE");
 			player.animation = "idle";
 			player.speed.x = 0;
-			
+
 
 			break;
 		case player_states::RUNNING:
 
 			LOG("Current State: RUNNING");
 			player.animation = "run";
-			
+
 
 			break;
 		case player_states::CROUCH:
@@ -167,7 +168,7 @@ bool j1Player::Update(float dt)
 		}
 
 		//Update position
-		player.position.y += player.speed.y; 
+		player.position.y += player.speed.y;
 		player.position.x += player.speed.x;
 	}
 	else //GodMode Activated!
@@ -188,7 +189,7 @@ bool j1Player::Update(float dt)
 	//Update player collider and position
 	player.player_hitbox.x = player.position.x;
 	player.player_hitbox.y = player.position.y;
-	player.player_collider->SetPos(player.position.x, player.position.y); 
+	player.player_collider->SetPos(player.position.x, player.position.y);
 
 	SetCamera();
 
@@ -257,9 +258,49 @@ void j1Player::OnCollision(Collider* A, Collider* B) {
 	// ------------ Player Colliding with the ground ------------------
 	if (A->type == object_type::PLAYER && B->type == object_type::GROUND) {
 
+		//Colliding from above
 		if (player.position.y + A->rect.h - player.max_speed.y - 5 < B->rect.y
 			&& A->rect.x < B->rect.x + B->rect.w
-			&& A->rect.x + A->rect.w > B->rect.x) 
+			&& A->rect.x + A->rect.w > B->rect.x)
+		{
+			if (player.speed.y > 0)
+			{
+				player.speed.y = 0;
+			}
+
+			player.position.y = B->rect.y - player.player_collider->rect.h + 1;
+			player.grounded = true;
+			player.jumping = false;
+		}
+		//Colliding from the sides
+		else if (player.position.y + (A->rect.h * 1.0f / 4.0f) < B->rect.y + B->rect.h
+			&& player.position.y + (A->rect.h * 3.0f / 4.0f) > B->rect.y)
+		{
+			if ((A->rect.x + A->rect.w) < (B->rect.x + B->rect.w / 4))
+			{ //Player to the left 
+				player.position.x = B->rect.x - A->rect.w;
+
+			}
+			else if (A->rect.x > (B->rect.x + B->rect.w * 3 / 4))
+			{ //Player to the right
+				player.position.x = B->rect.x + B->rect.w;
+			}
+		}
+		//from below
+		else if (player.position.y < (B->rect.y + B->rect.h))
+		{
+			player.speed.y = player.max_speed.y / 2;
+			player.position.y = B->rect.y + B->rect.h;
+		}
+	}
+
+	// ------------ Player Colliding with platforms ------------------
+	if (A->type == object_type::PLAYER && B->type == object_type::PLATFORM) {
+
+		//Colliding from above
+		if (player.position.y + A->rect.h - player.max_speed.y - 5 < B->rect.y
+			&& A->rect.x < B->rect.x + B->rect.w
+			&& A->rect.x + A->rect.w > B->rect.x)
 		{
 			if (player.speed.y > 0)
 			{
@@ -271,6 +312,7 @@ void j1Player::OnCollision(Collider* A, Collider* B) {
 			player.jumping = false;
 		}
 	}
+
 
 	// ------------ Player Colliding with death limit ------------------
 	if (A->type == object_type::PLAYER && B->type == object_type::DEATH) {
@@ -384,7 +426,14 @@ void j1Player::SetCamera()
 	{
 		float x_axis = (-player.position.x) + (App->win->screen_surface->w / 2);
 		float y_axis = (-player.position.y) + (App->win->screen_surface->h / 2);
-		App->render->camera.x = (int)x_axis;
+
+
+		//Checks camera x limits
+		if (App->render->camera.x < App->scene->camera_left_limit && App->render->camera.x >(App->scene->camera_right_limit + App->win->screen_surface->w))
+		{
+			App->render->camera.x = (int)x_axis;
+		}
+
 		//App->render->camera.y = (int)y_axis;
 	}
 }
