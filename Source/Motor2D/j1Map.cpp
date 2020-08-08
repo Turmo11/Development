@@ -4,6 +4,7 @@
 #include "j1Render.h"
 #include "j1Textures.h"
 #include "j1Map.h"
+#include "j1Player.h"
 #include <math.h>
 
 j1Map::j1Map() : j1Module(), map_loaded(false)
@@ -54,6 +55,61 @@ void j1Map::Draw()
 		}
 		layer = layer->next;
 	}
+}
+
+void j1Map::DrawAnimation(p2SString name, p2SString tileset, bool flip)
+{
+
+	TileSet* anim_tileset = nullptr;
+
+	p2List_item<TileSet*>* tileset_iterator = data.tilesets.start;
+
+	while (tileset_iterator != NULL)
+	{
+		if (tileset_iterator->data->name == tileset)
+		{
+			anim_tileset = tileset_iterator->data;
+		}
+		tileset_iterator = tileset_iterator->next;
+	}
+
+	// I have the adventurer Tileset inside I have animation
+	Animations* current_anim = nullptr;
+
+	p2List_item<Animations*>* anim_iterator;
+	anim_iterator = anim_tileset->animations.start;
+
+	while (anim_iterator)
+	{
+		if (name == anim_iterator->data->name)
+		{
+			current_anim = anim_iterator->data; //gets the animation with the name we sent
+		}
+		anim_iterator = anim_iterator->next;
+	}
+
+	if (prev_anim_name != current_anim->name) // So that when animations change they start from frame 0
+	{
+		i = 0;
+		frame_count = 1;
+	}
+
+	prev_anim_name = current_anim->name;
+
+	App->render->Blit(anim_tileset->texture,									//Texture of the animation(tileset) 
+	App->player->player.position.x, App->player->player.position.y,			//drawn at player position
+	anim_tileset->PlayerTileRect(current_anim->frames[i]), flip);			//draw frames tile id
+
+	if (frame_count % (current_anim->speed / 2) == 0)	//counts frames each loop (60 fps using vsync) Magic Numbers
+	{
+		i++;
+	}
+	if (i >= current_anim->n_frames)		//Iterate from 0 to n_frames (number of frames in animation)
+	{				
+		i = 0;
+	}
+
+	frame_count++;
 }
 
 TileSet* j1Map::GetTilesetFromTileId(int id) const
@@ -149,6 +205,12 @@ bool j1Map::CleanUp()
 
 	while (item != NULL)
 	{
+		item->data->animations.clear();
+		delete item->data->player_tile_rect;
+		
+
+		SDL_DestroyTexture(item->data->texture);
+
 		RELEASE(item->data);
 		item = item->next;
 	}
@@ -223,6 +285,11 @@ bool j1Map::Load(const char* file_name)
 			ret = LoadTilesetImage(tileset, set);
 		}
 
+		if (ret == true)
+		{
+			ret = LoadTilesetAnimation(tileset, set);
+		}
+
 		data.tilesets.add(set);
 	}
 
@@ -285,8 +352,6 @@ bool j1Map::Load(const char* file_name)
 
 	return ret;
 }
-
-
 
 // Load map general properties
 bool j1Map::LoadMap()
@@ -357,6 +422,7 @@ bool j1Map::LoadMap()
 	return ret;
 }
 
+// Load Tileset data
 bool j1Map::LoadTilesetDetails(pugi::xml_node& tileset_node, TileSet* set)
 {
 	bool ret = true;
@@ -382,6 +448,7 @@ bool j1Map::LoadTilesetDetails(pugi::xml_node& tileset_node, TileSet* set)
 	return ret;
 }
 
+//Load Tileset Image
 bool j1Map::LoadTilesetImage(pugi::xml_node& tileset_node, TileSet* set)
 {
 	bool ret = true;
@@ -418,6 +485,7 @@ bool j1Map::LoadTilesetImage(pugi::xml_node& tileset_node, TileSet* set)
 	return ret;
 }
 
+//Load different map layers
 bool j1Map::LoadLayer(pugi::xml_node& node, MapLayer* layer)
 {
 	bool ret = true;
@@ -449,7 +517,7 @@ bool j1Map::LoadLayer(pugi::xml_node& node, MapLayer* layer)
 	return ret;
 }
 
-
+//Load object layer for colliders
 bool j1Map::LoadObjectLayers(pugi::xml_node& node, ObjectGroup* object_group)
 {
 	object_group->name = node.attribute("name").as_string();
@@ -523,8 +591,6 @@ bool j1Map::LoadObjectLayers(pugi::xml_node& node, ObjectGroup* object_group)
 }
 
 // Load a group of properties from a node and fill a list with it
-
-
 bool j1Map::LoadProperties(pugi::xml_node& node, Properties& properties)							//REVISE THIS HERE. Check why it crashes the game at exit time.
 {
 	bool ret = false;
@@ -548,6 +614,7 @@ bool j1Map::LoadProperties(pugi::xml_node& node, Properties& properties)							/
 	return ret;
 }
 
+// Returns a property
 value Properties::Get(const char* name, value* default_value) const
 {
 	p2List_item<Property*>* item = property_list.start;
@@ -561,3 +628,39 @@ value Properties::Get(const char* name, value* default_value) const
 
 	return *default_value;
 }
+
+// Load Animations from tileset
+bool j1Map::LoadTilesetAnimation(pugi::xml_node& tileset_node, TileSet* set)
+{
+	bool ret = true;
+
+	for (pugi::xml_node iterator_node = tileset_node.child("tile"); iterator_node; iterator_node = iterator_node.next_sibling("tile")) { //Iterator for all animation childs
+
+		Animations* new_animation = new Animations;
+
+		new_animation->id = iterator_node.attribute("id").as_uint(); // Get the id of the animated tile
+
+		new_animation->name = iterator_node.child("properties").child("property").attribute("name").as_string(); //Get the name of the animation inside extra attribute
+
+		new_animation->name = iterator_node.child("properties").child("property").attribute("value").as_string(); //Get the name of the animation inside extra attribute
+
+		new_animation->frames = new uint[12]; // new array for frames
+
+		memset(new_animation->frames, 0, 12); // allocate the new array
+
+		int j = 0;
+		for (pugi::xml_node iterator_node_anim = iterator_node.child("animation").child("frame"); iterator_node_anim; j++) { //Enters the frame of the animation child inside the tile we are in
+
+			new_animation->frames[j] = iterator_node_anim.attribute("tileid").as_uint(); //Set frames ids
+			new_animation->speed = iterator_node_anim.attribute("duration").as_uint();//set animation speed
+			iterator_node_anim = iterator_node_anim.next_sibling("frame"); // next frame
+		}
+
+		new_animation->n_frames = j;
+
+		set->animations.add(new_animation);
+	}
+
+	return ret;
+};
+

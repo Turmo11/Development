@@ -73,9 +73,9 @@ struct ObjectGroup
 
 struct Animations
 {
-	p2SString			name;
+	p2SString			name = "idle";
 	uint				id;				//Tile which is animated
-	uint				frame_count;	//Number of frames of the animation
+	uint				n_frames;	//Number of frames of the animation
 	uint*				frames;
 	uint				speed;
 };
@@ -122,6 +122,28 @@ struct TileSet
 	int					num_tiles_height;
 	int					offset_x;
 	int					offset_y;
+	p2List<Animations*> animations;
+
+	SDL_Rect* player_tile_rect = new SDL_Rect;
+	SDL_Rect* PlayerTileRect(uint tile_id) {
+
+		SDL_Rect* ret = player_tile_rect;
+
+		int num_t_width = tex_width / tile_width;
+		int num_t_height = tex_height / tile_height;
+
+		int x = tile_id % num_t_width;
+		int y = tile_id / num_t_width;
+
+
+		ret->x = x * tile_width;
+		ret->y = y * tile_height;
+		ret->w = tile_width;
+		ret->h = tile_height;
+
+		return ret;
+	}
+
 };
 
 enum class map_types
@@ -163,7 +185,7 @@ public:
 
 	// Called each loop iteration
 	void Draw();
-	void DrawAnimation(p2SString name, const char* tileset, bool flip = false);
+	void DrawAnimation(p2SString name, p2SString tileset, bool flip = false);
 
 	// Called before quitting
 	bool CleanUp();
@@ -196,11 +218,13 @@ private:
 
 	int i = 0;
 
-	int frameCount = 1;
+	int frame_count = 1;
 
 	pugi::xml_document	map_file;
 	p2SString			folder;
 	bool				map_loaded;
+
+	p2SString prev_anim_name = "idle";
 };
 
 #endif // __j1MAP_H__

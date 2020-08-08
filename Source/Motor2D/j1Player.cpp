@@ -127,7 +127,7 @@ bool j1Player::Update(float dt)
 		case player_states::CROUCH:
 
 			LOG("Current State: CROUCH");
-			player.animation = "crouch";
+			//player.animation = "crouch";
 
 			break;
 		case player_states::JUMP:
@@ -165,6 +165,15 @@ bool j1Player::Update(float dt)
 			{
 				player.speed.y = player.max_speed.y;
 			}
+
+			if (player.speed.y < 0) // If on jump is going up uses jump animation
+			{
+				//player.animation = "jump";
+			}
+			else // If on jump is going down uses fall animation
+			{
+				//player.animation = "fall";
+			}
 		}
 
 		//Update position
@@ -173,7 +182,7 @@ bool j1Player::Update(float dt)
 	}
 	else //GodMode Activated!
 	{
-		player.animation = "godmode";
+		//player.animation = "godmode";
 
 		if (App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT)
 		{
@@ -186,10 +195,13 @@ bool j1Player::Update(float dt)
 		player.position.x += player.speed.x * 2;
 	}
 
+	//Draw player
+	App->map->DrawAnimation(player.animation, "playerx96", player.flip);
+
+
 	//Update player collider and position
-	player.player_hitbox.x = player.position.x;
-	player.player_hitbox.y = player.position.y;
-	player.player_collider->SetPos(player.position.x, player.position.y);
+
+	player.player_collider->SetPos(player.position.x + 20, player.position.y);
 
 	SetCamera();
 
@@ -259,7 +271,7 @@ void j1Player::OnCollision(Collider* A, Collider* B) {
 	if (A->type == object_type::PLAYER && B->type == object_type::GROUND) {
 
 		//Colliding from above
-		if (player.position.y + A->rect.h - player.max_speed.y - 5 < B->rect.y
+		if (A->rect.y + A->rect.h - player.max_speed.y - 2 < B->rect.y
 			&& A->rect.x < B->rect.x + B->rect.w
 			&& A->rect.x + A->rect.w > B->rect.x)
 		{
@@ -273,8 +285,8 @@ void j1Player::OnCollision(Collider* A, Collider* B) {
 			player.jumping = false;
 		}
 		//Colliding from the sides
-		else if (player.position.y + (A->rect.h * 1.0f / 4.0f) < B->rect.y + B->rect.h
-			&& player.position.y + (A->rect.h * 3.0f / 4.0f) > B->rect.y)
+		else if (A->rect.y + (A->rect.h * 1.0f / 4.0f) < B->rect.y + B->rect.h
+			&& A->rect.y + (A->rect.h * 3.0f / 4.0f) > B->rect.y)
 		{
 			if ((A->rect.x + A->rect.w) < (B->rect.x + B->rect.w / 4))
 			{ //Player to the left 
@@ -287,7 +299,7 @@ void j1Player::OnCollision(Collider* A, Collider* B) {
 			}
 		}
 		//from below
-		else if (player.position.y < (B->rect.y + B->rect.h))
+		else if (A->rect.y < (B->rect.y + B->rect.h))
 		{
 			player.speed.y = player.max_speed.y / 2;
 			player.position.y = B->rect.y + B->rect.h;
@@ -298,7 +310,7 @@ void j1Player::OnCollision(Collider* A, Collider* B) {
 	if (A->type == object_type::PLAYER && B->type == object_type::PLATFORM) {
 
 		//Colliding from above
-		if (player.position.y + A->rect.h - player.max_speed.y - 5 < B->rect.y
+		if (A->rect.y + A->rect.h - player.max_speed.y - 5 < B->rect.y
 			&& A->rect.x < B->rect.x + B->rect.w
 			&& A->rect.x + A->rect.w > B->rect.x)
 		{
@@ -318,7 +330,7 @@ void j1Player::OnCollision(Collider* A, Collider* B) {
 	if (A->type == object_type::PLAYER && B->type == object_type::DEATH) {
 
 		//from above
-		if (player.position.y + A->rect.h - player.max_speed.y - 5 < B->rect.y
+		if (A->rect.y + A->rect.h - player.max_speed.y - 5 < B->rect.y
 			&& A->rect.x < B->rect.x + B->rect.w
 			&& A->rect.x + A->rect.w > B->rect.x)
 		{
