@@ -186,7 +186,7 @@ public:
 	// Called each loop iteration
 	void Draw();
 	void DrawAnimation(p2SString name, p2SString tileset, bool flip = false);
-
+	void DrawStaticAnimation(p2SString name, p2SString tileset, iPoint position);
 	// Called before quitting
 	bool CleanUp();
 
@@ -225,6 +225,7 @@ private:
 	bool				map_loaded;
 
 	p2SString prev_anim_name = "idle";
+	p2SString prev_s_anim_name;
 };
 
 #endif // __j1MAP_H__
