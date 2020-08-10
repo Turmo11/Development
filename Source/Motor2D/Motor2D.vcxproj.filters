@@ -41,6 +41,9 @@
     <ClCompile Include="j1Collisions.cpp">
       <Filter>Desenvolupament  ========\Modules</Filter>
     </ClCompile>
+    <ClCompile Include="j1Pickups.cpp">
+      <Filter>Desenvolupament  ========\PickUps</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="j1Window.h">
@@ -102,6 +105,9 @@
     <ClInclude Include="j1Collisions.h">
       <Filter>Desenvolupament  ========\Modules</Filter>
     </ClInclude>
+    <ClInclude Include="j1Pickups.h">
+      <Filter>Desenvolupament  ========\PickUps</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Programacio 2 ===========">
@@ -127,6 +133,9 @@
     </Filter>
     <Filter Include="Desenvolupament  ========\Player">
       <UniqueIdentifier>{5a779f0d-932c-4fd6-9cf0-40e262674dac}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Desenvolupament  ========\PickUps">
+      <UniqueIdentifier>{99dd4ab7-3728-4544-8466-93fc80c2215a}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
