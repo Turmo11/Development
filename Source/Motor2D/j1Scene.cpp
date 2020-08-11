@@ -9,6 +9,7 @@
 #include "j1Map.h"
 #include "j1Scene.h"
 #include "j1Player.h"
+#include "j1Pickups.h"
 
 j1Scene::j1Scene() : j1Module()
 {
@@ -38,10 +39,7 @@ bool j1Scene::Start()
 	camera_left_limit = 0;
 	camera_right_limit = -2500;
 
-	alpha_pos = { 1152, 704 };
-	chi_pos = { 1792, 576 };
-	rho_pos = { 1408, 512 };
-	eta_pos = { 1792, 384 };
+	App->pickups->SetUp(0);
 	
 	//test_work_pls = { (int)App->player->player.position.x, App->player->player.position.y, 200, 200 };
 	return true;
@@ -75,10 +73,6 @@ bool j1Scene::Update(float dt)
 		App->render->camera.x -= 2;
 
 	App->map->Draw();
-	App->map->DrawStaticAnimation("alpha_shine", "letter_tileset", alpha_pos);
-	/*App->map->DrawStaticAnimation("chi_shine", "letter_tileset", chi_pos);
-	App->map->DrawStaticAnimation("rho_shine", "letter_tileset", rho_pos);
-	App->map->DrawStaticAnimation("eta_shine", "letter_tileset", eta_pos);*/
 
 	p2SString title("Map:%dx%d Tiles:%dx%d Tilesets:%d Camera:(%d,%d) Player:(%.2f,%.2f)",
 					App->map->data.width, App->map->data.height,

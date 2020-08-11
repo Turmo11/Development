@@ -111,7 +111,7 @@ bool j1Player::Update(float dt)
 		{
 		case player_states::IDLE:
 
-			LOG("Current State: IDLE");
+			//LOG("Current State: IDLE");
 			player.animation = "idle";
 			player.speed.x = 0;
 
@@ -119,27 +119,27 @@ bool j1Player::Update(float dt)
 			break;
 		case player_states::RUNNING:
 
-			LOG("Current State: RUNNING");
+			//LOG("Current State: RUNNING");
 			player.animation = "run";
 
 
 			break;
 		case player_states::CROUCH:
 
-			LOG("Current State: CROUCH");
+			//LOG("Current State: CROUCH");
 			//player.animation = "crouch";
 
 			break;
 		case player_states::JUMP:
 
-			LOG("Current State: JUMP");
+			//LOG("Current State: JUMP");
 			player.speed.y -= player.acceleration.y;
 			player.jumping = true;
 
 			break;
 		case player_states::FALL:
 
-			LOG("Current State: FALL");
+			//LOG("Current State: FALL");
 			player.jumping = true;
 
 			break;

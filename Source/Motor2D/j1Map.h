@@ -7,6 +7,7 @@
 #include "p2SString.h"
 #include "j1Module.h"
 
+struct AnimationInfo;
 // ----------------------------------------------------
 union value {
 	const char*		v_string;
@@ -161,6 +162,7 @@ struct MapData
 	int						tile_width;
 	int						tile_height;
 
+	p2SString				name;
 	p2Point<float>			starting_position;
 
 	SDL_Color				background_color;
@@ -186,7 +188,7 @@ public:
 	// Called each loop iteration
 	void Draw();
 	void DrawAnimation(p2SString name, p2SString tileset, bool flip = false);
-	void DrawStaticAnimation(p2SString name, p2SString tileset, iPoint position);
+	void DrawStaticAnimation(p2SString name, p2SString tileset, iPoint position, AnimationInfo* anim_info);
 	// Called before quitting
 	bool CleanUp();
 

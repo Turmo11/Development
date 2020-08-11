@@ -39,10 +39,6 @@ public:
 
 private:
 
-	iPoint alpha_pos;
-	iPoint chi_pos;
-	iPoint rho_pos;
-	iPoint eta_pos;
 };
 
 #endif // __j1SCENE_H__

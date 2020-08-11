@@ -5,6 +5,7 @@
 #include "j1Textures.h"
 #include "j1Map.h"
 #include "j1Player.h"
+#include "j1Pickups.h"
 #include <math.h>
 
 j1Map::j1Map() : j1Module(), map_loaded(false)
@@ -112,7 +113,7 @@ void j1Map::DrawAnimation(p2SString name, p2SString tileset, bool flip)
 	frame_count++;
 }
 
-void j1Map::DrawStaticAnimation(p2SString name, p2SString tileset, iPoint position)
+void j1Map::DrawStaticAnimation(p2SString name, p2SString tileset, iPoint position, AnimationInfo* anim_info)
 {
 
 	TileSet* s_anim_tileset = nullptr;
@@ -142,26 +143,28 @@ void j1Map::DrawStaticAnimation(p2SString name, p2SString tileset, iPoint positi
 		anim_iterator = anim_iterator->next;
 	}
 
-	if (prev_s_anim_name != current_anim->name) // So that when animations change they start from frame 0
+	if (anim_info->prev_s_anim_name != current_anim->name) // So that when animations change they start from frame 0
 	{
-		i = 0;
-		frame_count = 1;
+		anim_info->i = 0;
+		anim_info->frame_count = 1;
 	}
 
-	prev_s_anim_name = current_anim->name;
+	anim_info->prev_s_anim_name = current_anim->name;
 
-	App->render->Blit(s_anim_tileset->texture, position.x, position.y, s_anim_tileset->PlayerTileRect(current_anim->frames[i]));			
+	App->render->Blit(s_anim_tileset->texture, position.x, position.y, s_anim_tileset->PlayerTileRect(current_anim->frames[anim_info->i]));			
 
-	if (frame_count % (current_anim->speed) / 2 == 0)	//counts frames each loop (60 fps using vsync) Magic Numbers
+	if (anim_info->frame_count > current_anim->speed / 2)	//counts time for each frame of animation
 	{
-		i++;
-	}
-	if (i >= current_anim->n_frames)		//Iterate from 0 to n_frames (number of frames in animation)
-	{
-		i = 0;
+		anim_info->i++;
+		anim_info->frame_count = 1;
 	}
 
-	frame_count++;
+	if (anim_info->i >= current_anim->n_frames)  //Iterate from 0 to nFrames (number of frames in animation)
+	{
+		anim_info->i = 0;
+	}
+
+	anim_info->frame_count++;
 }
 
 
@@ -419,6 +422,8 @@ bool j1Map::LoadMap()
 	}
 	else
 	{
+		
+		data.name = map.child("properties").child("property").next_sibling().next_sibling().attribute("name").as_string();
 		data.starting_position.x = map.child("properties").child("property").attribute("value").as_float();
 		data.starting_position.y = map.child("properties").child("property").next_sibling().attribute("value").as_float();
 
