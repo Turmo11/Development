@@ -51,6 +51,15 @@ bool j1Player::Start()
 
 bool j1Player::PreUpdate()
 {
+	if (App->render->camera.x > App->scene->camera_left_limit)
+	{
+		App->render->camera.x = App->scene->camera_left_limit;
+	}
+	if (App->render->camera.x < (App->scene->camera_right_limit + App->win->screen_surface->w))
+	{
+		App->render->camera.x = (App->scene->camera_right_limit + App->win->screen_surface->w);
+	}
+
 	if (player.disabled) //if the player is disable, it stops updating the logic
 	{
 		return true;
@@ -65,6 +74,7 @@ bool j1Player::PreUpdate()
 		if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT || App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT)
 		{
 			player.current_state = player_states::CROUCH;
+			player.able_to_drop = true;
 		}
 
 		if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT
@@ -81,7 +91,14 @@ bool j1Player::PreUpdate()
 			player.speed.y = 0;
 		}
 	}
-
+	if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT) //If player has to drop from platform
+	{
+		player.able_to_drop = true;
+	}
+	else
+	{
+		player.able_to_drop = false;
+	}
 	if (App->input->GetKey(SDL_SCANCODE_F10) == KEY_DOWN) // Able/Disable GodMode
 	{
 		GodMode();
@@ -111,7 +128,7 @@ bool j1Player::Update(float dt)
 		{
 		case player_states::IDLE:
 
-			LOG("Current State: IDLE");
+			//LOG("Current State: IDLE");
 			player.animation = "idle";
 			player.speed.x = 0;
 
@@ -119,27 +136,27 @@ bool j1Player::Update(float dt)
 			break;
 		case player_states::RUNNING:
 
-			LOG("Current State: RUNNING");
+			//LOG("Current State: RUNNING");
 			player.animation = "run";
 
 
 			break;
 		case player_states::CROUCH:
 
-			LOG("Current State: CROUCH");
+			//LOG("Current State: CROUCH");
 			//player.animation = "crouch";
 
 			break;
 		case player_states::JUMP:
 
-			LOG("Current State: JUMP");
+			//LOG("Current State: JUMP");
 			player.speed.y -= player.acceleration.y;
 			player.jumping = true;
 
 			break;
 		case player_states::FALL:
 
-			LOG("Current State: FALL");
+			//LOG("Current State: FALL");
 			player.jumping = true;
 
 			break;
@@ -235,14 +252,15 @@ bool j1Player::SummonPlayer()
 
 	//booleans
 	player.moving_right = false;
-	player.moving_left = false;
-	player.jumping = false;
-	player.grounded = false;
+	player.moving_left	= false;
+	player.jumping		= false;
+	player.grounded		= false;
+	player.able_to_drop = false;
 
-	player.disabled = false;
-	player.god_mode = false;
+	player.disabled		= false;
+	player.god_mode		= false;
 
-	player.flip = false;
+	player.flip			= false;
 
 	return true;
 }
@@ -267,81 +285,110 @@ void j1Player::OnCollision(Collider* A, Collider* B) {
 		return;
 	}
 
-	// ------------ Player Colliding with the ground ------------------
-	if (A->type == object_type::PLAYER && B->type == object_type::GROUND) {
+	if (!player.god_mode)
+	{
+		// ------------ Player Colliding with the ground ------------------
+		if (A->type == object_type::PLAYER && B->type == object_type::GROUND) {
 
-		//Colliding from above
-		if (A->rect.y + A->rect.h - player.max_speed.y - 2 < B->rect.y
-			&& A->rect.x < B->rect.x + B->rect.w
-			&& A->rect.x + A->rect.w > B->rect.x)
-		{
-			if (player.speed.y > 0)
+			//Colliding from above
+			if (A->rect.y + A->rect.h - player.max_speed.y - 2 < B->rect.y
+				&& A->rect.x < B->rect.x + B->rect.w
+				&& A->rect.x + A->rect.w > B->rect.x)
 			{
-				player.speed.y = 0;
+				if (player.speed.y > 0)
+				{
+					player.speed.y = 0;
+				}
+
+				player.position.y = B->rect.y - player.player_collider->rect.h + 1;
+				player.grounded = true;
+				player.jumping = false;
+			}
+			//Colliding from the sides
+			else if (A->rect.y + (A->rect.h * 1.0f / 4.0f) < B->rect.y + B->rect.h
+				&& A->rect.y + (A->rect.h * 3.0f / 4.0f) > B->rect.y)
+			{
+				if ((A->rect.x + A->rect.w) < (B->rect.x + B->rect.w / 4))
+				{ //Player to the left 
+					player.position.x = B->rect.x - A->rect.w;
+
+				}
+				else if (A->rect.x > (B->rect.x + B->rect.w * 3 / 4))
+				{ //Player to the right
+					player.position.x = B->rect.x + B->rect.w;
+				}
+			}
+			//from below
+			else if (A->rect.y < (B->rect.y + B->rect.h))
+			{
+				player.speed.y = player.max_speed.y / 2;
+				player.position.y = B->rect.y + B->rect.h;
+			}
+		}
+
+		if (!player.able_to_drop)
+		{
+			// ------------ Player Colliding with platforms ------------------
+			if (A->type == object_type::PLAYER && B->type == object_type::PLATFORM) {
+
+				//Colliding from above
+				if (A->rect.y + A->rect.h - player.max_speed.y - 5 < B->rect.y
+					&& A->rect.x < B->rect.x + B->rect.w
+					&& A->rect.x + A->rect.w > B->rect.x)
+				{
+					if (player.speed.y > 0)
+					{
+						player.speed.y = 0;
+					}
+
+					player.position.y = B->rect.y - player.player_collider->rect.h + 1;
+					player.grounded = true;
+					player.jumping = false;
+				}
 			}
 
-			player.position.y = B->rect.y - player.player_collider->rect.h + 1;
-			player.grounded = true;
-			player.jumping = false;
 		}
-		//Colliding from the sides
-		else if (A->rect.y + (A->rect.h * 1.0f / 4.0f) < B->rect.y + B->rect.h
-			&& A->rect.y + (A->rect.h * 3.0f / 4.0f) > B->rect.y)
-		{
-			if ((A->rect.x + A->rect.w) < (B->rect.x + B->rect.w / 4))
-			{ //Player to the left 
-				player.position.x = B->rect.x - A->rect.w;
+		
 
+		// ------------ Player Colliding with death limit ------------------
+		if (A->type == object_type::PLAYER && B->type == object_type::DEATH) {
+
+			//from above
+			if (A->rect.y + A->rect.h - player.max_speed.y - 5 < B->rect.y
+				&& A->rect.x < B->rect.x + B->rect.w
+				&& A->rect.x + A->rect.w > B->rect.x)
+			{
+				if (player.speed.y > 0)
+				{
+					player.speed.y = 0;
+				}
+
+				ResetPlayer();
 			}
-			else if (A->rect.x > (B->rect.x + B->rect.w * 3 / 4))
-			{ //Player to the right
-				player.position.x = B->rect.x + B->rect.w;
-			}
-		}
-		//from below
-		else if (A->rect.y < (B->rect.y + B->rect.h))
-		{
-			player.speed.y = player.max_speed.y / 2;
-			player.position.y = B->rect.y + B->rect.h;
 		}
 	}
 
-	// ------------ Player Colliding with platforms ------------------
-	if (A->type == object_type::PLAYER && B->type == object_type::PLATFORM) {
+	if (App->scene->level_completed)
+	{
+		// ------------ Player Colliding with the goal ------------------
+		if (A->type == object_type::PLAYER && B->type == object_type::GOAL) {
 
-		//Colliding from above
-		if (A->rect.y + A->rect.h - player.max_speed.y - 5 < B->rect.y
-			&& A->rect.x < B->rect.x + B->rect.w
-			&& A->rect.x + A->rect.w > B->rect.x)
-		{
-			if (player.speed.y > 0)
+			//Colliding from above
+			if (A->rect.y + A->rect.h - player.max_speed.y - 2 < B->rect.y
+				&& A->rect.x < B->rect.x + B->rect.w
+				&& A->rect.x + A->rect.w > B->rect.x)
 			{
-				player.speed.y = 0;
+				ResetPlayer();
 			}
-
-			player.position.y = B->rect.y - player.player_collider->rect.h + 1;
-			player.grounded = true;
-			player.jumping = false;
+			//Colliding from the sides
+			else if (A->rect.y + (A->rect.h * 1.0f / 4.0f) < B->rect.y + B->rect.h
+				&& A->rect.y + (A->rect.h * 3.0f / 4.0f) > B->rect.y)
+			{
+				ResetPlayer();
+			}
 		}
 	}
-
-
-	// ------------ Player Colliding with death limit ------------------
-	if (A->type == object_type::PLAYER && B->type == object_type::DEATH) {
-
-		//from above
-		if (A->rect.y + A->rect.h - player.max_speed.y - 5 < B->rect.y
-			&& A->rect.x < B->rect.x + B->rect.w
-			&& A->rect.x + A->rect.w > B->rect.x)
-		{
-			if (player.speed.y > 0)
-			{
-				player.speed.y = 0;
-			}
-
-			ResetPlayer();
-		}
-	}
+	
 }
 
 //Handles movement on the x-axis and sets the proper flip
@@ -389,12 +436,12 @@ void j1Player::MoveLeft() // Move Left the player at speed
 
 void j1Player::MoveDown() // Move Right the player at set speed
 {
-	player.position.y += player.max_speed.y;
+	player.position.y += (player.max_speed.y / 2);
 }
 
 void j1Player::MoveUp() // Move Right the player at set speed
 {
-	player.position.y -= player.max_speed.y;
+	player.position.y -= (player.max_speed.y / 2);
 }
 
 //Toggles god mode
@@ -436,12 +483,12 @@ void j1Player::SetCamera()
 	}
 	else
 	{
-		float x_axis = (-player.position.x) + (App->win->screen_surface->w / 2);
-		float y_axis = (-player.position.y) + (App->win->screen_surface->h / 2);
+		x_axis = (-player.position.x) + (App->win->screen_surface->w / 2);
+		y_axis = (-player.position.y) + (App->win->screen_surface->h / 2);
 
 
 		//Checks camera x limits
-		if (App->render->camera.x < App->scene->camera_left_limit && App->render->camera.x >(App->scene->camera_right_limit + App->win->screen_surface->w))
+		if (App->render->camera.x <= App->scene->camera_left_limit && App->render->camera.x >= (App->scene->camera_right_limit + App->win->screen_surface->w))
 		{
 			App->render->camera.x = (int)x_axis;
 		}

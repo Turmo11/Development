@@ -34,10 +34,17 @@ public:
 
 public:
 
+	void CheckLevelProgress();
+
+public:
+
 	int		camera_left_limit;
 	int		camera_right_limit;
 
+	bool	level_completed; //used to check if the player has collected all the pickups
+
 private:
+
 };
 
 #endif // __j1SCENE_H__

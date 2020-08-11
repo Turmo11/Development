@@ -5,6 +5,7 @@
 #include "j1Textures.h"
 #include "j1Map.h"
 #include "j1Player.h"
+#include "j1Pickups.h"
 #include <math.h>
 
 j1Map::j1Map() : j1Module(), map_loaded(false)
@@ -100,7 +101,7 @@ void j1Map::DrawAnimation(p2SString name, p2SString tileset, bool flip)
 	App->player->player.position.x, App->player->player.position.y,			//drawn at player position
 	anim_tileset->PlayerTileRect(current_anim->frames[i]), flip);			//draw frames tile id
 
-	if (frame_count % (current_anim->speed / 2) == 0)	//counts frames each loop (60 fps using vsync) Magic Numbers
+	if (frame_count % (current_anim->speed / 1) == 0)	//counts frames each loop (60 fps using vsync) Magic Numbers
 	{
 		i++;
 	}
@@ -111,6 +112,61 @@ void j1Map::DrawAnimation(p2SString name, p2SString tileset, bool flip)
 
 	frame_count++;
 }
+
+void j1Map::DrawStaticAnimation(p2SString name, p2SString tileset, iPoint position, AnimationInfo* anim_info)
+{
+
+	TileSet* s_anim_tileset = nullptr;
+
+	p2List_item<TileSet*>* tileset_iterator = data.tilesets.start;
+
+	while (tileset_iterator != NULL)
+	{
+		if (tileset_iterator->data->name == tileset)
+		{
+			s_anim_tileset = tileset_iterator->data;
+		}
+		tileset_iterator = tileset_iterator->next;
+	}
+
+	Animations* current_anim = nullptr;
+
+	p2List_item<Animations*>* anim_iterator;
+	anim_iterator = s_anim_tileset->animations.start;
+
+	while (anim_iterator)
+	{
+		if (name == anim_iterator->data->name)
+		{
+			current_anim = anim_iterator->data; //gets the animation with the name we sent
+		}
+		anim_iterator = anim_iterator->next;
+	}
+
+	if (anim_info->prev_s_anim_name != current_anim->name) // So that when animations change they start from frame 0
+	{
+		anim_info->i = 0;
+		anim_info->frame_count = 1;
+	}
+
+	anim_info->prev_s_anim_name = current_anim->name;
+
+	App->render->Blit(s_anim_tileset->texture, position.x, position.y, s_anim_tileset->PlayerTileRect(current_anim->frames[anim_info->i]));			
+
+	if (anim_info->frame_count > current_anim->speed / 2)	//counts time for each frame of animation
+	{
+		anim_info->i++;
+		anim_info->frame_count = 1;
+	}
+
+	if (anim_info->i >= current_anim->n_frames)  //Iterate from 0 to nFrames (number of frames in animation)
+	{
+		anim_info->i = 0;
+	}
+
+	anim_info->frame_count++;
+}
+
 
 TileSet* j1Map::GetTilesetFromTileId(int id) const
 {
@@ -366,6 +422,8 @@ bool j1Map::LoadMap()
 	}
 	else
 	{
+		
+		data.name = map.child("properties").child("property").next_sibling().next_sibling().attribute("name").as_string();
 		data.starting_position.x = map.child("properties").child("property").attribute("value").as_float();
 		data.starting_position.y = map.child("properties").child("property").next_sibling().attribute("value").as_float();
 
@@ -644,9 +702,9 @@ bool j1Map::LoadTilesetAnimation(pugi::xml_node& tileset_node, TileSet* set)
 
 		new_animation->name = iterator_node.child("properties").child("property").attribute("value").as_string(); //Get the name of the animation inside extra attribute
 
-		new_animation->frames = new uint[12]; // new array for frames
+		new_animation->frames = new uint[24]; // new array for frames
 
-		memset(new_animation->frames, 0, 12); // allocate the new array
+		memset(new_animation->frames, 0, 24); // allocate the new array
 
 		int j = 0;
 		for (pugi::xml_node iterator_node_anim = iterator_node.child("animation").child("frame"); iterator_node_anim; j++) { //Enters the frame of the animation child inside the tile we are in

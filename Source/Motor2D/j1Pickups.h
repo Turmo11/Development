@@ -9,14 +9,24 @@
 struct SDL_Texture;
 struct Collider;
 
-struct Pickups
+struct AnimationInfo
 {
+	int			i = 0;
+	p2SString	prev_s_anim_name = "shine";
+	float		frame_count = 1;
+};
 
-	//Animation
-	SDL_Rect pickup_hitbox;
-	Collider* pickup_collider;
+struct Pickup
+{
+	p2SString		name;
 
-	bool dead;
+	iPoint			position;
+	SDL_Rect		pickup_hitbox;
+	Collider*		pickup_collider;
+
+	bool			collected;
+
+	AnimationInfo	anim_info;
 
 };
 
@@ -42,11 +52,16 @@ public:
 
 public:
 
-	void j1Pickups::OnCollision(Collider* A, Collider* B);
+	void CreatePickup(p2SString name, iPoint position);
+	void SetUp(int level);
+	void OnCollision(Collider* A, Collider* B);
+	void DrawAnimations();
+	void GetCollected();
 
 public:
 
-	Pickups pickup;
+	Pickup pickup;
+	p2List<Pickup*>	pickup_list;
 	
 
 };
