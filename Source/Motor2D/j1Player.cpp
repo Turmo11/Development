@@ -51,6 +51,15 @@ bool j1Player::Start()
 
 bool j1Player::PreUpdate()
 {
+	if (App->render->camera.x > App->scene->camera_left_limit)
+	{
+		App->render->camera.x = App->scene->camera_left_limit;
+	}
+	if (App->render->camera.x < (App->scene->camera_right_limit + App->win->screen_surface->w))
+	{
+		App->render->camera.x = (App->scene->camera_right_limit + App->win->screen_surface->w);
+	}
+
 	if (player.disabled) //if the player is disable, it stops updating the logic
 	{
 		return true;
@@ -436,12 +445,12 @@ void j1Player::SetCamera()
 	}
 	else
 	{
-		float x_axis = (-player.position.x) + (App->win->screen_surface->w / 2);
-		float y_axis = (-player.position.y) + (App->win->screen_surface->h / 2);
+		x_axis = (-player.position.x) + (App->win->screen_surface->w / 2);
+		y_axis = (-player.position.y) + (App->win->screen_surface->h / 2);
 
 
 		//Checks camera x limits
-		if (App->render->camera.x < App->scene->camera_left_limit && App->render->camera.x >(App->scene->camera_right_limit + App->win->screen_surface->w))
+		if (App->render->camera.x <= App->scene->camera_left_limit && App->render->camera.x >= (App->scene->camera_right_limit + App->win->screen_surface->w))
 		{
 			App->render->camera.x = (int)x_axis;
 		}

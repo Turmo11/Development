@@ -99,6 +99,8 @@ public:
 
 	Player player;
 
+private:
+	float x_axis, y_axis;
 };
 
 

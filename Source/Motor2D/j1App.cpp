@@ -43,9 +43,9 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 
 	//player and scenes
 	AddModule(scene);
+	AddModule(pickups);
 	AddModule(player);
 
-	AddModule(pickups);
 	AddModule(collisions);
 
 	// render last to swap buffer
