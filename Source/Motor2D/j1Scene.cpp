@@ -39,9 +39,9 @@ bool j1Scene::Start()
 	camera_left_limit = 0;
 	camera_right_limit = -2500;
 
+	level_completed = false;
 	App->pickups->SetUp(0);
 	
-	//test_work_pls = { (int)App->player->player.position.x, App->player->player.position.y, 200, 200 };
 	return true;
 }
 
@@ -105,4 +105,19 @@ bool j1Scene::CleanUp()
 	LOG("Freeing scene");
 
 	return true;
+}
+
+void j1Scene::CheckLevelProgress()
+{
+	p2List_item<Pickup*>* pickup_iterator = App->pickups->pickup_list.start;
+
+	while (pickup_iterator != NULL)
+	{
+		if (!pickup_iterator->data->collected)
+		{
+			return;
+		}
+		pickup_iterator = pickup_iterator->next;
+	}
+	level_completed = true;
 }

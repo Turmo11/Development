@@ -40,10 +40,10 @@ struct Player
 	bool				grounded;
 	bool				able_to_drop;
 
-	bool				disabled;		//used during screen transitions or deaths when we want to take away the control from the player
+	bool				disabled;		 //used during screen transitions or deaths when we want to take away the control from the player
 	bool				god_mode;
 
-	bool				flip;			//used to handle texture flips
+	bool				flip;			 //used to handle texture flips
 
 	//Collider
 	int					hitbox_width;

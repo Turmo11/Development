@@ -5,6 +5,7 @@
 #include "j1Map.h"
 #include "j1Collisions.h"
 #include "j1Pickups.h"
+#include "j1Scene.h"
 
 
 
@@ -103,6 +104,7 @@ void j1Pickups::OnCollision(Collider* A, Collider* B)
 	{
 		A->to_delete = true;
 		GetCollected();
+		App->scene->CheckLevelProgress();
 
 	}
 }

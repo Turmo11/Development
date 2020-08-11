@@ -367,6 +367,27 @@ void j1Player::OnCollision(Collider* A, Collider* B) {
 			}
 		}
 	}
+
+	if (App->scene->level_completed)
+	{
+		// ------------ Player Colliding with the goal ------------------
+		if (A->type == object_type::PLAYER && B->type == object_type::GOAL) {
+
+			//Colliding from above
+			if (A->rect.y + A->rect.h - player.max_speed.y - 2 < B->rect.y
+				&& A->rect.x < B->rect.x + B->rect.w
+				&& A->rect.x + A->rect.w > B->rect.x)
+			{
+				ResetPlayer();
+			}
+			//Colliding from the sides
+			else if (A->rect.y + (A->rect.h * 1.0f / 4.0f) < B->rect.y + B->rect.h
+				&& A->rect.y + (A->rect.h * 3.0f / 4.0f) > B->rect.y)
+			{
+				ResetPlayer();
+			}
+		}
+	}
 	
 }
 
