@@ -80,6 +80,14 @@ void j1Pickups::SetUp(int level)
 		CreatePickup("eta", { 1792, 384 });
 		break;
 
+	case 1:
+
+		CreatePickup("alpha", { 2128, 2448 });
+		CreatePickup("chi", { 528, 3024 });
+		CreatePickup("rho", { 2960, 784 });
+		CreatePickup("eta", { 656, 1936 });
+		break;
+
 	}
 }
 

@@ -24,7 +24,7 @@
     <gravity value="0.07" />
     <speed x="0" y="0" />
     <max_speed x="2" y="6"/>
-    <hitbox w="45" h="96"/>
+    <hitbox w="30" h="96"/>
   </player>
 
   <file_system>

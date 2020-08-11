@@ -32,15 +32,15 @@ bool j1Scene::Awake()
 // Called before the first frame
 bool j1Scene::Start()
 {
-	App->map->Load("map.tmx");
+	App->map->Load("tutorial.tmx");
 	App->render->camera.x = App->render->starting_cam_pos.x;
 	App->render->camera.y = App->render->starting_cam_pos.y;
 
 	camera_left_limit = 0;
-	camera_right_limit = -2500;
+	camera_right_limit = -3150;
 
 	level_completed = false;
-	App->pickups->SetUp(0);
+	App->pickups->SetUp(1);
 	
 	return true;
 }
