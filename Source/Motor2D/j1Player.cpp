@@ -312,7 +312,7 @@ void j1Player::OnCollision(Collider* A, Collider* B) {
 			//from below
 			else if (A->rect.y < (B->rect.y + B->rect.h))
 			{
-				player.speed.y = player.max_speed.y / 2;
+				player.speed.y = player.max_speed.y / 8;
 				player.position.y = B->rect.y + B->rect.h;
 			}
 		}

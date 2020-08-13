@@ -1412,8 +1412,8 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile gid="75"/>
-   <tile gid="77"/>
+   <tile/>
+   <tile gid="78"/>
    <tile/>
    <tile/>
    <tile/>
@@ -1559,8 +1559,8 @@
    <tile/>
    <tile gid="75"/>
    <tile gid="76"/>
+   <tile gid="76"/>
    <tile gid="77"/>
-   <tile/>
    <tile/>
    <tile/>
    <tile/>
@@ -3153,17 +3153,17 @@
   <object id="20" name="ground" type="ground" x="386.208" y="3137.65" width="315.625" height="60.9318"/>
   <object id="21" name="ground" type="ground" x="1281.78" y="1857.74" width="252.292" height="60.9318"/>
   <object id="22" name="ground" type="ground" x="2305.45" y="1921.41" width="252.292" height="60.9318"/>
-  <object id="23" name="ground" type="ground" x="1857.95" y="1792.91" width="188.042" height="60.9318"/>
+  <object id="23" name="ground" type="ground" x="1857.95" y="1792.91" width="253.709" height="60.9318"/>
   <object id="24" name="ground" type="ground" x="961.951" y="1217.66" width="188.042" height="60.9318"/>
   <object id="25" name="ground" type="ground" x="194.269" y="2945.05" width="124.042" height="60.9318"/>
   <object id="26" name="ground" type="ground" x="128.269" y="2753.05" width="126.042" height="60.9318"/>
   <object id="27" name="ground" type="ground" x="1538.3" y="2049.3" width="123.648" height="60.9318"/>
   <object id="28" name="ground" type="ground" x="1282.3" y="1473.3" width="123.648" height="60.9318"/>
-  <object id="29" name="ground" type="ground" x="2178.05" y="1601.55" width="123.648" height="60.9318"/>
+  <object id="29" name="ground" type="ground" x="2241.05" y="1601.55" width="60.648" height="60.9318"/>
   <object id="30" name="ground" type="ground" x="1346.87" y="2241.06" width="58.9811" height="60.9318"/>
   <object id="31" name="ground" type="ground" x="1666.2" y="1729.06" width="58.9811" height="60.9318"/>
-  <object id="32" name="ground" type="ground" x="1666.87" y="1409.06" width="58.9811" height="60.9318"/>
-  <object id="33" name="ground" type="ground" x="1922.99" y="1473.18" width="58.9811" height="60.9318"/>
+  <object id="32" name="ground" type="ground" x="1665.62" y="1409.06" width="60.2311" height="60.9318"/>
+  <object id="33" name="ground" type="ground" x="1922.08" y="1473.18" width="59.8902" height="60.9318"/>
   <object id="34" name="ground" type="ground" x="706.489" y="1281.43" width="58.9811" height="60.9318"/>
   <object id="35" name="ground" type="ground" x="1026.49" y="2433.18" width="58.9811" height="252.598"/>
   <object id="36" name="ground" type="ground" x="1218.82" y="2497.18" width="58.9811" height="252.598"/>

@@ -23,7 +23,7 @@ bool j1Collisions::Awake(pugi::xml_node& config) {
 
 bool j1Collisions::Start() {
 
-	debug_colliders = true;
+	debug_colliders = false;
 	LoadFromMap();
 
 	return true;
