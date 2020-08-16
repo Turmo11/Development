@@ -72,7 +72,11 @@ bool j1Scene::Update(float dt)
 
 	if (App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
 		App->render->camera.x -= 2;
-
+	
+	if (App->input->GetKey(SDL_SCANCODE_F4) == KEY_DOWN)
+	{
+		App->win->ToggleFullscreen();
+	}
 	App->map->Draw();
 
 	p2SString title("Map:%dx%d Tiles:%dx%d Tilesets:%d Camera:(%d,%d) Player:(%.2f,%.2f)",
