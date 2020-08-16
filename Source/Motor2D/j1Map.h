@@ -50,6 +50,7 @@ enum class object_type
 	GROUND,
 	PLATFORM,
 	LETTER,
+	ENEMY,
 	GOAL,
 	DEATH
 };

@@ -622,13 +622,9 @@ bool j1Map::LoadObjectLayers(pugi::xml_node& node, ObjectGroup* object_group)
 			temp->data.v_string = iterator_node.child("properties").child("property").attribute("value").as_string();
 			object_group->objects[i].properties.property_list.add(temp);
 		}
-		else if (type == "death")
+		else if (type == "enemy")
 		{
-			object_group->objects[i].type = object_type::DEATH;
-			Properties::Property* temp = new Properties::Property;
-			temp->name = iterator_node.child("properties").child("property").attribute("name").as_string();
-			temp->data.v_string = iterator_node.child("properties").child("property").attribute("value").as_string();
-			object_group->objects[i].properties.property_list.add(temp);
+			object_group->objects[i].type = object_type::ENEMY;
 		}
 		else if (type == "goal")
 		{
@@ -639,7 +635,14 @@ bool j1Map::LoadObjectLayers(pugi::xml_node& node, ObjectGroup* object_group)
 			temp->data.v_string = iterator_node.child("properties").child("property").attribute("value").as_string();
 			object_group->objects[i].properties.property_list.add(temp);
 		}
-		
+		else if (type == "death")
+		{
+			object_group->objects[i].type = object_type::DEATH;
+			Properties::Property* temp = new Properties::Property;
+			temp->name = iterator_node.child("properties").child("property").attribute("name").as_string();
+			temp->data.v_string = iterator_node.child("properties").child("property").attribute("value").as_string();
+			object_group->objects[i].properties.property_list.add(temp);
+		}
 		else
 		{
 			object_group->objects[i].type = object_type::UNKNOWN;

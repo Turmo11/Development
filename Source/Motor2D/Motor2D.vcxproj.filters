@@ -36,13 +36,16 @@
     </ClCompile>
     <ClCompile Include="Dependencies\PugiXml\src\pugixml.cpp" />
     <ClCompile Include="j1Player.cpp">
-      <Filter>Desenvolupament  ========\Player</Filter>
+      <Filter>Desenvolupament  ========\Entities\Player</Filter>
     </ClCompile>
     <ClCompile Include="j1Collisions.cpp">
       <Filter>Desenvolupament  ========\Modules</Filter>
     </ClCompile>
     <ClCompile Include="j1Pickups.cpp">
-      <Filter>Desenvolupament  ========\PickUps</Filter>
+      <Filter>Desenvolupament  ========\Entities\PickUps</Filter>
+    </ClCompile>
+    <ClCompile Include="j1WalkingEnemy.cpp">
+      <Filter>Desenvolupament  ========\Entities\Enemies</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -97,7 +100,7 @@
     <ClInclude Include="Dependencies\PugiXml\src\pugiconfig.hpp" />
     <ClInclude Include="Dependencies\PugiXml\src\pugixml.hpp" />
     <ClInclude Include="j1Player.h">
-      <Filter>Desenvolupament  ========\Player</Filter>
+      <Filter>Desenvolupament  ========\Entities\Player</Filter>
     </ClInclude>
     <ClInclude Include="p2Animation.h">
       <Filter>Programacio 2 ===========</Filter>
@@ -106,7 +109,10 @@
       <Filter>Desenvolupament  ========\Modules</Filter>
     </ClInclude>
     <ClInclude Include="j1Pickups.h">
-      <Filter>Desenvolupament  ========\PickUps</Filter>
+      <Filter>Desenvolupament  ========\Entities\PickUps</Filter>
+    </ClInclude>
+    <ClInclude Include="j1WalkingEnemy.h">
+      <Filter>Desenvolupament  ========\Entities\Enemies</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -131,11 +137,17 @@
     <Filter Include="Desenvolupament  ========\Tools\Timers">
       <UniqueIdentifier>{b4ddeef7-b2bd-4abe-9120-f686c0272e95}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Desenvolupament  ========\Player">
+    <Filter Include="Desenvolupament  ========\Entities">
+      <UniqueIdentifier>{8af86e5d-a17c-47af-83fb-94fdb81e745a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Desenvolupament  ========\Entities\PickUps">
+      <UniqueIdentifier>{99dd4ab7-3728-4544-8466-93fc80c2215a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Desenvolupament  ========\Entities\Player">
       <UniqueIdentifier>{5a779f0d-932c-4fd6-9cf0-40e262674dac}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Desenvolupament  ========\PickUps">
-      <UniqueIdentifier>{99dd4ab7-3728-4544-8466-93fc80c2215a}</UniqueIdentifier>
+    <Filter Include="Desenvolupament  ========\Entities\Enemies">
+      <UniqueIdentifier>{1ac984ea-1b0c-4226-aa99-4f72b19a5a09}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

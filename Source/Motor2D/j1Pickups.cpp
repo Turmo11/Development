@@ -6,6 +6,7 @@
 #include "j1Collisions.h"
 #include "j1Pickups.h"
 #include "j1Scene.h"
+#include "j1WalkingEnemy.h"
 
 
 
@@ -86,6 +87,7 @@ void j1Pickups::SetUp(int level)
 		CreatePickup("chi", { 528, 3024 });
 		CreatePickup("rho", { 2960, 784 });
 		CreatePickup("eta", { 656, 1936 });
+		App->walking_enemy->CreateEnemy(enemy_type::SOUL, { 925, 3475 });
 		break;
 
 	}

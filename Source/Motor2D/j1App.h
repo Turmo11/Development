@@ -16,6 +16,7 @@ class j1Map;
 class j1Player;
 class j1Pickups;
 class j1Collisions;
+class j1WalkingEnemy;
 class j1App
 {
 public:
@@ -88,6 +89,7 @@ public:
 	j1Player*			player;
 	j1Pickups*			pickups;
 	j1Collisions*		collisions;
+	j1WalkingEnemy*		walking_enemy;
 	
 
 private:

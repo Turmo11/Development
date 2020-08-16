@@ -14,6 +14,7 @@
 #include "j1Player.h"
 #include "j1Pickups.h"
 #include "j1Collisions.h"
+#include "j1WalkingEnemy.h"
 
 
 // Constructor
@@ -32,6 +33,7 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	player = new j1Player();
 	pickups = new j1Pickups();
 	collisions = new j1Collisions();
+	walking_enemy = new j1WalkingEnemy();
 	
 	// Ordered for awake / Start / Update
 	// Reverse order of CleanUp
@@ -43,6 +45,7 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 
 	//player and scenes
 	AddModule(scene);
+	AddModule(walking_enemy);
 	AddModule(pickups);
 	AddModule(player);
 
