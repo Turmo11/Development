@@ -190,7 +190,7 @@ bool j1Player::Update(float dt)
 	}
 	else //GodMode Activated!
 	{
-		//player.animation = "godmode";
+		player.animation = "god";
 
 		if (App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT)
 		{

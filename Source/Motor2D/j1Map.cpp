@@ -101,7 +101,7 @@ void j1Map::DrawAnimation(p2SString name, p2SString tileset, bool flip)
 	App->player->player.position.x, App->player->player.position.y,			//drawn at player position
 	anim_tileset->PlayerTileRect(current_anim->frames[i]), flip);			//draw frames tile id
 
-	if (frame_count % (current_anim->speed / 1) == 0)	//counts frames each loop (60 fps using vsync) Magic Numbers
+	if (frame_count % (current_anim->speed / 10) == 0)	//counts frames each loop (60 fps using vsync) Magic Numbers
 	{
 		i++;
 	}
@@ -151,9 +151,9 @@ void j1Map::DrawStaticAnimation(p2SString name, p2SString tileset, iPoint positi
 
 	anim_info->prev_s_anim_name = current_anim->name;
 
-	App->render->Blit(s_anim_tileset->texture, position.x, position.y, s_anim_tileset->PlayerTileRect(current_anim->frames[anim_info->i]));			
+	App->render->Blit(s_anim_tileset->texture, position.x - 16, position.y - 16, s_anim_tileset->PlayerTileRect(current_anim->frames[anim_info->i]));			
 
-	if (anim_info->frame_count > current_anim->speed / 2)	//counts time for each frame of animation
+	if (anim_info->frame_count > current_anim->speed / 10)	//counts time for each frame of animation
 	{
 		anim_info->i++;
 		anim_info->frame_count = 1;

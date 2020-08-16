@@ -55,8 +55,8 @@ void j1Pickups::CreatePickup(p2SString name, iPoint position)
 	new_pickup->name = name;
 	new_pickup->position = position;
 
-	new_pickup->pickup_hitbox.x = position.x + 16;
-	new_pickup->pickup_hitbox.y = position.y + 16;
+	new_pickup->pickup_hitbox.x = position.x;
+	new_pickup->pickup_hitbox.y = position.y;
 	new_pickup->pickup_hitbox.w = 32;
 	new_pickup->pickup_hitbox.h = 32;
 
