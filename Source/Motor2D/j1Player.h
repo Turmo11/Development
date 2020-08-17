@@ -38,6 +38,7 @@ struct Player
 	bool				moving_left;
 	bool				jumping;
 	bool				grounded;
+	bool				colliding_wall;
 	bool				able_to_drop;
 
 	bool				disabled;		 //used during screen transitions or deaths when we want to take away the control from the player

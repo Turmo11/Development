@@ -184,9 +184,10 @@ bool j1Player::Update(float dt)
 			}
 		}
 
-		//Update position
-		player.position.y += player.speed.y;
-		player.position.x += player.speed.x;
+		if (player.colliding_wall)
+		{
+			player.speed.x = 0;
+		}
 	}
 	else //GodMode Activated!
 	{
@@ -203,6 +204,10 @@ bool j1Player::Update(float dt)
 		player.position.x += player.speed.x * 2;
 	}
 
+	//Update position
+	player.position.y += player.speed.y;
+	player.position.x += player.speed.x;
+
 	//Draw player
 	App->map->DrawAnimation(player.animation, "playerx96", player.flip);
 
@@ -210,6 +215,8 @@ bool j1Player::Update(float dt)
 	//Update player collider and position
 
 	player.player_collider->SetPos(player.position.x + 30, player.position.y);
+
+	player.colliding_wall = false;
 
 	SetCamera();
 
@@ -242,16 +249,17 @@ bool j1Player::SummonPlayer()
 	player.player_collider = App->collisions->AddCollider(player.player_hitbox, object_type::PLAYER, this);
 
 	//booleans
-	player.moving_right = false;
-	player.moving_left	= false;
-	player.jumping		= false;
-	player.grounded		= false;
-	player.able_to_drop = false;
+	player.moving_right		= false;
+	player.moving_left		= false;
+	player.jumping			= false;
+	player.grounded			= false;
+	player.colliding_wall	= false;
+	player.able_to_drop		= false;
 
-	player.disabled		= false;
-	player.god_mode		= false;
+	player.disabled			= false;
+	player.god_mode			= false;
 
-	player.flip			= false;
+	player.flip				= false;
 
 	return true;
 }
@@ -299,14 +307,17 @@ void j1Player::OnCollision(Collider* A, Collider* B) {
 			else if (A->rect.y + (A->rect.h * 1.0f / 4.0f) < B->rect.y + B->rect.h
 				&& A->rect.y + (A->rect.h * 3.0f / 4.0f) > B->rect.y)
 			{
+				player.colliding_wall = true;
+				LOG("Touching WALL");
+
 				if ((A->rect.x + A->rect.w) < (B->rect.x + B->rect.w / 4))
 				{ //Player to the left 
-					player.position.x = B->rect.x - A->rect.w;
+					player.position.x = B->rect.x - A->rect.w - 32;
 
 				}
 				else if (A->rect.x > (B->rect.x + B->rect.w * 3 / 4))
 				{ //Player to the right
-					player.position.x = B->rect.x + B->rect.w;
+					player.position.x = B->rect.x + B->rect.w - 20;
 				}
 			}
 			//from below
