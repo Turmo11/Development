@@ -25,6 +25,39 @@ j1Player::j1Player() : j1Module()
 j1Player::~j1Player()
 {}
 
+bool j1Player::Save(pugi::xml_node& node) const {
+
+	LOG("Saving Player...");
+	node.child("position").append_attribute("x") = player.position.x;
+	node.child("position").append_attribute("y") = player.position.y;
+
+	pugi::xml_node flags = node.append_child("flags");
+	flags.append_attribute("jumping") = player.jumping;
+	flags.append_attribute("able_to_drop") = player.able_to_drop;
+	flags.append_attribute("grounded") = player.grounded;
+	flags.append_attribute("flip") = player.flip;
+	flags.append_attribute("god_mode") = player.god_mode;
+
+	return true;
+}
+
+bool j1Player::Load(pugi::xml_node& node) {
+
+	LOG("Loading Player...");
+
+	player.position.x = node.child("position").attribute("x").as_float();
+	player.position.y = node.child("position").attribute("y").as_float();
+
+	pugi::xml_node flags = node.child("flags");
+	player.able_to_drop = flags.attribute("drop_plat").as_bool();
+	player.jumping = flags.attribute("jumping").as_bool();
+	player.grounded = flags.attribute("playerGrounded").as_bool();
+
+	player.current_state = player_states::IDLE;
+
+	return true;
+}
+
 bool j1Player::Awake(pugi::xml_node& config)
 {
 	player.speed.x = config.child("speed").attribute("x").as_float();

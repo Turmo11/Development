@@ -7,7 +7,7 @@
 #include "j1Pickups.h"
 #include "j1Scene.h"
 #include "j1WalkingEnemy.h"
-
+#include "j1Audio.h"
 
 
 j1Pickups::j1Pickups() : j1Module()
@@ -75,6 +75,7 @@ void j1Pickups::SetUp(int level)
 	{
 	case 0:
 
+		App->audio->PlayMusic("Assets/audio/music/tutorial.ogg", 0.0f);
 		CreatePickup("alpha", { 1152, 704 });
 		CreatePickup("chi", { 1792, 576 });
 		CreatePickup("rho", { 1408, 512 });
@@ -83,6 +84,7 @@ void j1Pickups::SetUp(int level)
 
 	case 1:
 
+		App->audio->PlayMusic("Assets/audio/music/athena.ogg", 0.0f);
 		CreatePickup("alpha", { 2128, 2448 });
 		CreatePickup("chi", { 528, 3024 });
 		CreatePickup("rho", { 2960, 784 });
@@ -90,6 +92,14 @@ void j1Pickups::SetUp(int level)
 		App->walking_enemy->CreateEnemy(enemy_type::SOUL, { 925, 3475 });
 		break;
 
+	case 2:
+		App->audio->PlayMusic("Assets/audio/music/athena.ogg", 0.0f);
+		CreatePickup("alpha", { 2128, 2448 });
+		CreatePickup("chi", { 528, 3024 });
+		CreatePickup("rho", { 2960, 784 });
+		CreatePickup("eta", { 656, 1936 });
+		App->walking_enemy->CreateEnemy(enemy_type::SOUL, { 925, 3475 });
+		break;
 	}
 }
 

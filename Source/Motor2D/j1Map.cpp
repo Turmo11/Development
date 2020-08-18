@@ -28,6 +28,24 @@ bool j1Map::Awake(pugi::xml_node& config)
 	return ret;
 }
 
+bool j1Map::Save(pugi::xml_node& node) const
+{
+	LOG("Saving Map...");
+	node.append_child("map_name").append_attribute("filename") = data.name.GetString();
+
+	return true;
+}
+
+bool j1Map::Load(pugi::xml_node& node)
+{
+	LOG("Loading Map...");
+
+	Load(node.child("map_name").attribute("filename").as_string());
+
+
+	return true;
+}
+
 void j1Map::Draw()
 {
 	if (map_loaded == false)
@@ -324,6 +342,7 @@ bool j1Map::Load(const char* file_name)
 	// Load general info ----------------------------------------------
 	if (ret == true)
 	{
+		data.name = fileName->GetString();
 		ret = LoadMap();
 	}
 
@@ -424,8 +443,6 @@ bool j1Map::LoadMap()
 	}
 	else
 	{
-		
-		data.name = map.child("properties").child("property").next_sibling().next_sibling().attribute("name").as_string();
 		data.starting_position.x = map.child("properties").child("property").attribute("value").as_float();
 		data.starting_position.y = map.child("properties").child("property").next_sibling().attribute("value").as_float();
 

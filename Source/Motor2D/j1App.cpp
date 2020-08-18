@@ -97,6 +97,9 @@ bool j1App::Awake()
 		app_config = config.child("app");
 		title.create(app_config.child("title").child_value());
 		organization.create(app_config.child("organization").child_value());
+		load_game = config.child("file_system").child("load_file").child_value();
+		save_game = config.child("file_system").child("save_file").child_value();
+
 	}
 
 	if(ret == true)
@@ -326,7 +329,7 @@ bool j1App::LoadGameNow()
 	{
 		LOG("Loading new Game State from %s...", load_game.GetString());
 
-		root = data.child("game_state");
+		root = data.child("save");
 
 		p2List_item<j1Module*>* item = modules.start;
 		ret = true;

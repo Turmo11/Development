@@ -64,6 +64,10 @@ public:
 	// Destructor
 	virtual ~j1Player();
 
+	//Save and Load
+	bool Save(pugi::xml_node&) const;
+	bool Load(pugi::xml_node&);
+
 	//Called at first
 	bool Start();
 	bool PreUpdate();

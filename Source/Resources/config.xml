@@ -12,7 +12,7 @@
   </renderer>
 
   <window>
-    <resolution width="1024" height="768" scale="1"/>
+    <resolution width="1424" height="768" scale="1"/>
     <fullscreen value="false"/>
     <borderless value="false"/>
     <resizable value="false"/>
@@ -29,8 +29,8 @@
 
   <file_system>
     <path>data.zip</path>
-    <loadTo>save_game.xml</loadTo>
-    <saveTo>save_game.xml</saveTo>
+    <load_file>save_game.xml</load_file>
+    <save_file>save_game.xml</save_file>
   </file_system>
 
   <map>

@@ -34,7 +34,6 @@
     <ClCompile Include="j1Timer.cpp">
       <Filter>Desenvolupament  ========\Tools\Timers</Filter>
     </ClCompile>
-    <ClCompile Include="Dependencies\PugiXml\src\pugixml.cpp" />
     <ClCompile Include="j1Player.cpp">
       <Filter>Desenvolupament  ========\Entities\Player</Filter>
     </ClCompile>
@@ -46,6 +45,9 @@
     </ClCompile>
     <ClCompile Include="j1WalkingEnemy.cpp">
       <Filter>Desenvolupament  ========\Entities\Enemies</Filter>
+    </ClCompile>
+    <ClCompile Include="Dependencies\PugiXml\src\pugixml.cpp">
+      <Filter>Desenvolupament  ========\Tools\PuguiXML</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -97,8 +99,6 @@
     <ClInclude Include="j1Timer.h">
       <Filter>Desenvolupament  ========\Tools\Timers</Filter>
     </ClInclude>
-    <ClInclude Include="Dependencies\PugiXml\src\pugiconfig.hpp" />
-    <ClInclude Include="Dependencies\PugiXml\src\pugixml.hpp" />
     <ClInclude Include="j1Player.h">
       <Filter>Desenvolupament  ========\Entities\Player</Filter>
     </ClInclude>
@@ -113,6 +113,12 @@
     </ClInclude>
     <ClInclude Include="j1WalkingEnemy.h">
       <Filter>Desenvolupament  ========\Entities\Enemies</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\PugiXml\src\pugiconfig.hpp">
+      <Filter>Desenvolupament  ========\Tools\PuguiXML</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\PugiXml\src\pugixml.hpp">
+      <Filter>Desenvolupament  ========\Tools\PuguiXML</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

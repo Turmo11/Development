@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<game_state>
+	<input />
+	<window />
+	<textures />
+	<audio />
+	<map>
+		<map_name filename="tutorial" />
+	</map>
+	<scene />
+	<enemy />
+	<pickups />
+	<player>
+		<flags jumping="false" able_to_drop="false" grounded="true" flip="false" god_mode="false" />
+	</player>
+	<collisions />
+	<renderer>
+		<camera x="-682" y="-213" />
+	</renderer>
+</game_state>
