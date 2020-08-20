@@ -138,104 +138,108 @@ bool j1Player::Update(float dt)
 		return true;
 	}
 
-	if (!CheckAirborne() && player.grounded)
+	if (!player.locked)
 	{
-		player.speed.y = 0;
-	}
-
-	HorizontalMovement();
-
-	if (!player.god_mode)
-	{
-		//State machine
-		switch (player.current_state)
+		if (!CheckAirborne() && player.grounded)
 		{
-		case player_states::IDLE:
-
-			//LOG("Current State: IDLE");
-			player.animation = "idle";
-			player.speed.x = 0;
-
-
-			break;
-		case player_states::RUNNING:
-
-			//LOG("Current State: RUNNING");
-			player.animation = "run";
-
-
-			break;
-		case player_states::CROUCH:
-
-			//LOG("Current State: CROUCH");
-			//player.animation = "crouch";
-
-			break;
-		case player_states::JUMP:
-
-			//LOG("Current State: JUMP");
-			player.speed.y -= player.acceleration.y;
-			player.jumping = true;
-
-			break;
-		case player_states::FALL:
-
-			//LOG("Current State: FALL");
-			player.jumping = true;
-
-			break;
-
+			player.speed.y = 0;
 		}
 
-		if (player.grounded)
-		{
-			player.jumping = false;
-			player.current_state = player_states::IDLE;
-		}
-		else
-		{
-			player.current_state = player_states::FALL;
-		}
+		HorizontalMovement();
 
-		//Jump logic
-		if (player.jumping)
+		if (!player.god_mode)
 		{
-			player.speed.y += player.gravity; // Speed.y is +gravity when not grounded
-
-			if (player.speed.y >= player.max_speed.y) // Speed.y is capped an maxSpeed
+			//State machine
+			switch (player.current_state)
 			{
-				player.speed.y = player.max_speed.y;
+			case player_states::IDLE:
+
+				//LOG("Current State: IDLE");
+				player.animation = "idle";
+				player.speed.x = 0;
+
+
+				break;
+			case player_states::RUNNING:
+
+				//LOG("Current State: RUNNING");
+				player.animation = "run";
+
+
+				break;
+			case player_states::CROUCH:
+
+				//LOG("Current State: CROUCH");
+				//player.animation = "crouch";
+
+				break;
+			case player_states::JUMP:
+
+				//LOG("Current State: JUMP");
+				player.speed.y -= player.acceleration.y;
+				player.jumping = true;
+
+				break;
+			case player_states::FALL:
+
+				//LOG("Current State: FALL");
+				player.jumping = true;
+
+				break;
+
 			}
 
-			if (player.speed.y < 0) // If on jump is going up uses jump animation
+			if (player.grounded)
 			{
-				//player.animation = "jump";
+				player.jumping = false;
+				player.current_state = player_states::IDLE;
 			}
-			else // If on jump is going down uses fall animation
+			else
 			{
-				//player.animation = "fall";
+				player.current_state = player_states::FALL;
+			}
+
+			//Jump logic
+			if (player.jumping)
+			{
+				player.speed.y += player.gravity; // Speed.y is +gravity when not grounded
+
+				if (player.speed.y >= player.max_speed.y) // Speed.y is capped an maxSpeed
+				{
+					player.speed.y = player.max_speed.y;
+				}
+
+				if (player.speed.y < 0) // If on jump is going up uses jump animation
+				{
+					//player.animation = "jump";
+				}
+				else // If on jump is going down uses fall animation
+				{
+					//player.animation = "fall";
+				}
+			}
+
+			if (player.colliding_wall)
+			{
+				player.speed.x = 0;
 			}
 		}
-
-		if (player.colliding_wall)
+		else //GodMode Activated!
 		{
-			player.speed.x = 0;
+			player.animation = "god";
+
+			if (App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT)
+			{
+				MoveUp();
+			}
+			else if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT)
+			{
+				MoveDown();
+			}
+			player.position.x += player.speed.x * 2;
 		}
 	}
-	else //GodMode Activated!
-	{
-		player.animation = "god";
-
-		if (App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT)
-		{
-			MoveUp();
-		}
-		else if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT)
-		{
-			MoveDown();
-		}
-		player.position.x += player.speed.x * 2;
-	}
+	
 
 	//Update position
 	player.position.y += player.speed.y;
@@ -290,6 +294,7 @@ bool j1Player::SummonPlayer()
 	player.able_to_drop		= false;
 
 	player.disabled			= false;
+	player.locked			= false;
 	player.god_mode			= false;
 
 	player.flip				= false;
@@ -413,13 +418,13 @@ void j1Player::OnCollision(Collider* A, Collider* B) {
 				&& A->rect.x < B->rect.x + B->rect.w
 				&& A->rect.x + A->rect.w > B->rect.x)
 			{
-				ResetPlayer();
+				Ascend();
 			}
 			//Colliding from the sides
 			else if (A->rect.y + (A->rect.h * 1.0f / 4.0f) < B->rect.y + B->rect.h
 				&& A->rect.y + (A->rect.h * 3.0f / 4.0f) > B->rect.y)
 			{
-				ResetPlayer();
+				Ascend();
 			}
 		}
 	}
@@ -553,4 +558,13 @@ void j1Player::SetCamera()
 			App->render->camera.y = App->scene->camera_bot_limit + App->win->screen_surface->h;;
 		}
 	}
+}
+
+//Player completes level
+void j1Player::Ascend()
+{
+	player.animation = "idle";
+	player.locked = true;
+	player.speed.x = 0;
+	player.position.y -= (player.max_speed.y / 8);
 }
