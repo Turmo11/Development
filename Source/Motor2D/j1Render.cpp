@@ -78,7 +78,8 @@ bool j1Render::Update(float dt)
 bool j1Render::PostUpdate()
 {
 	//SDL_SetRenderDrawColor(renderer, background.r, background.g, background.g, background.a);
-	SDL_SetRenderDrawColor(renderer, 100, 150, 255, background.a);
+	//SDL_SetRenderDrawColor(renderer, 64, 49, 49, background.a);
+	SDL_SetRenderDrawColor(renderer, 75, 70, 70, background.a);
 	SDL_RenderPresent(renderer);
 	return true;
 }

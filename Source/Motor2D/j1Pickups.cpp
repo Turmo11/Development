@@ -35,6 +35,7 @@ bool j1Pickups::PreUpdate()
 bool j1Pickups::Update(float dt)
 {
 	DrawAnimations();
+	UpdateGoal();
 
 	return true;
 }
@@ -46,6 +47,29 @@ bool j1Pickups::PostUpdate()
 
 bool j1Pickups::CleanUp()
 {
+	// Remove pickups
+	p2List_item<Pickup*>* item;
+	item = pickup_list.start;
+
+	while (item != NULL)
+	{
+		RELEASE(item->data);
+		item = item->next;
+	}
+	pickup_list.clear();
+
+	// Remove goals
+	p2List_item<Goal*>* item2;
+	item2 = goal_list.start;
+
+	while (item2 != NULL)
+	{
+		RELEASE(item2->data);
+		item2 = item2->next;
+	}
+	goal_list.clear();
+
+
 	return true;
 }
 
@@ -89,6 +113,7 @@ void j1Pickups::SetUp(int level)
 		CreatePickup("chi", { 528, 3024 });
 		CreatePickup("rho", { 2960, 784 });
 		CreatePickup("eta", { 656, 1936 });
+		SetGoal({ 1552, 656 });
 		App->walking_enemy->CreateEnemy(enemy_type::SOUL, { 925, 3475 });
 		break;
 
@@ -99,6 +124,7 @@ void j1Pickups::SetUp(int level)
 		CreatePickup("rho", { 2960, 784 });
 		CreatePickup("eta", { 656, 1936 });
 		App->walking_enemy->CreateEnemy(enemy_type::SOUL, { 925, 3475 });
+		
 		break;
 	}
 }
@@ -141,5 +167,34 @@ void j1Pickups::GetCollected()
 			LOG("Collected %s", pickup_iterator->data->name.GetString());
 		}
 		pickup_iterator = pickup_iterator->next;
+	}
+}
+
+void j1Pickups::SetGoal(iPoint position)
+{
+	Goal* left_goal = new Goal;
+	Goal* right_goal = new Goal;
+
+	left_goal->position = position;
+
+	right_goal->position.x = position.x + 192;
+	right_goal->position.y = position.y;
+
+	goal_list.add(left_goal);
+	goal_list.add(right_goal);
+}
+
+void j1Pickups::UpdateGoal()
+{
+	p2List_item<Goal*>* goal_iterator = goal_list.start;
+
+	while (goal_iterator != NULL)
+	{
+		if (App->scene->level_completed)
+		{
+			App->map->DrawStaticAnimation("goal", "goal", goal_iterator->data->position, &goal_iterator->data->anim_info);
+
+		}
+		goal_iterator = goal_iterator->next;
 	}
 }

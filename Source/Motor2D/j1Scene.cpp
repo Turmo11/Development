@@ -41,6 +41,8 @@ bool j1Scene::Start()
 
 	camera_left_limit = 0;
 	camera_right_limit = -3150;
+	camera_top_limit = -450;
+	camera_bot_limit = -3800;
 
 	level_completed = false;
 	App->pickups->SetUp(1);
@@ -77,7 +79,7 @@ bool j1Scene::Update(float dt)
 	p2SString title("Map:%dx%d Tiles:%dx%d Tilesets:%d Camera:(%d,%d) Player:(%.2f,%.2f)",
 					App->map->data.width, App->map->data.height,
 					App->map->data.tile_width, App->map->data.tile_height,
-					App->map->data.tilesets.count(), App->render->camera.x, -App->render->camera.y,
+					App->map->data.tilesets.count(), App->render->camera.x, App->render->camera.y,
 					App->player->player.position.x, App->player->player.position.y);
 
 	App->win->SetTitle(title.GetString());

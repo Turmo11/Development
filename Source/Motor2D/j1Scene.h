@@ -40,6 +40,8 @@ public:
 
 	int		camera_left_limit;
 	int		camera_right_limit;
+	int		camera_bot_limit;
+	int		camera_top_limit;
 
 	bool	level_completed; //used to check if the player has collected all the pickups
 

@@ -252,7 +252,7 @@ bool j1Player::Update(float dt)
 	player.colliding_wall = false;
 
 	SetCamera();
-
+	
 	return true;
 }
 
@@ -526,18 +526,31 @@ void j1Player::SetCamera()
 		if (App->render->camera.x <= App->scene->camera_left_limit && App->render->camera.x >= (App->scene->camera_right_limit + App->win->screen_surface->w))
 		{
 			App->render->camera.x = (int)x_axis;
+			
 		}
-
 		if (App->render->camera.x >= App->scene->camera_left_limit && player.position.x < (App->win->screen_surface->w / 2) + 1)
 		{
 			App->render->camera.x = App->scene->camera_left_limit - 1;
+			
 		}
-
 		else if (player.position.x > (-(App->scene->camera_right_limit) - (App->win->screen_surface->w / 2)))
 		{
 			App->render->camera.x = App->scene->camera_right_limit + App->win->screen_surface->w + 2;
+
 		}
 
-		App->render->camera.y = (int)y_axis;
+		//Checks camera y limits
+		if (App->render->camera.y <= App->scene->camera_top_limit && App->render->camera.y >= (App->scene->camera_bot_limit + App->win->screen_surface->h))
+		{
+			App->render->camera.y = (int)y_axis;
+		}
+		if (App->render->camera.y >= App->scene->camera_top_limit)
+		{
+			App->render->camera.y = App->scene->camera_top_limit;
+		}
+		else if (App->render->camera.y < (App->scene->camera_bot_limit + App->win->screen_surface->h))
+		{
+			App->render->camera.y = App->scene->camera_bot_limit + App->win->screen_surface->h;;
+		}
 	}
 }
