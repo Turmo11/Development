@@ -93,42 +93,6 @@ void j1Pickups::CreatePickup(p2SString name, iPoint position)
 
 }
 
-void j1Pickups::SetUp(int level)
-{
-	switch (level)
-	{
-	case 0:
-
-		App->audio->PlayMusic("Assets/audio/music/tutorial.ogg", 0.0f);
-		CreatePickup("alpha", { 1152, 704 });
-		CreatePickup("chi", { 1792, 576 });
-		CreatePickup("rho", { 1408, 512 });
-		CreatePickup("eta", { 1792, 384 });
-		break;
-
-	case 1:
-
-		App->audio->PlayMusic("Assets/audio/music/athena.ogg", 0.0f);
-		CreatePickup("alpha", { 2128, 2448 });
-		CreatePickup("chi", { 528, 3024 });
-		CreatePickup("rho", { 2960, 784 });
-		CreatePickup("eta", { 656, 1936 });
-		SetGoal({ 1552, 656 });
-		App->walking_enemy->CreateEnemy(enemy_type::SOUL, { 925, 3475 });
-		break;
-
-	case 2:
-		App->audio->PlayMusic("Assets/audio/music/athena.ogg", 0.0f);
-		CreatePickup("alpha", { 2128, 2448 });
-		CreatePickup("chi", { 528, 3024 });
-		CreatePickup("rho", { 2960, 784 });
-		CreatePickup("eta", { 656, 1936 });
-		App->walking_enemy->CreateEnemy(enemy_type::SOUL, { 925, 3475 });
-		
-		break;
-	}
-}
-
 void j1Pickups::DrawAnimations()
 {
 	p2List_item<Pickup*>* pickup_iterator = pickup_list.start;

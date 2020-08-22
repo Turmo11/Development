@@ -59,7 +59,6 @@ public:
 public:
 
 	void CreatePickup(p2SString name, iPoint position);
-	void SetUp(int level);
 	void OnCollision(Collider* A, Collider* B);
 	void DrawAnimations();
 	void GetCollected();

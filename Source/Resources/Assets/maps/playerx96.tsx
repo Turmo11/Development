@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<tileset version="1.2" tiledversion="1.2.4" name="playerx96" tilewidth="96" tileheight="96" tilecount="16" columns="4">
- <image source="../textures/player/playerx96.png" width="384" height="384"/>
+<tileset version="1.2" tiledversion="1.2.4" name="playerx96" tilewidth="96" tileheight="96" tilecount="20" columns="4">
+ <image source="../textures/player/playerx96.png" width="384" height="480"/>
  <tile id="0">
   <properties>
    <property name="idle" value="idle"/>
@@ -28,6 +28,16 @@
    <frame tileid="13" duration="70"/>
    <frame tileid="14" duration="70"/>
    <frame tileid="15" duration="70"/>
+  </animation>
+ </tile>
+ <tile id="16">
+  <properties>
+   <property name="god" value="god"/>
+  </properties>
+  <animation>
+   <frame tileid="16" duration="100"/>
+   <frame tileid="17" duration="100"/>
+   <frame tileid="18" duration="100"/>
   </animation>
  </tile>
 </tileset>

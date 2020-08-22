@@ -35,6 +35,7 @@ public:
 public:
 
 	void CheckLevelProgress();
+	void SetUp(int level);
 
 public:
 
@@ -44,6 +45,9 @@ public:
 	int		camera_top_limit;
 
 	bool	level_completed; //used to check if the player has collected all the pickups
+
+	float	volume;
+	float	max_volume;
 
 private:
 

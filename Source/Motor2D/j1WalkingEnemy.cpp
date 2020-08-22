@@ -54,10 +54,14 @@ void j1WalkingEnemy::CreateEnemy(enemy_type type, iPoint position)
 	new_enemy->type = type;
 	new_enemy->position = position;
 
-	new_enemy->hitbox.x = position.x + 16;
+/*	new_enemy->hitbox.x = position.x + 16;
 	new_enemy->hitbox.y = position.y + 32;
 	new_enemy->hitbox.w = 64;
-	new_enemy->hitbox.h = 75; 
+	new_enemy->hitbox.h = 75;*/ 
+	new_enemy->hitbox.x = position.x - 4;
+	new_enemy->hitbox.y = position.y + 10;
+	new_enemy->hitbox.w = 38;
+	new_enemy->hitbox.h = 38;
 
 	new_enemy->collider = App->collisions->AddCollider(new_enemy->hitbox, object_type::ENEMY, this);
 
@@ -77,7 +81,7 @@ void j1WalkingEnemy::DrawAnimations()
 		{
 			if (enemy_iterator->data->type == enemy_type::SOUL)
 			{
-				App->map->DrawStaticAnimation("soul", "soul_enemy", enemy_iterator->data->position, &enemy_iterator->data->anim_info);
+				App->map->DrawStaticAnimation("soul", "soul_enemyx64", enemy_iterator->data->position, &enemy_iterator->data->anim_info);
 			}
 
 		}

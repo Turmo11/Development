@@ -2,6 +2,7 @@
 #include "p2Log.h"
 #include "j1Audio.h"
 #include "p2List.h"
+#include "j1Input.h"
 
 #include "Dependencies/SDL/include/SDL.h"
 #include "Dependencies/SDL_mixer\include\SDL_mixer.h"
@@ -171,3 +172,28 @@ bool j1Audio::PlayFx(unsigned int id, int repeat)
 
 	return ret;
 }
+
+int j1Audio::SetMusicVolume(float m_volume)
+{
+	if (m_volume >= 0.0f)
+	{
+		return Mix_VolumeMusic(MIX_MAX_VOLUME * m_volume);
+	}
+	else 
+	{
+		return Mix_VolumeMusic(-1);
+	}
+}
+
+int j1Audio::SetFxVolume(float fx_volume)
+{
+	if (fx_volume >= 0.0f)
+	{
+		return Mix_Volume(-1, MIX_MAX_VOLUME * fx_volume);
+	}
+	else
+	{
+		return Mix_Volume(-1, -1);
+	}
+}
+

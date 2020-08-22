@@ -125,6 +125,8 @@ bool j1Player::PreUpdate()
 	}
 	if (App->input->GetKey(SDL_SCANCODE_F10) == KEY_DOWN) // Able/Disable GodMode
 	{
+		player.speed.x = 0;
+		player.speed.y = 0;
 		GodMode();
 
 	}

@@ -34,6 +34,10 @@ public:
 	// Play a previously loaded WAV
 	bool PlayFx(unsigned int fx, int repeat = 0);
 
+	// Set Volumes - If vol < 0 just return current value; 
+	int SetMusicVolume(float m_volume);
+	int SetFxVolume(float fx_volume);
+
 private:
 
 	_Mix_Music*			music;
