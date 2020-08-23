@@ -44,6 +44,16 @@ bool j1WalkingEnemy::PostUpdate()
 
 bool j1WalkingEnemy::CleanUp()
 {
+	// Remove pickups
+	p2List_item<Enemy*>* item;
+	item = enemy_list.start;
+
+	while (item != NULL)
+	{
+		RELEASE(item->data);
+		item = item->next;
+	}
+	enemy_list.clear();
 	return true;
 }
 

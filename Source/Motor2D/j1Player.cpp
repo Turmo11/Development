@@ -10,6 +10,7 @@
 #include "j1Input.h"
 #include "j1Collisions.h"
 #include "j1Scene.h"
+#include "j1FadeToBlack.h"
 #include <math.h>
 #include <thread>         
 #include <chrono>   
@@ -258,6 +259,10 @@ bool j1Player::Update(float dt)
 	player.colliding_wall = false;
 
 	SetCamera();
+	if (player.ascending)
+	{
+		Ascend();
+	}
 	
 	return true;
 }
@@ -298,6 +303,7 @@ bool j1Player::SummonPlayer()
 	player.disabled			= false;
 	player.locked			= false;
 	player.god_mode			= false;
+	player.ascending		= false;
 
 	player.flip				= false;
 
@@ -405,7 +411,7 @@ void j1Player::OnCollision(Collider* A, Collider* B) {
 					player.speed.y = 0;
 				}
 
-				ResetPlayer();
+				App->fade_to_black->FadeToBlackPlayerOnly();
 			}
 		}
 	}
@@ -420,13 +426,13 @@ void j1Player::OnCollision(Collider* A, Collider* B) {
 				&& A->rect.x < B->rect.x + B->rect.w
 				&& A->rect.x + A->rect.w > B->rect.x)
 			{
-				Ascend();
+				player.ascending = true;
 			}
 			//Colliding from the sides
 			else if (A->rect.y + (A->rect.h * 1.0f / 4.0f) < B->rect.y + B->rect.h
 				&& A->rect.y + (A->rect.h * 3.0f / 4.0f) > B->rect.y)
 			{
-				Ascend();
+				player.ascending = true;
 			}
 		}
 	}
@@ -478,12 +484,12 @@ void j1Player::MoveLeft() // Move Left the player at speed
 
 void j1Player::MoveDown() // Move Right the player at set speed
 {
-	player.position.y += (player.max_speed.y / 2);
+	player.position.y += (player.max_speed.y);
 }
 
 void j1Player::MoveUp() // Move Right the player at set speed
 {
-	player.position.y -= (player.max_speed.y / 2);
+	player.position.y -= (player.max_speed.y);
 }
 
 //Toggles god mode
@@ -526,7 +532,7 @@ void j1Player::SetCamera()
 	else
 	{
 		x_axis = (-player.position.x) + (App->win->screen_surface->w / 2);
-		y_axis = (-player.position.y) + (App->win->screen_surface->h * .6);
+		y_axis = (-player.position.y) + (App->win->screen_surface->h * .5);
 
 
 		//Checks camera x limits
@@ -563,10 +569,51 @@ void j1Player::SetCamera()
 }
 
 //Player completes level
-void j1Player::Ascend()
+void j1Player::Ascend(float time)
 {
-	player.animation = "idle";
-	player.locked = true;
-	player.speed.x = 0;
-	player.position.y -= (player.max_speed.y / 8);
+
+	
+
+	switch (current_step)
+	{
+	case ascending::NONE:
+	{
+		current_step = ascending::ASCENDING;
+		player.animation = "idle";
+		start_time = SDL_GetTicks();
+		total_time = (Uint32)(time * 0.5f * 1000.0f);
+
+
+		player.locked = true;
+		player.speed.x = 0;
+		
+		break;
+	}
+		
+	case ascending::ASCENDING:
+	{
+		Uint32 now = SDL_GetTicks() - start_time;
+		if (now >= total_time)
+		{
+			
+			current_step = ascending::ASCENDED;
+		}
+		player.position.y -= (player.max_speed.y / 8);
+		break;
+	}
+	case ascending::ASCENDED:
+	{
+		player.ascending = false;
+		App->fade_to_black->FadeToBlack(App->scene->current_level + 1);
+		current_step = ascending::NONE;
+	}
+	}
+
+	
+
+	
+
+	
+	
+	
 }

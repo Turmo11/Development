@@ -11,6 +11,7 @@
 #include "j1Player.h"
 #include "j1Pickups.h"
 #include "j1WalkingEnemy.h"
+#include "j1FadeToBlack.h"
 
 j1Scene::j1Scene() : j1Module()
 {
@@ -33,13 +34,14 @@ bool j1Scene::Awake()
 // Called before the first frame
 bool j1Scene::Start()
 {
-	volume = 1.0f;
+	volume = 0.5f;
 	max_volume = 1.0f;
 
 	App->audio->SetFxVolume(volume);
 	App->audio->SetMusicVolume(volume);
 
-	SetUp(2);
+	current_level = 1;
+	SetUp(current_level);
 	
 	App->render->camera.x = App->render->starting_cam_pos.x;
 	App->render->camera.y = App->render->starting_cam_pos.y;
@@ -58,63 +60,8 @@ bool j1Scene::PreUpdate()
 // Called each loop iteration
 bool j1Scene::Update(float dt)
 {
-	//Debug keys
-	if (App->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN)
-	{
-		SetUp(1);
-		App->player->ResetPlayer();
-	}
-	if (App->input->GetKey(SDL_SCANCODE_F2) == KEY_DOWN)
-	{
-		SetUp(2);
-		App->player->ResetPlayer();
-	}
-	if (App->input->GetKey(SDL_SCANCODE_F3) == KEY_DOWN)
-	{
-		App->player->ResetPlayer();
-	}
-	if (App->input->GetKey(SDL_SCANCODE_F4) == KEY_DOWN)
-	{
-		App->win->ToggleFullscreen();
-	}
-	if (App->input->GetKey(SDL_SCANCODE_F5) == KEY_DOWN)
-	{
-		App->SaveGame();
-	}
-	if (App->input->GetKey(SDL_SCANCODE_F6) == KEY_DOWN)
-	{
-		App->LoadGame();
-	}
+	DebugKeys();	
 
-	//Volume
-	if (App->input->GetKey(SDL_SCANCODE_KP_PLUS) == KEY_DOWN)
-	{
-		if (volume < max_volume)
-		{
-			volume += 0.1f;
-			App->audio->SetFxVolume(volume);
-			App->audio->SetMusicVolume(volume);
-		}
-
-	}
-	if (App->input->GetKey(SDL_SCANCODE_KP_MINUS) == KEY_DOWN)
-	{
-		if (volume > 0.0f)
-		{
-			volume -= 0.1f;
-			App->audio->SetFxVolume(volume);
-			App->audio->SetMusicVolume(volume);
-		}
-	}
-	if (volume > max_volume)
-	{
-		volume = max_volume;
-	}
-	if (volume < 0.0f)
-	{
-		volume = 0.0f;
-	}
-		
 	App->map->Draw();
 
 	p2SString title("Map:%dx%d Tiles:%dx%d Tilesets:%d Camera:(%d,%d) Player:(%.2f,%.2f)",
@@ -167,12 +114,78 @@ void j1Scene::CheckLevelProgress()
 	level_completed = true;
 }
 
+void j1Scene::DebugKeys()
+{
+	//Debug keys
+	if (App->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN)
+	{
+		App->fade_to_black->FadeToBlack(1);
+	}
+	if (App->input->GetKey(SDL_SCANCODE_F2) == KEY_DOWN)
+	{
+		App->fade_to_black->FadeToBlack(2);
+	}
+	if (App->input->GetKey(SDL_SCANCODE_F3) == KEY_DOWN)
+	{
+		App->fade_to_black->FadeToBlack(current_level);
+	}
+	if (App->input->GetKey(SDL_SCANCODE_F4) == KEY_DOWN)
+	{
+		App->win->ToggleFullscreen();
+	}
+	if (App->input->GetKey(SDL_SCANCODE_F5) == KEY_DOWN)
+	{
+		App->SaveGame();
+	}
+	if (App->input->GetKey(SDL_SCANCODE_F6) == KEY_DOWN)
+	{
+		App->LoadGame();
+	}
+	if (App->input->GetKey(SDL_SCANCODE_KP_MULTIPLY) == KEY_DOWN)
+	{
+		App->pickups->DebugCollectAll();
+	}
+
+	//Volume
+	if (App->input->GetKey(SDL_SCANCODE_KP_PLUS) == KEY_DOWN)
+	{
+		if (volume < max_volume)
+		{
+			volume += 0.1f;
+			App->audio->SetFxVolume(volume);
+			App->audio->SetMusicVolume(volume);
+		}
+
+	}
+	if (App->input->GetKey(SDL_SCANCODE_KP_MINUS) == KEY_DOWN)
+	{
+		if (volume > 0.0f)
+		{
+			volume -= 0.1f;
+			App->audio->SetFxVolume(volume);
+			App->audio->SetMusicVolume(volume);
+		}
+	}
+	if (volume > max_volume)
+	{
+		volume = max_volume;
+	}
+	if (volume < 0.0f)
+	{
+		volume = 0.0f;
+	}
+}
+
 void j1Scene::SetUp(int level)
 {
+	App->pickups->CleanUp();
+	App->walking_enemy->CleanUp();
+
 	switch (level)
 	{
 	case 0:
 
+		current_level = 0;
 		App->audio->PlayMusic("Assets/audio/music/tutorial.ogg", 0.0f);
 		App->pickups->CreatePickup("alpha", { 1152, 704 });
 		App->pickups->CreatePickup("chi", { 1792, 576 });
@@ -184,12 +197,14 @@ void j1Scene::SetUp(int level)
 
 		App->map->Load("tutorial.tmx");
 
+		current_level = 1;
+
 		camera_left_limit = 0;
 		camera_right_limit = -3150;
 		camera_top_limit = -450;
 		camera_bot_limit = -3800;
 
-		App->audio->PlayMusic("Assets/audio/music/athena.ogg", 0.0f);
+		App->audio->PlayMusic("Assets/audio/music/tutorial.ogg", 0.0f);
 		App->pickups->CreatePickup("alpha", { 2128, 2448 });
 		App->pickups->CreatePickup("chi", { 528, 3024 });
 		App->pickups->CreatePickup("rho", { 2960, 784 });
@@ -202,6 +217,8 @@ void j1Scene::SetUp(int level)
 	case 2:
 
 		App->map->Load("athena.tmx");
+
+		current_level = 2;
 
 		camera_left_limit = 0;
 		camera_right_limit = -3150;

@@ -36,6 +36,7 @@ public:
 
 	void CheckLevelProgress();
 	void SetUp(int level);
+	void DebugKeys();
 
 public:
 
@@ -48,6 +49,8 @@ public:
 
 	float	volume;
 	float	max_volume;
+
+	int		current_level;
 
 private:
 

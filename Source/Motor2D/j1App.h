@@ -17,6 +17,7 @@ class j1Player;
 class j1Pickups;
 class j1Collisions;
 class j1WalkingEnemy;
+class j1FadeToBlack;
 class j1App
 {
 public:
@@ -90,6 +91,7 @@ public:
 	j1Pickups*			pickups;
 	j1Collisions*		collisions;
 	j1WalkingEnemy*		walking_enemy;
+	j1FadeToBlack*		fade_to_black;
 	
 
 private:

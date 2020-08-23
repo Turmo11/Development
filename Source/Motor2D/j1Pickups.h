@@ -64,6 +64,8 @@ public:
 	void GetCollected();
 	void SetGoal(iPoint position);
 	void UpdateGoal();
+	void DebugCollectAll();
+
 public:
 
 	p2List<Pickup*>	pickup_list;

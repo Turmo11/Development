@@ -20,6 +20,8 @@ enum class player_states {
 	DEBUG
 };
 
+
+
 struct Player 
 {
 	player_states		current_state;
@@ -44,6 +46,7 @@ struct Player
 	bool				disabled;		//used during screen transitions or deaths when we want to take away the control from the player
 	bool				locked;			//used during cutscenes when we want to take away the control from the player
 	bool				god_mode;
+	bool				ascending;
 
 	bool				flip;			 //used to handle texture flips
 
@@ -95,7 +98,7 @@ public:
 	void GodMode();
 	bool SummonPlayer();
 	void ResetPlayer();
-	void Ascend();
+	void Ascend(float time = 2.0f);
 
 	bool CheckAirborne();
 
@@ -108,7 +111,18 @@ public:
 	Player player;
 
 private:
+
+	enum class ascending
+	{
+		NONE,
+		ASCENDING,
+		ASCENDED
+
+	} current_step = ascending::NONE;
+
 	float x_axis, y_axis;
+	Uint32		start_time = 0;
+	Uint32		total_time = 0;
 };
 
 

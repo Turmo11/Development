@@ -134,6 +134,20 @@ void j1Pickups::GetCollected()
 	}
 }
 
+void j1Pickups::DebugCollectAll()
+{
+	p2List_item<Pickup*>* pickup_iterator = pickup_list.start;
+
+	while (pickup_iterator != NULL)
+	{
+		pickup_iterator->data->collected = true;
+		pickup_iterator = pickup_iterator->next;
+	}
+
+	App->scene->CheckLevelProgress();
+}
+
+
 void j1Pickups::SetGoal(iPoint position)
 {
 	Goal* left_goal = new Goal;
@@ -162,3 +176,5 @@ void j1Pickups::UpdateGoal()
 		goal_iterator = goal_iterator->next;
 	}
 }
+
+

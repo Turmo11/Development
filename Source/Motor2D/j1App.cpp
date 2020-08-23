@@ -15,6 +15,7 @@
 #include "j1Pickups.h"
 #include "j1Collisions.h"
 #include "j1WalkingEnemy.h"
+#include "j1FadeToBlack.h"
 
 
 // Constructor
@@ -23,17 +24,18 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	frames = 0;
 	want_to_save = want_to_load = false;
 
-	input = new j1Input();
-	win = new j1Window();
-	render = new j1Render();
-	tex = new j1Textures();
-	audio = new j1Audio();
-	scene = new j1Scene();
-	map = new j1Map();
-	player = new j1Player();
-	pickups = new j1Pickups();
-	collisions = new j1Collisions();
-	walking_enemy = new j1WalkingEnemy();
+	input			= new j1Input();
+	win				= new j1Window();
+	render			= new j1Render();
+	tex				= new j1Textures();
+	audio			= new j1Audio();
+	scene			= new j1Scene();
+	map				= new j1Map();
+	player			= new j1Player();
+	pickups			= new j1Pickups();
+	collisions		= new j1Collisions();
+	fade_to_black	= new j1FadeToBlack();
+	walking_enemy	= new j1WalkingEnemy();
 	
 	// Ordered for awake / Start / Update
 	// Reverse order of CleanUp
@@ -46,10 +48,12 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	//player and scenes
 	AddModule(scene);
 	AddModule(walking_enemy);
+	AddModule(fade_to_black);
 	AddModule(pickups);
 	AddModule(player);
 
 	AddModule(collisions);
+	
 
 	// render last to swap buffer
 	AddModule(render);
