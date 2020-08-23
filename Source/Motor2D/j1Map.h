@@ -220,6 +220,8 @@ public:
 
 	MapData data;
 
+	float parallax_velocity = 0.05f;
+
 private:
 
 	int i = 0;
@@ -229,6 +231,9 @@ private:
 	pugi::xml_document	map_file;
 	p2SString			folder;
 	bool				map_loaded;
+
+	float parallax = 0.4f;
+	float normal_speed = 1.0f;
 
 	p2SString prev_anim_name = "idle";
 	p2SString prev_s_anim_name;
