@@ -572,7 +572,7 @@ void j1Player::SetCamera()
 void j1Player::Ascend(float time)
 {
 
-	
+	player.position.y -= (player.max_speed.y / 8);
 
 	switch (current_step)
 	{
@@ -598,7 +598,6 @@ void j1Player::Ascend(float time)
 			
 			current_step = ascending::ASCENDED;
 		}
-		player.position.y -= (player.max_speed.y / 8);
 		break;
 	}
 	case ascending::ASCENDED:

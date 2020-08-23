@@ -6253,7 +6253,7 @@
   <object id="48" name="platform" type="platform" x="1982.58" y="1119.25" width="191.5" height="32"/>
   <object id="49" name="ground" type="ground" x="2370.42" y="1089.25" width="187.583" height="126"/>
   <object id="50" name="ground" type="ground" x="2818.42" y="895.917" width="254.917" height="126"/>
-  <object id="51" name="goal" type="goal" x="1657" y="732.917" width="14" height="36.5833"/>
+  <object id="51" name="goal" type="goal" x="1657" y="544.167" width="14" height="225.333"/>
   <object id="52" name="death" type="death" x="-21.2121" y="3830.3" width="1512.12" height="69.697"/>
   <object id="58" name="ground" type="ground" x="-126.511" y="3257.18" width="126.981" height="394.598"/>
   <object id="62" name="ground" type="ground" x="3200.41" y="256.407" width="126.981" height="323.931">
