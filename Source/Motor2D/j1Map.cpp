@@ -26,6 +26,7 @@ bool j1Map::Awake(pugi::xml_node& config)
 	folder.create(config.child("folder").child_value());
 
 	parallax = config.child("parallax").attribute("value").as_float();
+	second_parallax = config.child("second_parallax").attribute("value").as_float();
 	normal_speed = config.child("normal_speed").attribute("value").as_float();
 
 	return ret;
@@ -63,14 +64,21 @@ void j1Map::Draw()
 			{
 
 				if (layer->data->name == "Parallax")
-				{
 					parallax_velocity = parallax;
-				}
+
+				else if (layer->data->name == "SecondParallax")
+					parallax_velocity = second_parallax;
+
+				else if (layer->data->name == "ThirdParallax")
+					parallax_velocity = second_parallax;
+				
+				//if (layer->data->name != "Parallax" && layer->data->name != "SecondParallax")
 
 				else
-				{
 					parallax_velocity = normal_speed;
-				}
+
+				
+				
 
 				int tile_id = layer->data->Get(x, y);
 				if (tile_id > 0)
