@@ -63,7 +63,10 @@ void j1Map::Draw()
 				{
 					parallax_velocity = parallax;
 				}
-
+				if (layer->data->name == "bg")
+				{
+					parallax_velocity = parallax - 0.2f;
+				}
 				else
 				{
 					parallax_velocity = normal_speed;

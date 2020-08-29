@@ -20,10 +20,10 @@
   </window>
 
   <player>
-    <acceleration x="2" y="22"/>
-    <gravity value="1" />
+    <acceleration x="2" y="20"/>
+    <gravity value="0.75" />
     <speed x="0" y="0" />
-    <max_speed x="10" y="22"/>
+    <max_speed x="10" y="30"/>
     <hitbox w="30" h="96"/>
   </player>
 
