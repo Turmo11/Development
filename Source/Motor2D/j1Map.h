@@ -232,8 +232,7 @@ private:
 	p2SString			folder;
 	bool				map_loaded;
 
-	float parallax = 0.4f;
-	float normal_speed = 1.0f;
+	float parallax, normal_speed, second_parallax;
 
 	p2SString prev_anim_name = "idle";
 	p2SString prev_s_anim_name;
