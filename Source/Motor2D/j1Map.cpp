@@ -25,6 +25,9 @@ bool j1Map::Awake(pugi::xml_node& config)
 
 	folder.create(config.child("folder").child_value());
 
+	parallax = config.child("parallax").attribute("value").as_float();
+	normal_speed = config.child("normal_speed").attribute("value").as_float();
+
 	return ret;
 }
 

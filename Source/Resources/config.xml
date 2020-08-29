@@ -35,5 +35,7 @@
 
   <map>
     <folder>Assets/maps/</folder>
+    <parallax value="0.5f"/>
+    <normal_speed value="1.0f"/>
   </map>
 </config>
