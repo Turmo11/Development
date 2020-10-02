@@ -51,8 +51,12 @@ public:
 	float	max_volume;
 
 	int		current_level;
+	
 
 private:
+
+	SDL_Rect		background_rect;
+	SDL_Texture*	background;
 
 };
 
