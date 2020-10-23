@@ -3,6 +3,7 @@
 #include "j1Map.h"
 #include "j1Render.h"
 #include "j1Input.h"
+#include "p2Log.h"
 
 j1Collisions::j1Collisions() : j1Module(), debug_colliders(false)
 {
@@ -78,6 +79,7 @@ bool j1Collisions::PreUpdate() {
 bool j1Collisions::Update(float dt) {
 
 	DebugDraw();
+	LOG("Collider mov test - Collider %d pos x = %d, y = %d", colliders.start->data->type, colliders.start->data->rect.x, colliders.start->data->rect.y);
 	return true;
 };
 

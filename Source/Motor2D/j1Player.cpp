@@ -29,8 +29,9 @@ j1Player::~j1Player()
 bool j1Player::Save(pugi::xml_node& node) const {
 
 	LOG("Saving Player...");
-	node.child("position").append_attribute("x") = player.position.x;
-	node.child("position").append_attribute("y") = player.position.y;
+	pugi::xml_node position = node.append_child("position");
+	position.append_attribute("x") = player.position.x;
+	position.append_attribute("y") = player.position.y;
 
 	pugi::xml_node flags = node.append_child("flags");
 	flags.append_attribute("jumping") = player.jumping;
@@ -46,15 +47,23 @@ bool j1Player::Load(pugi::xml_node& node) {
 
 	LOG("Loading Player...");
 
-	player.position.x = node.child("position").attribute("x").as_float();
-	player.position.y = node.child("position").attribute("y").as_float();
+	player.disabled = true;
+	player.speed.x = 0;
+	player.speed.y = 0;
+
+	pugi::xml_node position = node.child("position");
+
+	player.position.x = position.attribute("x").as_float();
+	player.position.y = position.attribute("y").as_float() - 1;
 
 	pugi::xml_node flags = node.child("flags");
 	player.able_to_drop = flags.attribute("drop_plat").as_bool();
 	player.jumping = flags.attribute("jumping").as_bool();
 	player.grounded = flags.attribute("playerGrounded").as_bool();
+	player.god_mode = flags.attribute("godmode").as_bool();
 
 	player.current_state = player_states::IDLE;
+	player.disabled = false;
 
 	return true;
 }
@@ -330,7 +339,7 @@ void j1Player::OnCollision(Collider* A, Collider* B) {
 		return;
 	}
 
-	if (!player.god_mode)
+	if (!player.god_mode && !player.disabled)
 	{
 		// ------------ Player Colliding with the ground ------------------
 		if (A->type == object_type::PLAYER && B->type == object_type::GROUND) {

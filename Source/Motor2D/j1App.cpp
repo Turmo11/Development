@@ -333,7 +333,7 @@ bool j1App::LoadGameNow()
 	{
 		LOG("Loading new Game State from %s...", load_game.GetString());
 
-		root = data.child("save");
+		root = data.child("game_state");
 
 		p2List_item<j1Module*>* item = modules.start;
 		ret = true;

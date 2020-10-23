@@ -76,9 +76,6 @@ void j1Map::Draw()
 				else
 					parallax_velocity = normal_speed;
 
-				
-				
-
 				int tile_id = layer->data->Get(x, y);
 				if (tile_id > 0)
 				{

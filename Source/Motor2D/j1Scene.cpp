@@ -34,18 +34,23 @@ bool j1Scene::Awake()
 // Called before the first frame
 bool j1Scene::Start()
 {
-	volume = 0.5f;
+	volume = 0.1f;
 	max_volume = 1.0f;
 
 	App->audio->SetFxVolume(volume);
 	App->audio->SetMusicVolume(volume);
 
-	background_rect.h = 5680;
+	/*background_rect.h = 5680;
 	background_rect.w = 2560;
+	background_rect.x = 0;
+	background_rect.y = 0;*/
+	background_rect.h = 6816;
+	background_rect.w = 3072;
 	background_rect.x = 0;
 	background_rect.y = 0;
 
-	background = App->tex->Load("Assets/textures/tower2.png");
+	//background = App->tex->Load("Assets/textures/tower2.png");
+	background = App->tex->Load("Assets/textures/tower3.png");
 
 	current_level = 1;
 	SetUp(current_level);
@@ -69,8 +74,16 @@ bool j1Scene::Update(float dt)
 {
 	DebugKeys();	
 	
-	App->render->Blit(background, -500, -4500, &background_rect, false, 0.1f);
-
+	switch (current_level)
+	{
+	case 1:
+		App->render->Blit(background, -800, -5700, &background_rect, false, 0.1f);
+		break;
+	case 2:
+		App->render->Blit(background, -800, -4250, &background_rect, false, 0.1f);
+		break;
+	}
+	
 	App->map->Draw();
 
 	p2SString title("Map:%dx%d Tiles:%dx%d Tilesets:%d Camera:(%d,%d) Player:(%.2f,%.2f)",
@@ -92,8 +105,6 @@ bool j1Scene::PostUpdate()
 
 	if(App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
 		ret = false;
-
-	LOG("%f", volume);
 
 	return ret;
 
@@ -189,6 +200,8 @@ void j1Scene::SetUp(int level)
 {
 	App->pickups->CleanUp();
 	App->walking_enemy->CleanUp();
+
+	LOG("SetUp level = %d", level);
 
 	switch (level)
 	{
