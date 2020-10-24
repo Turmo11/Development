@@ -12,11 +12,11 @@
 	<fade />
 	<pickups />
 	<player>
-		<position x="490" y="3489" />
+		<position x="562" y="2273" />
 		<flags jumping="false" able_to_drop="false" grounded="true" flip="false" god_mode="false" />
 	</player>
 	<collisions />
 	<renderer>
-		<camera x="-1" y="-3032" />
+		<camera x="-1" y="-1889" />
 	</renderer>
 </game_state>

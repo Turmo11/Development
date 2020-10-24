@@ -40,10 +40,6 @@ bool j1Scene::Start()
 	App->audio->SetFxVolume(volume);
 	App->audio->SetMusicVolume(volume);
 
-	/*background_rect.h = 5680;
-	background_rect.w = 2560;
-	background_rect.x = 0;
-	background_rect.y = 0;*/
 	background_rect.h = 6816;
 	background_rect.w = 3072;
 	background_rect.x = 0;
@@ -77,10 +73,10 @@ bool j1Scene::Update(float dt)
 	switch (current_level)
 	{
 	case 1:
-		App->render->Blit(background, -800, -5700, &background_rect, false, 0.1f);
+		App->render->Blit(background, -800, -5500, &background_rect, false, 0.1f);
 		break;
 	case 2:
-		App->render->Blit(background, -800, -4250, &background_rect, false, 0.1f);
+		App->render->Blit(background, -800, -5000, &background_rect, false, 0.1f);
 		break;
 	}
 	
@@ -245,7 +241,8 @@ void j1Scene::SetUp(int level)
 
 		camera_left_limit = 0;
 		camera_right_limit = -3150;
-		camera_top_limit = -450;
+		camera_top_limit = 5000;
+		//camera_top_limit = -450;
 		camera_bot_limit = -3800;
 
 		App->audio->PlayMusic("Assets/audio/music/athena.ogg", 0.0f);

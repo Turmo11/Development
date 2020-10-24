@@ -68,11 +68,6 @@ void j1Map::Draw()
 					
 				else if (layer->data->name == "SecondParallax")
 					parallax_velocity = second_parallax;
-
-				else if (layer->data->name == "Tower")
-					parallax_velocity = third_parallax;
-				
-				//if (layer->data->name != "Parallax" && layer->data->name != "SecondParallax")
 				else
 					parallax_velocity = normal_speed;
 

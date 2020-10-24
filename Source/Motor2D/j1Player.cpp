@@ -223,11 +223,11 @@ bool j1Player::Update(float dt)
 
 				if (player.speed.y < 0) // If on jump is going up uses jump animation
 				{
-					//player.animation = "jump";
+					player.animation = "jump";
 				}
 				else // If on jump is going down uses fall animation
 				{
-					//player.animation = "fall";
+					player.animation = "fall";
 				}
 			}
 
