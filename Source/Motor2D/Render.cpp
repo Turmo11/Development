@@ -84,7 +84,11 @@ bool Render::PostUpdate()
 	}
 	else if (App->fade_to_black->active_scene == "TitleScene")
 	{
-		SDL_SetRenderDrawColor(renderer, 48, 48, 48, background.a);
+		SDL_SetRenderDrawColor(renderer, 34, 32, 52, background.a);
+	}
+	else if (App->fade_to_black->active_scene == "GameOverScene")
+	{
+		SDL_SetRenderDrawColor(renderer, 0, 0, 0, background.a);
 	}
 	
 	SDL_RenderPresent(renderer);

@@ -13,6 +13,7 @@
 #include "Map.h"
 #include "Scene.h"
 #include "TitleScene.h"
+#include "GameOverScene.h"
 #include "Dependencies/SDL/include/SDL_render.h"
 #include "Dependencies/SDL/include/SDL_timer.h"
 
@@ -228,11 +229,22 @@ bool FadeToBlack::SwitchScenes(char* scene)
 	if(scene == "TitleScene")
 	{
 		App->scene->active = false;
+		App->game_over_scene->active = false;
 		App->player->active = false;
 		App->pickups->active = false;
 		App->walking_enemy->active = false;
 		App->map->active = false;
 		App->title_scene->active = true;
+	}
+	if (scene == "GameOverScene")
+	{
+		App->game_over_scene->active = true;
+		App->scene->active = false;
+		App->title_scene->active = false;
+		App->player->active = false;
+		App->pickups->active = false;
+		App->walking_enemy->active = false;
+		App->map->active = false;
 	}
 	if (scene == "Scene")
 	{
@@ -242,6 +254,7 @@ bool FadeToBlack::SwitchScenes(char* scene)
 		App->walking_enemy->active = true;
 		App->map->active = true;
 		App->title_scene->active = false;
+		App->game_over_scene->active = false;
 	}
 
 	active_scene = scene;

@@ -13,6 +13,7 @@ class Textures;
 class Audio;
 class Scene;
 class TitleScene;
+class GameOverScene;
 class Map;
 class E_Player;
 class Pickups;
@@ -88,6 +89,7 @@ public:
 	Audio*			audio;
 	Scene*			scene;
 	TitleScene*		title_scene;
+	GameOverScene*  game_over_scene;
 	Map*			map;
 	E_Player*		player;
 	Pickups*		pickups;

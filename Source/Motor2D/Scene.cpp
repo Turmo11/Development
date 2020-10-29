@@ -161,6 +161,10 @@ void Scene::DebugKeys()
 	{
 		App->fade_to_black->FadeToBlackScene("TitleScene");
 	}
+	if (App->input->GetKey(SDL_SCANCODE_F8) == KEY_DOWN)
+	{
+		App->fade_to_black->FadeToBlackScene("GameOverScene");
+	}
 	if (App->input->GetKey(SDL_SCANCODE_KP_MULTIPLY) == KEY_DOWN)
 	{
 		App->pickups->DebugCollectAll();
@@ -223,8 +227,8 @@ void Scene::SetUp(int level)
 
 		camera_left_limit = 0;
 		camera_right_limit = -3150;
-		//camera_top_limit = -450;
-		camera_top_limit = 5000;
+		camera_top_limit = -450;
+		//camera_top_limit = 5000;
 		camera_bot_limit = -3800;
 
 		App->audio->PlayMusic("Assets/audio/music/tutorial.ogg", 0.0f);
@@ -234,7 +238,7 @@ void Scene::SetUp(int level)
 		App->pickups->CreatePickup("eta", { 656, 1936 });
 		App->pickups->SetGoal({ 1552, 656 });
 		//App->walking_enemy->CreateEnemy(enemy_type::SOUL, { 925, 3475 });
-		App->walking_enemy->CreateEnemy(enemy_type::SOUL, { 976, 3536 });
+		//App->walking_enemy->CreateEnemy(enemy_type::SOUL, { 976, 3536 });
 		break;
 
 	case 2:

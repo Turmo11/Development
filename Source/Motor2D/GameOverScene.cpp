@@ -6,33 +6,33 @@
 #include "Audio.h"
 #include "Render.h"
 #include "Window.h"
-#include "TitleScene.h"
+#include "GameOverScene.h"
 #include "E_PLayer.h"
 #include "FadeToBlack.h"
 #include "Scene.h"
 
-TitleScene::TitleScene() : Module()
+GameOverScene::GameOverScene() : Module()
 {
-	name.create("TitleScene");
+	name.create("GameOverScene");
 }
 
 // Destructor
-TitleScene::~TitleScene()
+GameOverScene::~GameOverScene()
 {}
 
 // Called before render is available
-bool TitleScene::Awake()
+bool GameOverScene::Awake()
 {
-	LOG("Loading TitleScene");
+	LOG("Loading GameOverScene");
 	bool ret = true;
 
 	return ret;
 }
 
 // Called before the first frame
-bool TitleScene::Start()
+bool GameOverScene::Start()
 {
-	App->fade_to_black->active_scene = "TitleScene";
+	App->fade_to_black->active_scene = "GameOverScene";
 
 	volume = 0.1f;
 	max_volume = 1.0f;
@@ -40,29 +40,27 @@ bool TitleScene::Start()
 	App->audio->SetFxVolume(volume);
 	App->audio->SetMusicVolume(volume);
 
-	background = App->tex->Load("Assets/textures/title.png");
+	background = App->tex->Load("Assets/textures/gameover.png");
 
 	background_rect.h = 512;
 	background_rect.w = 1024;
 	background_rect.x = 0;
 	background_rect.y = 0;
 
-	App->audio->StopMusic();
-
-	App->render->camera.x = App->render->starting_cam_pos.x;
-	App->render->camera.y = App->render->starting_cam_pos.y;
+	App->render->camera.x = 0;
+	App->render->camera.y = 0;
 
 	return true;
 }
 
 // Called each loop iteration
-bool TitleScene::PreUpdate()
+bool GameOverScene::PreUpdate()
 {
 	return true;
 }
 
 // Called each loop iteration
-bool TitleScene::Update(float dt)
+bool GameOverScene::Update(float dt)
 {
 	DebugKeys();
 	App->render->camera.x = 0;
@@ -77,7 +75,7 @@ bool TitleScene::Update(float dt)
 }
 
 // Called each loop iteration
-bool TitleScene::PostUpdate()
+bool GameOverScene::PostUpdate()
 {
 	bool ret = true;
 
@@ -90,20 +88,20 @@ bool TitleScene::PostUpdate()
 }
 
 // Called before quitting
-bool TitleScene::CleanUp()
+bool GameOverScene::CleanUp()
 {
-	LOG("Freeing TitleScene");
+	LOG("Freeing GameOverScene");
 
 	return true;
 }
 
-void TitleScene::DebugKeys()
+void GameOverScene::DebugKeys()
 {
 	//Debug keys
 	if (App->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN)
 	{
-		App->fade_to_black->FadeToBlackScene("Scene");
-		App->audio->ResumeMusic();
+		App->fade_to_black->FadeToBlackScene("TitleScene");
+	
 	}
 	if (App->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN)
 	{

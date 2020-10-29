@@ -10,6 +10,7 @@
 #include "Audio.h"
 #include "Scene.h"
 #include "TitleScene.h"
+#include "GameOverScene.h"
 #include "Map.h"
 #include "Application.h"
 #include "E_PLayer.h"
@@ -32,6 +33,7 @@ Application::Application(int argc, char* args[]) : argc(argc), args(args)
 	audio			= new Audio();
 	scene			= new Scene();
 	title_scene		= new TitleScene();
+	game_over_scene = new GameOverScene();
 	map				= new Map();
 	player			= new E_Player();
 	pickups			= new Pickups();
@@ -49,6 +51,7 @@ Application::Application(int argc, char* args[]) : argc(argc), args(args)
 
 	//player and scenes
 	AddModule(scene);
+	AddModule(game_over_scene);
 	AddModule(title_scene);
 	AddModule(walking_enemy);
 	AddModule(fade_to_black);
@@ -138,6 +141,7 @@ bool Application::Start()
 		item = item->next;
 	}
 	scene->active = false;
+	game_over_scene->active = false;
 	player->active = false;
 	pickups->active = false;
 	map->active = false;
