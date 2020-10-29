@@ -1,11 +1,11 @@
-#ifndef __j1WALKINGENEMY_H__
-#define __j1WALKINGENEMY_H__
+#ifndef __WalkingEnemy_H__
+#define __WalkingEnemy_H__
 
 #include "p2Point.h"
 #include "Dependencies/PugiXml/src/pugixml.hpp"
 #include "p2List.h"
-#include "j1Module.h"
-#include "j1Pickups.h"
+#include "Module.h"
+#include "Pickups.h"
 
 struct SDL_Texture;
 struct Collider;
@@ -33,16 +33,16 @@ struct Enemy
 
 };
 
-class j1WalkingEnemy : public j1Module
+class WalkingEnemy : public Module
 {
 
 public:
 
 	//Constructor
-	j1WalkingEnemy();
+	WalkingEnemy();
 
 	// Destructor
-	virtual ~j1WalkingEnemy();
+	virtual ~WalkingEnemy();
 
 	//Called at first
 	bool Start();

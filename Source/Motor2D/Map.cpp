@@ -1,24 +1,24 @@
 #include "p2Defs.h"
 #include "p2Log.h"
-#include "j1App.h"
-#include "j1Render.h"
-#include "j1Textures.h"
-#include "j1Map.h"
-#include "j1Player.h"
-#include "j1Pickups.h"
+#include "Application.h"
+#include "Render.h"
+#include "Textures.h"
+#include "Map.h"
+#include "E_PLayer.h"
+#include "Pickups.h"
 #include <math.h>
 
-j1Map::j1Map() : j1Module(), map_loaded(false)
+Map::Map() : Module(), map_loaded(false)
 {
 	name.create("map");
 }
 
 // Destructor
-j1Map::~j1Map()
+Map::~Map()
 {}
 
 // Called before render is available
-bool j1Map::Awake(pugi::xml_node& config)
+bool Map::Awake(pugi::xml_node& config)
 {
 	LOG("Loading Map Parser");
 	bool ret = true;
@@ -33,7 +33,7 @@ bool j1Map::Awake(pugi::xml_node& config)
 	return ret;
 }
 
-bool j1Map::Save(pugi::xml_node& node) const
+bool Map::Save(pugi::xml_node& node) const
 {
 	LOG("Saving Map...");
 	node.append_child("map_name").append_attribute("filename") = data.name.GetString();
@@ -41,7 +41,7 @@ bool j1Map::Save(pugi::xml_node& node) const
 	return true;
 }
 
-bool j1Map::Load(pugi::xml_node& node)
+bool Map::Load(pugi::xml_node& node)
 {
 	LOG("Loading Map...");
 
@@ -51,7 +51,7 @@ bool j1Map::Load(pugi::xml_node& node)
 	return true;
 }
 
-void j1Map::Draw()
+void Map::Draw()
 {
 	if (map_loaded == false)
 		return;
@@ -89,7 +89,7 @@ void j1Map::Draw()
 	}
 }
 
-void j1Map::DrawAnimation(p2SString name, p2SString tileset, bool flip)
+void Map::DrawAnimation(p2SString name, p2SString tileset, bool flip)
 {
 
 	TileSet* anim_tileset = nullptr;
@@ -144,7 +144,7 @@ void j1Map::DrawAnimation(p2SString name, p2SString tileset, bool flip)
 	frame_count++;
 }
 
-void j1Map::DrawStaticAnimation(p2SString name, p2SString tileset, iPoint position, AnimationInfo* anim_info)
+void Map::DrawStaticAnimation(p2SString name, p2SString tileset, iPoint position, AnimationInfo* anim_info)
 {
 
 	TileSet* s_anim_tileset = nullptr;
@@ -199,7 +199,7 @@ void j1Map::DrawStaticAnimation(p2SString name, p2SString tileset, iPoint positi
 }
 
 
-TileSet* j1Map::GetTilesetFromTileId(int id) const
+TileSet* Map::GetTilesetFromTileId(int id) const
 {
 	// TODO 3: Complete this method so we pick the right
 	// Tileset based on a tile id //data.tilesets.start->data
@@ -221,7 +221,7 @@ TileSet* j1Map::GetTilesetFromTileId(int id) const
 	return ret;
 }
 
-iPoint j1Map::MapToWorld(int x, int y) const
+iPoint Map::MapToWorld(int x, int y) const
 {
 	iPoint ret;
 
@@ -244,7 +244,7 @@ iPoint j1Map::MapToWorld(int x, int y) const
 	return ret;
 }
 
-iPoint j1Map::WorldToMap(int x, int y) const
+iPoint Map::WorldToMap(int x, int y) const
 {
 	iPoint ret(0, 0);
 
@@ -282,7 +282,7 @@ SDL_Rect TileSet::GetTileRect(int id) const
 }
 
 // Called before quitting
-bool j1Map::CleanUp()
+bool Map::CleanUp()
 {
 	LOG("Unloading map");
 
@@ -337,7 +337,7 @@ bool j1Map::CleanUp()
 }
 
 // Load new map
-bool j1Map::Load(const char* file_name)
+bool Map::Load(const char* file_name)
 {
 	bool ret = true;
 	p2SString tmp("%s%s", folder.GetString(), file_name);
@@ -444,7 +444,7 @@ bool j1Map::Load(const char* file_name)
 }
 
 // Load map general properties
-bool j1Map::LoadMap()
+bool Map::LoadMap()
 {
 	bool ret = true;
 	pugi::xml_node map = map_file.child("map");
@@ -513,7 +513,7 @@ bool j1Map::LoadMap()
 }
 
 // Load Tileset data
-bool j1Map::LoadTilesetDetails(pugi::xml_node& tileset_node, TileSet* set)
+bool Map::LoadTilesetDetails(pugi::xml_node& tileset_node, TileSet* set)
 {
 	bool ret = true;
 	set->name.create(tileset_node.attribute("name").as_string());
@@ -539,7 +539,7 @@ bool j1Map::LoadTilesetDetails(pugi::xml_node& tileset_node, TileSet* set)
 }
 
 //Load Tileset Image
-bool j1Map::LoadTilesetImage(pugi::xml_node& tileset_node, TileSet* set)
+bool Map::LoadTilesetImage(pugi::xml_node& tileset_node, TileSet* set)
 {
 	bool ret = true;
 	pugi::xml_node image = tileset_node.child("image");
@@ -576,7 +576,7 @@ bool j1Map::LoadTilesetImage(pugi::xml_node& tileset_node, TileSet* set)
 }
 
 //Load different map layers
-bool j1Map::LoadLayer(pugi::xml_node& node, MapLayer* layer)
+bool Map::LoadLayer(pugi::xml_node& node, MapLayer* layer)
 {
 	bool ret = true;
 
@@ -608,7 +608,7 @@ bool j1Map::LoadLayer(pugi::xml_node& node, MapLayer* layer)
 }
 
 //Load object layer for colliders
-bool j1Map::LoadObjectLayers(pugi::xml_node& node, ObjectGroup* object_group)
+bool Map::LoadObjectLayers(pugi::xml_node& node, ObjectGroup* object_group)
 {
 	object_group->name = node.attribute("name").as_string();
 	object_group->id = node.attribute("id").as_uint();
@@ -684,7 +684,7 @@ bool j1Map::LoadObjectLayers(pugi::xml_node& node, ObjectGroup* object_group)
 }
 
 // Load a group of properties from a node and fill a list with it
-bool j1Map::LoadProperties(pugi::xml_node& node, Properties& properties)							//REVISE THIS HERE. Check why it crashes the game at exit time.
+bool Map::LoadProperties(pugi::xml_node& node, Properties& properties)							//REVISE THIS HERE. Check why it crashes the game at exit time.
 {
 	bool ret = false;
 
@@ -723,7 +723,7 @@ value Properties::Get(const char* name, value* default_value) const
 }
 
 // Load Animations from tileset
-bool j1Map::LoadTilesetAnimation(pugi::xml_node& tileset_node, TileSet* set)
+bool Map::LoadTilesetAnimation(pugi::xml_node& tileset_node, TileSet* set)
 {
 	bool ret = true;
 

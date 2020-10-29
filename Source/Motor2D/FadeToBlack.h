@@ -1,20 +1,20 @@
-#ifndef __J1FADETOBLACK_H__
-#define __J1FADETOBLACK_H__
+#ifndef __FADETOBLACK_H__
+#define __FADETOBLACK_H__
 
-#include "j1Module.h"
+#include "Module.h"
 #include "Dependencies/SDL\include\SDL_rect.h"
 
-class j1FadeToBlack : public j1Module
+class FadeToBlack : public Module
 {
 public:
 
-	j1FadeToBlack();
-	~j1FadeToBlack();
+	FadeToBlack();
+	~FadeToBlack();
 
 	bool Start();
 	bool Awake(pugi::xml_node& conf);
 	bool Update(float dt);
-	bool FadeToBlack(int level, float time = 0.5f);
+	bool DoFadeToBlack(int level, float time = 0.5f);
 	bool FadeToBlackPlayerOnly(float time = 0.5f);
 	bool SwitchMap(int level);
 

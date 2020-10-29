@@ -1,10 +1,10 @@
-#ifndef __j1PICKUPS_H__
-#define __j1PICKUPS_H__
+#ifndef __Pickups_H__
+#define __Pickups_H__
 
 #include "p2Point.h"
 #include "Dependencies/PugiXml/src/pugixml.hpp"
 #include "p2List.h"
-#include "j1Module.h"
+#include "Module.h"
 
 struct SDL_Texture;
 struct Collider;
@@ -36,16 +36,16 @@ struct Pickup
 
 };
 
-class j1Pickups : public j1Module
+class Pickups : public Module
 {
 
 public:
 
 	//Constructor
-	j1Pickups();
+	Pickups();
 
 	// Destructor
-	virtual ~j1Pickups();
+	virtual ~Pickups();
 
 	//Called at first
 	bool Start();

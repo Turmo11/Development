@@ -5,13 +5,13 @@
 #include "p2Point.h"
 #define MAX_FRAMES 25
 
-#include "j1App.h"
+#include "Application.h"
 #include "PugiXml\src\pugixml.hpp"
-#include "j1Map.h"
+#include "Map.h"
 #include "p2List.h"
 #include "p2SString.h"
-#include "j1Render.h"
-#include "j1Textures.h"
+#include "Render.h"
+#include "Textures.h"
 #include "p2Log.h"
 
 class Animation

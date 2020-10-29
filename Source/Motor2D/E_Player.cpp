@@ -1,32 +1,32 @@
 #include "p2Defs.h"
 #include "p2Log.h"
-#include "j1App.h"
-#include "j1Render.h"
-#include "j1Audio.h"
-#include "j1Textures.h"
-#include "j1Player.h"
-#include "j1Window.h"
-#include "j1Map.h"
-#include "j1Input.h"
-#include "j1Collisions.h"
-#include "j1Scene.h"
-#include "j1FadeToBlack.h"
+#include "Application.h"
+#include "Render.h"
+#include "Audio.h"
+#include "Textures.h"
+#include "E_Player.h"
+#include "Window.h"
+#include "Map.h"
+#include "Input.h"
+#include "Collisions.h"
+#include "Scene.h"
+#include "FadeToBlack.h"
 #include <math.h>
 #include <thread>         
 #include <chrono>   
 #include <time.h>
 
 
-j1Player::j1Player() : j1Module()
+E_Player::E_Player() : Module()
 {
 	name.create("player");
 }
 
 // Destructor
-j1Player::~j1Player()
+E_Player::~E_Player()
 {}
 
-bool j1Player::Save(pugi::xml_node& node) const {
+bool E_Player::Save(pugi::xml_node& node) const {
 
 	LOG("Saving Player...");
 	pugi::xml_node position = node.append_child("position");
@@ -43,7 +43,7 @@ bool j1Player::Save(pugi::xml_node& node) const {
 	return true;
 }
 
-bool j1Player::Load(pugi::xml_node& node) {
+bool E_Player::Load(pugi::xml_node& node) {
 
 	LOG("Loading Player...");
 
@@ -68,7 +68,7 @@ bool j1Player::Load(pugi::xml_node& node) {
 	return true;
 }
 
-bool j1Player::Awake(pugi::xml_node& config)
+bool E_Player::Awake(pugi::xml_node& config)
 {
 	player.speed.x = config.child("speed").attribute("x").as_float();
 	player.speed.y = config.child("speed").attribute("y").as_float();
@@ -86,13 +86,13 @@ bool j1Player::Awake(pugi::xml_node& config)
 
 }
 
-bool j1Player::Start()
+bool E_Player::Start()
 {
 	SummonPlayer();
 	return true;
 }
 
-bool j1Player::PreUpdate()
+bool E_Player::PreUpdate()
 {
 	if (player.disabled) //if the player is disable, it stops updating the logic
 	{
@@ -143,7 +143,7 @@ bool j1Player::PreUpdate()
 	return true;
 }
 
-bool j1Player::Update(float dt)
+bool E_Player::Update(float dt)
 {
 	if (player.disabled) //if the player is disable, it stops updating the logic
 	{
@@ -276,7 +276,7 @@ bool j1Player::Update(float dt)
 	return true;
 }
 
-bool j1Player::PostUpdate()
+bool E_Player::PostUpdate()
 {
 	if (player.disabled) //if the player is disable, it stops updating the logic
 	{
@@ -286,14 +286,14 @@ bool j1Player::PostUpdate()
 	return true;
 }
 
-bool j1Player::CleanUp()
+bool E_Player::CleanUp()
 {
 
 	return true;
 }
 
 //Setting up the player on start
-bool j1Player::SummonPlayer()
+bool E_Player::SummonPlayer()
 {
 	player.position = App->map->data.starting_position;
 
@@ -320,7 +320,7 @@ bool j1Player::SummonPlayer()
 }
 
 //Setting up the player on death
-void j1Player::ResetPlayer()
+void E_Player::ResetPlayer()
 {
 
 	player.player_collider->to_delete = true;
@@ -328,7 +328,7 @@ void j1Player::ResetPlayer()
 }
 
 //Collisions
-void j1Player::OnCollision(Collider* A, Collider* B) {
+void E_Player::OnCollision(Collider* A, Collider* B) {
 
 	if (B->type == object_type::PLAYER) {
 		Collider temp = *A;
@@ -449,7 +449,7 @@ void j1Player::OnCollision(Collider* A, Collider* B) {
 }
 
 //Handles movement on the x-axis and sets the proper flip
-void j1Player::HorizontalMovement()
+void E_Player::HorizontalMovement()
 {
 	if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT /*|| App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT*/)
 	{
@@ -470,7 +470,7 @@ void j1Player::HorizontalMovement()
 }
 
 //Movement basic functions
-void j1Player::MoveRight() // Move Right the player at set speed
+void E_Player::MoveRight() // Move Right the player at set speed
 {
 	player.speed.x += player.acceleration.x;
 
@@ -481,7 +481,7 @@ void j1Player::MoveRight() // Move Right the player at set speed
 
 }
 
-void j1Player::MoveLeft() // Move Left the player at speed
+void E_Player::MoveLeft() // Move Left the player at speed
 {
 	player.speed.x -= player.acceleration.x;
 
@@ -491,18 +491,18 @@ void j1Player::MoveLeft() // Move Left the player at speed
 	}
 }
 
-void j1Player::MoveDown() // Move Right the player at set speed
+void E_Player::MoveDown() // Move Right the player at set speed
 {
 	player.position.y += (player.max_speed.y);
 }
 
-void j1Player::MoveUp() // Move Right the player at set speed
+void E_Player::MoveUp() // Move Right the player at set speed
 {
 	player.position.y -= (player.max_speed.y);
 }
 
 //Toggles god mode
-void j1Player::GodMode()
+void E_Player::GodMode()
 {
 	if (player.god_mode)
 	{
@@ -516,7 +516,7 @@ void j1Player::GodMode()
 }
 
 //Checks if the player is in the air
-bool j1Player::CheckAirborne()
+bool E_Player::CheckAirborne()
 {
 	if (player.current_state != player_states::JUMP && player.current_state != player_states::FALL)
 	{
@@ -529,7 +529,7 @@ bool j1Player::CheckAirborne()
 }
 
 //Centering camera on the player
-void j1Player::SetCamera()
+void E_Player::SetCamera()
 {
 	if (App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT ||
 		App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT ||
@@ -578,7 +578,7 @@ void j1Player::SetCamera()
 }
 
 //Player completes level
-void j1Player::Ascend(float time)
+void E_Player::Ascend(float time)
 {
 
 	player.position.y -= (player.max_speed.y / 8);
@@ -612,7 +612,7 @@ void j1Player::Ascend(float time)
 	case ascending::ASCENDED:
 	{
 		player.ascending = false;
-		App->fade_to_black->FadeToBlack(App->scene->current_level + 1);
+		App->fade_to_black->DoFadeToBlack(App->scene->current_level + 1);
 		current_step = ascending::NONE;
 	}
 	}

@@ -1,32 +1,32 @@
-#ifndef __j1APP_H__
-#define __j1APP_H__
+#ifndef __APP_H__
+#define __APP_H__
 
 #include "p2List.h"
-#include "j1Module.h"
+#include "Module.h"
 #include "Dependencies/PugiXml\src\pugixml.hpp"
 
 // Modules
-class j1Window;
-class j1Input;
-class j1Render;
-class j1Textures;
-class j1Audio;
-class j1Scene;
-class j1Map;
-class j1Player;
-class j1Pickups;
-class j1Collisions;
-class j1WalkingEnemy;
-class j1FadeToBlack;
-class j1App
+class Window;
+class Input;
+class Render;
+class Textures;
+class Audio;
+class Scene;
+class Map;
+class E_Player;
+class Pickups;
+class Collisions;
+class WalkingEnemy;
+class FadeToBlack;
+class Application
 {
 public:
 
 	// Constructor
-	j1App(int argc, char* args[]);
+	Application(int argc, char* args[]);
 
 	// Destructor
-	virtual ~j1App();
+	virtual ~Application();
 
 	// Called before render is available
 	bool Awake();
@@ -41,7 +41,7 @@ public:
 	bool CleanUp();
 
 	// Add a new module to handle
-	void AddModule(j1Module* module);
+	void AddModule(Module* module);
 
 	// Exposing some properties for reading
 	int GetArgc() const;
@@ -80,23 +80,23 @@ private:
 public:
 
 	// Modules
-	j1Window*			win;
-	j1Input*			input;
-	j1Render*			render;
-	j1Textures*			tex;
-	j1Audio*			audio;
-	j1Scene*			scene;
-	j1Map*				map;
-	j1Player*			player;
-	j1Pickups*			pickups;
-	j1Collisions*		collisions;
-	j1WalkingEnemy*		walking_enemy;
-	j1FadeToBlack*		fade_to_black;
+	Window*			win;
+	Input*			input;
+	Render*			render;
+	Textures*			tex;
+	Audio*			audio;
+	Scene*			scene;
+	Map*				map;
+	E_Player*			player;
+	Pickups*			pickups;
+	Collisions*		collisions;
+	WalkingEnemy*		walking_enemy;
+	FadeToBlack*		fade_to_black;
 	
 
 private:
 
-	p2List<j1Module*>	modules;
+	p2List<Module*>	modules;
 	uint				frames;
 	float				dt;
 	int					argc;
@@ -111,6 +111,6 @@ private:
 	mutable p2SString	save_game;
 };
 
-extern j1App* App; 
+extern Application* App;
 
 #endif

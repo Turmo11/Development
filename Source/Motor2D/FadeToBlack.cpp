@@ -1,28 +1,28 @@
 #include <math.h>
 
-#include "j1App.h"
-#include "j1Module.h"
-#include "j1FadeToBlack.h"
-#include "j1Window.h"
+#include "Application.h"
+#include "Module.h"
+#include "FadeToBlack.h"
+#include "Window.h"
 #include "p2Log.h"
-#include "j1Render.h"
-#include "j1Player.h"
-#include "j1Collisions.h"
-#include "j1Map.h"
-#include "j1Scene.h"
+#include "Render.h"
+#include "E_PLayer.h"
+#include "Collisions.h"
+#include "Map.h"
+#include "Scene.h"
 #include "Dependencies/SDL/include/SDL_render.h"
 #include "Dependencies/SDL/include/SDL_timer.h"
 
-j1FadeToBlack::j1FadeToBlack()
+FadeToBlack::FadeToBlack()
 {
 	name.create("fade");
 
 }
 
-j1FadeToBlack::~j1FadeToBlack()
+FadeToBlack::~FadeToBlack()
 {}
 
-bool j1FadeToBlack::Awake(pugi::xml_node& conf) {
+bool FadeToBlack::Awake(pugi::xml_node& conf) {
 
 	
 	uint width, height;
@@ -35,7 +35,7 @@ bool j1FadeToBlack::Awake(pugi::xml_node& conf) {
 }
 
 // Load assets
-bool j1FadeToBlack::Start()
+bool FadeToBlack::Start()
 {
 	LOG("Preparing Fade Screen");
 	SDL_SetRenderDrawBlendMode(App->render->renderer, SDL_BLENDMODE_BLEND);
@@ -46,7 +46,7 @@ bool j1FadeToBlack::Start()
 }
 
 // Update: draw background
-bool j1FadeToBlack::Update(float dt)
+bool FadeToBlack::Update(float dt)
 {
 	
 	if(current_step == fade_step::NONE)
@@ -94,7 +94,7 @@ bool j1FadeToBlack::Update(float dt)
 }
 
 // Fade to black. At mid point deactivate one module, then activate the other
-bool j1FadeToBlack::FadeToBlack(int level, float time)
+bool FadeToBlack::DoFadeToBlack(int level, float time)
 {
 	bool ret = false;
 
@@ -114,7 +114,7 @@ bool j1FadeToBlack::FadeToBlack(int level, float time)
 }
 
 // Fade to black. At mid point deactivate one module, then activate the other
-bool j1FadeToBlack::FadeToBlackPlayerOnly(float time)
+bool FadeToBlack::FadeToBlackPlayerOnly(float time)
 {
 	bool ret = false;
 
@@ -133,7 +133,7 @@ bool j1FadeToBlack::FadeToBlackPlayerOnly(float time)
 	return ret;
 }
 
-bool j1FadeToBlack::SwitchMap(int level) {
+bool FadeToBlack::SwitchMap(int level) {
 	bool ret = true;
 	LOG("Switching Maps...");
 

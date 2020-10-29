@@ -1,28 +1,28 @@
-#include "j1App.h"
-#include "j1Collisions.h"
-#include "j1Map.h"
-#include "j1Render.h"
-#include "j1Input.h"
+#include "Application.h"
+#include "Collisions.h"
+#include "Map.h"
+#include "Render.h"
+#include "Input.h"
 #include "p2Log.h"
 
-j1Collisions::j1Collisions() : j1Module(), debug_colliders(false)
+Collisions::Collisions() : Module(), debug_colliders(false)
 {
 	name.create("collisions");
 
 }
 
-bool j1Collisions::Init() {
+bool Collisions::Init() {
 
 	return true;
 };
 
-bool j1Collisions::Awake(pugi::xml_node& config) {
+bool Collisions::Awake(pugi::xml_node& config) {
 
 
 	return true;
 };
 
-bool j1Collisions::Start() {
+bool Collisions::Start() {
 
 	debug_colliders = false;
 	LoadFromMap();
@@ -30,7 +30,7 @@ bool j1Collisions::Start() {
 	return true;
 };
 
-bool j1Collisions::PreUpdate() {
+bool Collisions::PreUpdate() {
 
 	//Deletes any collider waiting to be destroyed (to_delete == true)
 	p2List_item<Collider*>* collider_iterator = colliders.start;
@@ -76,14 +76,14 @@ bool j1Collisions::PreUpdate() {
 	return true;
 };
 
-bool j1Collisions::Update(float dt) {
+bool Collisions::Update(float dt) {
 
 	DebugDraw();
 	LOG("Collider mov test - Collider %d pos x = %d, y = %d", colliders.start->data->type, colliders.start->data->rect.x, colliders.start->data->rect.y);
 	return true;
 };
 
-void j1Collisions::DebugDraw() {
+void Collisions::DebugDraw() {
 	if (App->input->GetKey(SDL_SCANCODE_F9) == KEY_DOWN)
 	{
 		if (debug_colliders)
@@ -132,18 +132,18 @@ void j1Collisions::DebugDraw() {
 
 }
 
-bool j1Collisions::PostUpdate() {
+bool Collisions::PostUpdate() {
 
 	return true;
 };
 
-bool j1Collisions::CleanUp() {
+bool Collisions::CleanUp() {
 
 	return true;
 };
 
 
-Collider* j1Collisions::AddCollider(SDL_Rect rect, object_type type, j1Module* callback, Properties* userdata)
+Collider* Collisions::AddCollider(SDL_Rect rect, object_type type, Module* callback, Properties* userdata)
 {
 	Collider* ret = new Collider;
 
@@ -159,7 +159,7 @@ Collider* j1Collisions::AddCollider(SDL_Rect rect, object_type type, j1Module* c
 
 
 //Loads colliders from tiled map
-void j1Collisions::LoadFromMap() {
+void Collisions::LoadFromMap() {
 	p2List_item<ObjectGroup*>* list_i = App->map->data.object_groups.start;
 	while (list_i != nullptr) {
 		for (int i = 0; i < list_i->data->objects_size; i++) {

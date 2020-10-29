@@ -1,11 +1,11 @@
-#ifndef __j1MAP_H__
-#define __j1MAP_H__
+#ifndef __MAP_H__
+#define __MAP_H__
 
 #include "Dependencies/PugiXml/src/pugixml.hpp"
 #include "p2List.h"
 #include "p2Point.h"
 #include "p2SString.h"
-#include "j1Module.h"
+#include "Module.h"
 
 struct AnimationInfo;
 // ----------------------------------------------------
@@ -174,14 +174,14 @@ struct MapData
 };
 
 // ----------------------------------------------------
-class j1Map : public j1Module
+class Map : public Module
 {
 public:
 
-	j1Map();
+	Map();
 
 	// Destructor
-	virtual ~j1Map();
+	virtual ~Map();
 
 	// Called before render is available
 	bool Awake(pugi::xml_node& conf);
@@ -239,4 +239,4 @@ private:
 	p2SString prev_s_anim_name;
 };
 
-#endif // __j1MAP_H__
+#endif // __MAP_H__

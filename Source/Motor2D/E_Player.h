@@ -1,11 +1,11 @@
 
-#ifndef __j1PLAYER_H__
-#define __j1PLAYER_H__
+#ifndef __Player_H__
+#define __Player_H__
 
 #include "Dependencies/PugiXml/src/pugixml.hpp"
 #include "p2List.h"
 #include "p2Point.h"
-#include "j1Module.h"
+#include "Module.h"
 
 struct Collider;
 
@@ -58,15 +58,15 @@ struct Player
 };
 
 // ----------------------------------------------------
-class j1Player : public j1Module
+class E_Player : public Module
 {
 public:
 
 	//Constructor
-	j1Player();
+	E_Player();
 
 	// Destructor
-	virtual ~j1Player();
+	virtual ~E_Player();
 
 	//Save and Load
 	bool Save(pugi::xml_node&) const;
@@ -102,7 +102,7 @@ public:
 
 	bool CheckAirborne();
 
-	void j1Player::OnCollision(Collider* A, Collider* B);
+	void E_Player::OnCollision(Collider* A, Collider* B);
 
 	void SetCamera();
 
@@ -127,4 +127,4 @@ private:
 
 
 
-#endif // __j1PLAYER_H__
+#endif // __Player_H__

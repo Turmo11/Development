@@ -1,29 +1,29 @@
 #include "p2Defs.h"
 #include "p2Log.h"
-#include "j1App.h"
-#include "j1Input.h"
-#include "j1Textures.h"
-#include "j1Audio.h"
-#include "j1Render.h"
-#include "j1Window.h"
-#include "j1Map.h"
-#include "j1Scene.h"
-#include "j1Player.h"
-#include "j1Pickups.h"
-#include "j1WalkingEnemy.h"
-#include "j1FadeToBlack.h"
+#include "Application.h"
+#include "Input.h"
+#include "Textures.h"
+#include "Audio.h"
+#include "Render.h"
+#include "Window.h"
+#include "Map.h"
+#include "Scene.h"
+#include "E_PLayer.h"
+#include "Pickups.h"
+#include "WalkingEnemy.h"
+#include "FadeToBlack.h"
 
-j1Scene::j1Scene() : j1Module()
+Scene::Scene() : Module()
 {
 	name.create("scene");
 }
 
 // Destructor
-j1Scene::~j1Scene()
+Scene::~Scene()
 {}
 
 // Called before render is available
-bool j1Scene::Awake()
+bool Scene::Awake()
 {
 	LOG("Loading Scene");
 	bool ret = true;
@@ -32,7 +32,7 @@ bool j1Scene::Awake()
 }
 
 // Called before the first frame
-bool j1Scene::Start()
+bool Scene::Start()
 {
 	volume = 0.1f;
 	max_volume = 1.0f;
@@ -60,13 +60,13 @@ bool j1Scene::Start()
 }
 
 // Called each loop iteration
-bool j1Scene::PreUpdate()
+bool Scene::PreUpdate()
 {
 	return true;
 }
 
 // Called each loop iteration
-bool j1Scene::Update(float dt)
+bool Scene::Update(float dt)
 {
 	DebugKeys();	
 	
@@ -93,7 +93,7 @@ bool j1Scene::Update(float dt)
 }
 
 // Called each loop iteration
-bool j1Scene::PostUpdate()
+bool Scene::PostUpdate()
 {
 	
 
@@ -108,14 +108,14 @@ bool j1Scene::PostUpdate()
 }
 
 // Called before quitting
-bool j1Scene::CleanUp()
+bool Scene::CleanUp()
 {
 	LOG("Freeing scene");
 
 	return true;
 }
 
-void j1Scene::CheckLevelProgress()
+void Scene::CheckLevelProgress()
 {
 	p2List_item<Pickup*>* pickup_iterator = App->pickups->pickup_list.start;
 
@@ -130,20 +130,20 @@ void j1Scene::CheckLevelProgress()
 	level_completed = true;
 }
 
-void j1Scene::DebugKeys()
+void Scene::DebugKeys()
 {
 	//Debug keys
 	if (App->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN)
 	{
-		App->fade_to_black->FadeToBlack(1);
+		App->fade_to_black->DoFadeToBlack(1);
 	}
 	if (App->input->GetKey(SDL_SCANCODE_F2) == KEY_DOWN)
 	{
-		App->fade_to_black->FadeToBlack(2);
+		App->fade_to_black->DoFadeToBlack(2);
 	}
 	if (App->input->GetKey(SDL_SCANCODE_F3) == KEY_DOWN)
 	{
-		App->fade_to_black->FadeToBlack(current_level);
+		App->fade_to_black->DoFadeToBlack(current_level);
 	}
 	if (App->input->GetKey(SDL_SCANCODE_F4) == KEY_DOWN)
 	{
@@ -192,7 +192,7 @@ void j1Scene::DebugKeys()
 	}
 }
 
-void j1Scene::SetUp(int level)
+void Scene::SetUp(int level)
 {
 	App->pickups->CleanUp();
 	App->walking_enemy->CleanUp();

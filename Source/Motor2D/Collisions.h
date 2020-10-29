@@ -1,7 +1,7 @@
-#ifndef __j1COLLISIONS_H__
-#define __j1COLLISIONS_H__
+#ifndef __Collisions_H__
+#define __Collisions_H__
 
-#include "j1Module.h"
+#include "Module.h"
 #include "Dependencies/SDL/include/SDL.h"
 
 enum class object_type;
@@ -14,10 +14,10 @@ struct Collider
 	SDL_Rect	rect;					//Collider box
 	bool		to_delete = false;			//deletes collider if true
 	object_type type;				//enum class collider type defined in map.h
-	j1Module*	callback = nullptr;	
+	Module*	callback = nullptr;	
 	Properties* userdata;
 
-	Collider(SDL_Rect rectangle, object_type type, j1Module* callback = nullptr) :
+	Collider(SDL_Rect rectangle, object_type type, Module* callback = nullptr) :
 		rect(rectangle),
 		type(type),
 		callback(callback)
@@ -38,14 +38,14 @@ struct Collider
 
 
 
-class j1Collisions : public j1Module {
+class Collisions : public Module {
 	
 public:
-	j1Collisions();
+	Collisions();
 
 	bool Init();
 
-	virtual ~j1Collisions() {};
+	virtual ~Collisions() {};
 
 	// Called before render is available
 	bool Awake(pugi::xml_node& node);
@@ -61,7 +61,7 @@ public:
 	// Called before quitting
 	bool CleanUp();
 
-	Collider* AddCollider(SDL_Rect rect, object_type type, j1Module* callback, Properties* userdata = nullptr);
+	Collider* AddCollider(SDL_Rect rect, object_type type, Module* callback, Properties* userdata = nullptr);
 	void LoadFromMap(); //Loads colliders from tiled map
 	
 

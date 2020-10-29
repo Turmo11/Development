@@ -1,38 +1,38 @@
 #include "p2Defs.h"
 #include "p2Log.h"
-#include "j1App.h"
-#include "j1Render.h"
-#include "j1Map.h"
-#include "j1Collisions.h"
-#include "j1Pickups.h"
-#include "j1Scene.h"
-#include "j1WalkingEnemy.h"
-#include "j1Audio.h"
+#include "Application.h"
+#include "Render.h"
+#include "Map.h"
+#include "Collisions.h"
+#include "Pickups.h"
+#include "Scene.h"
+#include "WalkingEnemy.h"
+#include "Audio.h"
 
 
-j1Pickups::j1Pickups() : j1Module()
+Pickups::Pickups() : Module()
 {
 	name.create("pickups");
 }
 
 
 // Destructor
-j1Pickups::~j1Pickups()
+Pickups::~Pickups()
 {}
 
-bool j1Pickups::Start()
+bool Pickups::Start()
 {
 
 
 	return true;
 }
 
-bool j1Pickups::PreUpdate()
+bool Pickups::PreUpdate()
 {
 	return true;
 }
 
-bool j1Pickups::Update(float dt)
+bool Pickups::Update(float dt)
 {
 	DrawAnimations();
 	UpdateGoal();
@@ -40,12 +40,12 @@ bool j1Pickups::Update(float dt)
 	return true;
 }
 
-bool j1Pickups::PostUpdate()
+bool Pickups::PostUpdate()
 {
 	return true;
 }
 
-bool j1Pickups::CleanUp()
+bool Pickups::CleanUp()
 {
 	// Remove pickups
 	p2List_item<Pickup*>* item;
@@ -73,7 +73,7 @@ bool j1Pickups::CleanUp()
 	return true;
 }
 
-void j1Pickups::CreatePickup(p2SString name, iPoint position)
+void Pickups::CreatePickup(p2SString name, iPoint position)
 {
 	Pickup* new_pickup = new Pickup;
 
@@ -93,7 +93,7 @@ void j1Pickups::CreatePickup(p2SString name, iPoint position)
 
 }
 
-void j1Pickups::DrawAnimations()
+void Pickups::DrawAnimations()
 {
 	p2List_item<Pickup*>* pickup_iterator = pickup_list.start;
 
@@ -108,7 +108,7 @@ void j1Pickups::DrawAnimations()
 	}
 }
 
-void j1Pickups::OnCollision(Collider* A, Collider* B)
+void Pickups::OnCollision(Collider* A, Collider* B)
 {
 	if (A->type == object_type::LETTER && B->type == object_type::PLAYER)
 	{
@@ -119,7 +119,7 @@ void j1Pickups::OnCollision(Collider* A, Collider* B)
 	}
 }
 
-void j1Pickups::GetCollected()
+void Pickups::GetCollected()
 {
 	p2List_item<Pickup*>* pickup_iterator = pickup_list.start;
 
@@ -134,7 +134,7 @@ void j1Pickups::GetCollected()
 	}
 }
 
-void j1Pickups::DebugCollectAll()
+void Pickups::DebugCollectAll()
 {
 	p2List_item<Pickup*>* pickup_iterator = pickup_list.start;
 
@@ -148,7 +148,7 @@ void j1Pickups::DebugCollectAll()
 }
 
 
-void j1Pickups::SetGoal(iPoint position)
+void Pickups::SetGoal(iPoint position)
 {
 	Goal* left_goal = new Goal;
 	Goal* right_goal = new Goal;
@@ -162,7 +162,7 @@ void j1Pickups::SetGoal(iPoint position)
 	goal_list.add(right_goal);
 }
 
-void j1Pickups::UpdateGoal()
+void Pickups::UpdateGoal()
 {
 	p2List_item<Goal*>* goal_iterator = goal_list.start;
 

@@ -1,48 +1,48 @@
 #include "p2Defs.h"
 #include "p2Log.h"
-#include "j1App.h"
-#include "j1Render.h"
-#include "j1Map.h"
-#include "j1Collisions.h"
-#include "j1Scene.h"
-#include "j1WalkingEnemy.h"
+#include "Application.h"
+#include "Render.h"
+#include "Map.h"
+#include "Collisions.h"
+#include "Scene.h"
+#include "WalkingEnemy.h"
 
 
-j1WalkingEnemy::j1WalkingEnemy() : j1Module()
+WalkingEnemy::WalkingEnemy() : Module()
 {
 	name.create("enemy");
 }
 
 
 // Destructor
-j1WalkingEnemy::~j1WalkingEnemy()
+WalkingEnemy::~WalkingEnemy()
 {}
 
-bool j1WalkingEnemy::Start()
+bool WalkingEnemy::Start()
 {
 
 
 	return true;
 }
 
-bool j1WalkingEnemy::PreUpdate()
+bool WalkingEnemy::PreUpdate()
 {
 	return true;
 }
 
-bool j1WalkingEnemy::Update(float dt)
+bool WalkingEnemy::Update(float dt)
 {
 	DrawAnimations();
 
 	return true;
 }
 
-bool j1WalkingEnemy::PostUpdate()
+bool WalkingEnemy::PostUpdate()
 {
 	return true;
 }
 
-bool j1WalkingEnemy::CleanUp()
+bool WalkingEnemy::CleanUp()
 {
 	// Remove pickups
 	p2List_item<Enemy*>* item;
@@ -57,7 +57,7 @@ bool j1WalkingEnemy::CleanUp()
 	return true;
 }
 
-void j1WalkingEnemy::CreateEnemy(enemy_type type, iPoint position)
+void WalkingEnemy::CreateEnemy(enemy_type type, iPoint position)
 {
 	Enemy* new_enemy = new Enemy;
 
@@ -81,7 +81,7 @@ void j1WalkingEnemy::CreateEnemy(enemy_type type, iPoint position)
 
 }
 
-void j1WalkingEnemy::DrawAnimations()
+void WalkingEnemy::DrawAnimations()
 {
 	p2List_item<Enemy*>* enemy_iterator = enemy_list.start;
 
@@ -99,7 +99,7 @@ void j1WalkingEnemy::DrawAnimations()
 	}
 }
 
-void j1WalkingEnemy::OnCollision(Collider* A, Collider* B)
+void WalkingEnemy::OnCollision(Collider* A, Collider* B)
 {
 	if (A->type == object_type::ENEMY && B->type == object_type::PLAYER)
 	{
@@ -108,7 +108,7 @@ void j1WalkingEnemy::OnCollision(Collider* A, Collider* B)
 	}
 }
 
-void j1WalkingEnemy::GetKilled()
+void WalkingEnemy::GetKilled()
 {
 	p2List_item<Enemy*>* enemy_iterator = enemy_list.start;
 

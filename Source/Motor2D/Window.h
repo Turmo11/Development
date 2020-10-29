@@ -1,19 +1,19 @@
-#ifndef __j1WINDOW_H__
-#define __j1WINDOW_H__
+#ifndef __WINDOW_H__
+#define __WINDOW_H__
 
-#include "j1Module.h"
+#include "Module.h"
 
 struct SDL_Window;
 struct SDL_Surface;
 
-class j1Window : public j1Module
+class Window : public Module
 {
 public:
 
-	j1Window();
+	Window();
 
 	// Destructor
-	virtual ~j1Window();
+	virtual ~Window();
 
 	// Called before render is available
 	bool Awake(pugi::xml_node&);
@@ -45,4 +45,4 @@ private:
 	uint		scale;
 };
 
-#endif // __j1WINDOW_H__
+#endif // __WINDOW_H__
