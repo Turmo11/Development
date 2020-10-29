@@ -3,6 +3,7 @@
 #include "Application.h"
 #include "Window.h"
 #include "Render.h"
+#include "FadeToBlack.h"
 
 #define VSYNC true
 
@@ -77,10 +78,15 @@ bool Render::Update(float dt)
 
 bool Render::PostUpdate()
 {
-	//SDL_SetRenderDrawColor(renderer, background.r, background.g, background.g, background.a);
-	//SDL_SetRenderDrawColor(renderer, 75, 70, 70, background.a); gris
-	//SDL_SetRenderDrawColor(renderer, 132, 219, 249, background.a); blau
-	SDL_SetRenderDrawColor(renderer, 135, 206, 235, background.a);
+	if (App->fade_to_black->active_scene == "Scene")
+	{
+		SDL_SetRenderDrawColor(renderer, 135, 206, 235, background.a);
+	}
+	else if (App->fade_to_black->active_scene == "TitleScene")
+	{
+		SDL_SetRenderDrawColor(renderer, 48, 48, 48, background.a);
+	}
+	
 	SDL_RenderPresent(renderer);
 	return true;
 }

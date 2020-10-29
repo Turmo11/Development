@@ -243,5 +243,7 @@ bool FadeToBlack::SwitchScenes(char* scene)
 		App->map->active = true;
 		App->title_scene->active = false;
 	}
+
+	active_scene = scene;
 	return true;
 }

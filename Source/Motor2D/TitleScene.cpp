@@ -9,6 +9,7 @@
 #include "TitleScene.h"
 #include "E_PLayer.h"
 #include "FadeToBlack.h"
+#include "Scene.h"
 
 TitleScene::TitleScene() : Module()
 {
@@ -41,6 +42,12 @@ bool TitleScene::Start()
 
 	background = App->tex->Load("Assets/textures/title.png");
 
+	background_rect.h = 512;
+	background_rect.w = 1024;
+	background_rect.x = 0;
+	background_rect.y = 0;
+
+	App->audio->StopMusic();
 
 	App->render->camera.x = App->render->starting_cam_pos.x;
 	App->render->camera.y = App->render->starting_cam_pos.y;
@@ -60,9 +67,9 @@ bool TitleScene::Update(float dt)
 	DebugKeys();
 
 	
-	App->render->Blit(background, -800, -5500, &background_rect, false, 0.1f);
+	App->render->Blit(background, 100, 125, &background_rect, false);
 
-	p2SString title("Metamorphosis");
+	p2SString title("Metamorphosis - Camera:(%d,%d)", App->render->camera.x, App->render->camera.y);
 
 	App->win->SetTitle(title.GetString());
 	return true;
@@ -95,7 +102,7 @@ void TitleScene::DebugKeys()
 	if (App->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN)
 	{
 		App->fade_to_black->FadeToBlackScene("Scene");
-	
+		App->audio->ResumeMusic();
 	}
 	if (App->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN)
 	{
@@ -109,7 +116,6 @@ void TitleScene::DebugKeys()
 	{
 		App->win->ToggleFullscreen();
 	}
-
 
 	//Volume
 	if (App->input->GetKey(SDL_SCANCODE_KP_PLUS) == KEY_DOWN)

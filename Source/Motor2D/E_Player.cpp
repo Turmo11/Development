@@ -251,7 +251,7 @@ bool E_Player::Update(float dt)
 			player.position.x += player.speed.x * 2;
 		}
 	}
-	
+
 
 	//Update position
 	player.position.y += player.speed.y;
@@ -272,7 +272,7 @@ bool E_Player::Update(float dt)
 	{
 		Ascend();
 	}
-	
+
 	return true;
 }
 
@@ -302,19 +302,19 @@ bool E_Player::SummonPlayer()
 	player.player_collider = App->collisions->AddCollider(player.player_hitbox, object_type::PLAYER, this);
 
 	//booleans
-	player.moving_right		= false;
-	player.moving_left		= false;
-	player.jumping			= false;
-	player.grounded			= false;
-	player.colliding_wall	= false;
-	player.able_to_drop		= false;
+	player.moving_right = false;
+	player.moving_left = false;
+	player.jumping = false;
+	player.grounded = false;
+	player.colliding_wall = false;
+	player.able_to_drop = false;
 
-	player.disabled			= false;
-	player.locked			= false;
-	player.god_mode			= false;
-	player.ascending		= false;
+	player.disabled = false;
+	player.locked = false;
+	player.god_mode = false;
+	player.ascending = false;
 
-	player.flip				= false;
+	player.flip = false;
 
 	return true;
 }
@@ -405,7 +405,7 @@ void E_Player::OnCollision(Collider* A, Collider* B) {
 			}
 
 		}
-		
+
 
 		// ------------ Player Colliding with death limit ------------------
 		if (A->type == object_type::PLAYER && B->type == object_type::DEATH) {
@@ -445,7 +445,7 @@ void E_Player::OnCollision(Collider* A, Collider* B) {
 			}
 		}
 	}
-	
+
 }
 
 //Handles movement on the x-axis and sets the proper flip
@@ -548,12 +548,12 @@ void E_Player::SetCamera()
 		if (App->render->camera.x <= App->scene->camera_left_limit && App->render->camera.x >= (App->scene->camera_right_limit + App->win->screen_surface->w))
 		{
 			App->render->camera.x = (int)x_axis;
-			
+
 		}
 		if (App->render->camera.x >= App->scene->camera_left_limit && player.position.x < (App->win->screen_surface->w / 2) + 1)
 		{
 			App->render->camera.x = App->scene->camera_left_limit - 1;
-			
+
 		}
 		else if (player.position.x > (-(App->scene->camera_right_limit) - (App->win->screen_surface->w / 2)))
 		{
@@ -595,16 +595,16 @@ void E_Player::Ascend(float time)
 
 		player.locked = true;
 		player.speed.x = 0;
-		
+
 		break;
 	}
-		
+
 	case ascending::ASCENDING:
 	{
 		Uint32 now = SDL_GetTicks() - start_time;
 		if (now >= total_time)
 		{
-			
+
 			current_step = ascending::ASCENDED;
 		}
 		break;
@@ -617,11 +617,11 @@ void E_Player::Ascend(float time)
 	}
 	}
 
-	
 
-	
 
-	
-	
-	
+
+
+
+
+
 }

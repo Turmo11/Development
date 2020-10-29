@@ -134,6 +134,17 @@ bool Audio::PlayMusic(const char* path, float fade_time)
 	return ret;
 }
 
+void Audio::StopMusic()
+{
+	Mix_PauseMusic();
+	LOG("Stop music");
+}
+void Audio::ResumeMusic()
+{
+	Mix_ResumeMusic();
+	LOG("Resume music");
+}
+
 // Load WAV
 unsigned int Audio::LoadFx(const char* path)
 {
