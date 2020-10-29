@@ -87,6 +87,7 @@
     <ClCompile Include="E_Player.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="Timer.cpp" />
+    <ClCompile Include="TitleScene.cpp" />
     <ClCompile Include="WalkingEnemy.cpp" />
     <ClCompile Include="p2Log.cpp" />
     <ClCompile Include="Render.cpp" />
@@ -102,6 +103,7 @@
     <ClInclude Include="E_Player.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="Timer.h" />
+    <ClInclude Include="TitleScene.h" />
     <ClInclude Include="WalkingEnemy.h" />
     <ClInclude Include="p2Animation.h" />
     <ClInclude Include="p2DynArray.h" />

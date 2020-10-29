@@ -9,6 +9,7 @@
 #include "Textures.h"
 #include "Audio.h"
 #include "Scene.h"
+#include "TitleScene.h"
 #include "Map.h"
 #include "Application.h"
 #include "E_PLayer.h"
@@ -30,6 +31,7 @@ Application::Application(int argc, char* args[]) : argc(argc), args(args)
 	tex				= new Textures();
 	audio			= new Audio();
 	scene			= new Scene();
+	title_scene		= new TitleScene();
 	map				= new Map();
 	player			= new E_Player();
 	pickups			= new Pickups();
@@ -47,6 +49,7 @@ Application::Application(int argc, char* args[]) : argc(argc), args(args)
 
 	//player and scenes
 	AddModule(scene);
+	AddModule(title_scene);
 	AddModule(walking_enemy);
 	AddModule(fade_to_black);
 	AddModule(pickups);
@@ -124,6 +127,7 @@ bool Application::Awake()
 // Called before the first frame
 bool Application::Start()
 {
+	
 	bool ret = true;
 	p2List_item<Module*>* item;
 	item = modules.start;
@@ -133,7 +137,10 @@ bool Application::Start()
 		ret = item->data->Start();
 		item = item->next;
 	}
-
+	scene->active = false;
+	player->active = false;
+	pickups->active = false;
+	map->active = false;
 	return ret;
 }
 

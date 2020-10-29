@@ -8,8 +8,11 @@
 #include "Render.h"
 #include "E_PLayer.h"
 #include "Collisions.h"
+#include "Pickups.h"
+#include "WalkingEnemy.h"
 #include "Map.h"
 #include "Scene.h"
+#include "TitleScene.h"
 #include "Dependencies/SDL/include/SDL_render.h"
 #include "Dependencies/SDL/include/SDL_timer.h"
 
@@ -24,7 +27,7 @@ FadeToBlack::~FadeToBlack()
 
 bool FadeToBlack::Awake(pugi::xml_node& conf) {
 
-	
+
 	uint width, height;
 	App->win->GetWindowSize(width, height);
 	screen.w = width + 200;
@@ -41,6 +44,8 @@ bool FadeToBlack::Start()
 	SDL_SetRenderDrawBlendMode(App->render->renderer, SDL_BLENDMODE_BLEND);
 
 	fading_player = false;
+	scene_switch = false;
+	wantToSwitchScene = "Scene";
 
 	return true;
 }
@@ -48,43 +53,52 @@ bool FadeToBlack::Start()
 // Update: draw background
 bool FadeToBlack::Update(float dt)
 {
-	
-	if(current_step == fade_step::NONE)
+
+	if (current_step == fade_step::NONE)
 		return true;
 
 	Uint32 now = SDL_GetTicks() - start_time;
 	float normalized = MIN(1.0f, (float)now / (float)total_time);
 
-	switch(current_step)
+	switch (current_step)
 	{
-		case fade_step::FADE_TO:
+	case fade_step::FADE_TO:
+	{
+		if (now >= total_time)
 		{
-			if(now >= total_time)
+			if (!scene_switch)
 			{
-				if(fading_player)
-				{ 
+
+
+				if (fading_player)
+				{
 					App->player->ResetPlayer();
 				}
 				else
 				{
 					SwitchMap(next_level);
 				}
-				
-				total_time += total_time;
-				start_time = SDL_GetTicks();
-				current_step = fade_step::FADE_FROM;
 			}
-		} break;
+			else
+			{
+				SwitchScenes(wantToSwitchScene);
+			}
+			total_time += total_time;
+			start_time = SDL_GetTicks();
+			current_step = fade_step::FADE_FROM;
+		}
+	} break;
 
-		case fade_step::FADE_FROM:
-		{
-			normalized = 1.0f - normalized;
+	case fade_step::FADE_FROM:
+	{
+		normalized = 1.0f - normalized;
 
-			if(now >= total_time)
-				current_step = fade_step::NONE;
-				App->player->player.disabled = false;
-				fading_player = false;
-		} break;
+		if (now >= total_time)
+			current_step = fade_step::NONE;
+		App->player->player.disabled = false;
+		fading_player = false;
+		scene_switch = false;
+	} break;
 	}
 
 	SDL_SetRenderDrawColor(App->render->renderer, 0, 0, 0, (Uint8)(normalized * 255.0f));
@@ -100,7 +114,7 @@ bool FadeToBlack::DoFadeToBlack(int level, float time)
 
 	next_level = level;
 
-	if(current_step == fade_step::NONE)
+	if (current_step == fade_step::NONE)
 	{
 		current_step = fade_step::FADE_TO;
 		start_time = SDL_GetTicks();
@@ -138,7 +152,7 @@ bool FadeToBlack::SwitchMap(int level) {
 	LOG("Switching Maps...");
 
 	App->collisions->colliders.clear(); //Clear colliders
-	
+
 	// Remove all tilesets
 	p2List_item<TileSet*>* item;
 	item = App->map->data.tilesets.start;
@@ -186,6 +200,48 @@ bool FadeToBlack::SwitchMap(int level) {
 	App->scene->SetUp(level);		//Load specified map
 	App->collisions->LoadFromMap();		//Load Collisions
 	App->player->ResetPlayer();	//Reset Player
-	
+
 	return ret;
+}
+
+bool FadeToBlack::FadeToBlackScene(char* scene, float time)
+{
+	bool ret = false;
+
+	scene_switch = true;
+	wantToSwitchScene = scene;
+
+	if (current_step == fade_step::NONE)
+	{
+		current_step = fade_step::FADE_TO;
+		start_time = SDL_GetTicks();
+		total_time = (Uint32)(time * 0.5f * 1000.0f);
+		ret = true;
+
+	}
+
+	return ret;
+}
+
+bool FadeToBlack::SwitchScenes(char* scene)
+{
+	if(scene == "TitleScene")
+	{
+		App->scene->active = false;
+		App->player->active = false;
+		App->pickups->active = false;
+		App->walking_enemy->active = false;
+		App->map->active = false;
+		App->title_scene->active = true;
+	}
+	if (scene == "Scene")
+	{
+		App->scene->active = true;
+		App->player->active = true;
+		App->pickups->active = true;
+		App->walking_enemy->active = true;
+		App->map->active = true;
+		App->title_scene->active = false;
+	}
+	return true;
 }

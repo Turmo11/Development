@@ -34,6 +34,7 @@ bool Scene::Awake()
 // Called before the first frame
 bool Scene::Start()
 {
+	App->fade_to_black->active_scene = "Scene";
 	volume = 0.1f;
 	max_volume = 1.0f;
 
@@ -45,7 +46,6 @@ bool Scene::Start()
 	background_rect.x = 0;
 	background_rect.y = 0;
 
-	//background = App->tex->Load("Assets/textures/tower2.png");
 	background = App->tex->Load("Assets/textures/tower3.png");
 
 	current_level = 1;
@@ -156,6 +156,10 @@ void Scene::DebugKeys()
 	if (App->input->GetKey(SDL_SCANCODE_F6) == KEY_DOWN)
 	{
 		App->LoadGame();
+	}
+	if (App->input->GetKey(SDL_SCANCODE_F7) == KEY_DOWN)
+	{
+		App->fade_to_black->FadeToBlackScene("TitleScene");
 	}
 	if (App->input->GetKey(SDL_SCANCODE_KP_MULTIPLY) == KEY_DOWN)
 	{

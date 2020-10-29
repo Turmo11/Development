@@ -16,7 +16,9 @@ public:
 	bool Update(float dt);
 	bool DoFadeToBlack(int level, float time = 0.5f);
 	bool FadeToBlackPlayerOnly(float time = 0.5f);
+	bool FadeToBlackScene(char* scene, float time = 0.5f);
 	bool SwitchMap(int level);
+	bool SwitchScenes(char* scene);
 
 private:
 
@@ -32,6 +34,9 @@ public:
 
 	int			next_level;
 	bool		fading_player;
+	bool		scene_switch;
+	char*		wantToSwitchScene;
+	char*		active_scene;
 
 private:
 	

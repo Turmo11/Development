@@ -52,6 +52,9 @@
     <ClCompile Include="Application.cpp">
       <Filter>Desenvolupament  ========</Filter>
     </ClCompile>
+    <ClCompile Include="TitleScene.cpp">
+      <Filter>Desenvolupament  ========\Scenes</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="p2Defs.h">
@@ -125,6 +128,9 @@
     </ClInclude>
     <ClInclude Include="Application.h">
       <Filter>Desenvolupament  ========</Filter>
+    </ClInclude>
+    <ClInclude Include="TitleScene.h">
+      <Filter>Desenvolupament  ========\Scenes</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

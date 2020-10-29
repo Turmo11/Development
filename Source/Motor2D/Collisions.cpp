@@ -79,7 +79,7 @@ bool Collisions::PreUpdate() {
 bool Collisions::Update(float dt) {
 
 	DebugDraw();
-	LOG("Collider mov test - Collider %d pos x = %d, y = %d", colliders.start->data->type, colliders.start->data->rect.x, colliders.start->data->rect.y);
+	//LOG("Collider mov test - Collider %d pos x = %d, y = %d", colliders.start->data->type, colliders.start->data->rect.x, colliders.start->data->rect.y);
 	return true;
 };
 

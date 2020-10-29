@@ -12,6 +12,7 @@ class Render;
 class Textures;
 class Audio;
 class Scene;
+class TitleScene;
 class Map;
 class E_Player;
 class Pickups;
@@ -83,15 +84,16 @@ public:
 	Window*			win;
 	Input*			input;
 	Render*			render;
-	Textures*			tex;
+	Textures*		tex;
 	Audio*			audio;
 	Scene*			scene;
-	Map*				map;
-	E_Player*			player;
-	Pickups*			pickups;
+	TitleScene*		title_scene;
+	Map*			map;
+	E_Player*		player;
+	Pickups*		pickups;
 	Collisions*		collisions;
-	WalkingEnemy*		walking_enemy;
-	FadeToBlack*		fade_to_black;
+	WalkingEnemy*	walking_enemy;
+	FadeToBlack*	fade_to_black;
 	
 
 private:
