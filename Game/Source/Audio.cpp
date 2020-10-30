@@ -22,8 +22,7 @@ bool Audio::Awake(pugi::xml_node& config)
 {
 
 	maxVolume = config.child("maxVolume").attribute("value").as_float();
-	LOG("%f   AAAAAAAAAAAAAAAAA \n\n\n", maxVolume);
-
+	
 	LOG("Loading Audio Mixer");
 	bool ret = true;
 	SDL_Init(0);

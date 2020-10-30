@@ -168,7 +168,7 @@ void Pickups::UpdateGoal()
 
 	while (goal_iterator != NULL)
 	{
-		if (App->scene->level_completed)
+		if (App->scene->levelCompleted)
 		{
 			App->map->DrawStaticAnimation("goal", "goal", goal_iterator->data->position, &goal_iterator->data->anim_info);
 

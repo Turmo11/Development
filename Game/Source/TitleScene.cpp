@@ -36,10 +36,10 @@ bool TitleScene::Start()
 
 	background = App->tex->Load("Assets/textures/UI/title.png");
 
-	background_rect.h = 512;
-	background_rect.w = 1024;
-	background_rect.x = 0;
-	background_rect.y = 0;
+	backgroundRect.h = 512;
+	backgroundRect.w = 1024;
+	backgroundRect.x = 0;
+	backgroundRect.y = 0;
 
 	App->audio->StopMusic();
 
@@ -62,7 +62,7 @@ bool TitleScene::Update(float dt)
 	App->render->camera.x = 0;
 	App->render->camera.y = 0;
 
-	App->render->Blit(background, 100, 125, &background_rect, false);
+	App->render->Blit(background, 100, 125, &backgroundRect, false);
 
 	p2SString title("Metamorphosis - Camera:(%d,%d)", App->render->camera.x, App->render->camera.y);
 

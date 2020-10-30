@@ -426,7 +426,7 @@ void EntityPlayer::OnCollision(Collider* A, Collider* B) {
 		}
 	}
 
-	if (App->scene->level_completed)
+	if (App->scene->levelCompleted)
 	{
 		// ------------ Player Colliding with the goal ------------------
 		if (A->type == ObjectType::PLAYER && B->type == ObjectType::GOAL) {
@@ -546,34 +546,34 @@ void EntityPlayer::SetCamera()
 
 
 		//Checks camera x limits
-		if (App->render->camera.x <= App->scene->camera_left_limit && App->render->camera.x >= (App->scene->camera_right_limit + App->win->screen_surface->w))
+		if (App->render->camera.x <= App->scene->cameraRect.x && App->render->camera.x >= (App->scene->cameraRect.w + App->win->screen_surface->w))
 		{
 			App->render->camera.x = (int)x_axis;
 
 		}
-		if (App->render->camera.x >= App->scene->camera_left_limit && player.position.x < (App->win->screen_surface->w / 2) + 1)
+		if (App->render->camera.x >= App->scene->cameraRect.x && player.position.x < (App->win->screen_surface->w / 2) + 1)
 		{
-			App->render->camera.x = App->scene->camera_left_limit - 1;
+			App->render->camera.x = App->scene->cameraRect.x - 1;
 
 		}
-		else if (player.position.x > (-(App->scene->camera_right_limit) - (App->win->screen_surface->w / 2)))
+		else if (player.position.x > (-(App->scene->cameraRect.w) - (App->win->screen_surface->w / 2)))
 		{
-			App->render->camera.x = App->scene->camera_right_limit + App->win->screen_surface->w + 2;
+			App->render->camera.x = App->scene->cameraRect.w + App->win->screen_surface->w + 2;
 
 		}
 
 		//Checks camera y limits
-		if (App->render->camera.y <= App->scene->camera_top_limit && App->render->camera.y >= (App->scene->camera_bot_limit + App->win->screen_surface->h))
+		if (App->render->camera.y <= App->scene->cameraRect.y && App->render->camera.y >= (App->scene->cameraRect.h + App->win->screen_surface->h))
 		{
 			App->render->camera.y = (int)y_axis;
 		}
-		if (App->render->camera.y >= App->scene->camera_top_limit)
+		if (App->render->camera.y >= App->scene->cameraRect.y)
 		{
-			App->render->camera.y = App->scene->camera_top_limit;
+			App->render->camera.y = App->scene->cameraRect.y;
 		}
-		else if (App->render->camera.y < (App->scene->camera_bot_limit + App->win->screen_surface->h))
+		else if (App->render->camera.y < (App->scene->cameraRect.h + App->win->screen_surface->h))
 		{
-			App->render->camera.y = App->scene->camera_bot_limit + App->win->screen_surface->h;;
+			App->render->camera.y = App->scene->cameraRect.h + App->win->screen_surface->h;;
 		}
 	}
 }
@@ -613,7 +613,7 @@ void EntityPlayer::Ascend(float time)
 	case Ascending::ASCENDED:
 	{
 		player.ascending = false;
-		App->fade_to_black->DoFadeToBlack(App->scene->current_level + 1);
+		App->fade_to_black->DoFadeToBlack(App->scene->currentLevel + 1);
 		current_step = Ascending::NONE;
 	}
 	}

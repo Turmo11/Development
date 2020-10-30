@@ -23,8 +23,22 @@ Scene::~Scene()
 {}
 
 // Called before render is available
-bool Scene::Awake()
+bool Scene::Awake(pugi::xml_node& config)
 {
+	currentLevel = config.child("currentLevel").attribute("value").as_int();
+
+	backgroundRect.x = config.child("backgroundRect").attribute("x").as_int();
+	backgroundRect.y = config.child("backgroundRect").attribute("y").as_int();
+	backgroundRect.h = config.child("backgroundRect").attribute("h").as_int();
+	backgroundRect.w = config.child("backgroundRect").attribute("w").as_int();
+
+	cameraRect.x = config.child("cameraRect").attribute("x").as_int();
+	cameraRect.y = config.child("cameraRect").attribute("y").as_int();
+	cameraRect.h = config.child("cameraRect").attribute("h").as_int();
+	cameraRect.w = config.child("cameraRect").attribute("w").as_int();
+
+	levelCompleted = config.child("levelCompleted").attribute("value").as_bool();
+
 	LOG("Loading Scene");
 	bool ret = true;
 
@@ -36,20 +50,20 @@ bool Scene::Start()
 {
 	App->fade_to_black->active_scene = "Scene";
 
-	background_rect.h = 6816;
-	background_rect.w = 3072;
-	background_rect.x = 0;
-	background_rect.y = 0;
+	backgroundRect.h = 6816;
+	backgroundRect.w = 3072;
+	backgroundRect.x = 0;
+	backgroundRect.y = 0;
 
 	background = App->tex->Load("Assets/textures/tower.png");
 
-	current_level = 1;
-	SetUp(current_level);
+	currentLevel = 1;
+	SetUp(currentLevel);
 	
 	App->render->camera.x = App->render->starting_cam_pos.x;
 	App->render->camera.y = App->render->starting_cam_pos.y;
 
-	level_completed = false;
+	levelCompleted = false;
 	
 	return true;
 }
@@ -65,13 +79,13 @@ bool Scene::Update(float dt)
 {
 	DebugKeys();	
 	
-	switch (current_level)
+	switch (currentLevel)
 	{
 	case 1:
-		App->render->Blit(background, -800, -5500, &background_rect, false, 0.1f);
+		App->render->Blit(background, -800, -5500, &backgroundRect, false, 0.1f);
 		break;
 	case 2:
-		App->render->Blit(background, -800, -4700, &background_rect, false, 0.1f);
+		App->render->Blit(background, -800, -4700, &backgroundRect, false, 0.1f);
 		break;
 	}
 	
@@ -122,7 +136,7 @@ void Scene::CheckLevelProgress()
 		}
 		pickup_iterator = pickup_iterator->next;
 	}
-	level_completed = true;
+	levelCompleted = true;
 }
 
 void Scene::DebugKeys()
@@ -138,7 +152,7 @@ void Scene::DebugKeys()
 	}
 	if (App->input->GetKey(SDL_SCANCODE_F3) == KEY_DOWN)
 	{
-		App->fade_to_black->DoFadeToBlack(current_level);
+		App->fade_to_black->DoFadeToBlack(currentLevel);
 	}
 	if (App->input->GetKey(SDL_SCANCODE_F4) == KEY_DOWN)
 	{
@@ -206,7 +220,7 @@ void Scene::SetUp(int level)
 	{
 	case 0:
 
-		current_level = 0;
+		currentLevel = 0;
 		App->audio->PlayMusic("Assets/audio/music/tutorial.ogg", 0.0f);
 		App->pickups->CreatePickup("alpha", { 1152, 704 });
 		App->pickups->CreatePickup("chi", { 1792, 576 });
@@ -218,13 +232,11 @@ void Scene::SetUp(int level)
 
 		App->map->Load("tutorial.tmx");
 
-		current_level = 1;
+		currentLevel = 1;
 
-		camera_left_limit = 0;
-		camera_right_limit = -3150;
-		camera_top_limit = -450;
-		//camera_top_limit = 5000;
-		camera_bot_limit = -3800;
+		cameraRect.y = -450;
+		//cameraRect.y = 5000;
+		cameraRect.h = -3800;
 
 		App->audio->PlayMusic("Assets/audio/music/tutorial.ogg", 0.0f);
 		App->pickups->CreatePickup("alpha", { 2128, 2448 });
@@ -240,14 +252,13 @@ void Scene::SetUp(int level)
 
 		App->map->Load("athena.tmx");
 
-		current_level = 2;
+		currentLevel = 2;
 
-		camera_left_limit = 0;
-		camera_right_limit = -3150;
-		camera_top_limit = 5000;
-		//camera_top_limit = -450;
-		//camera_bot_limit = -3800;
-		camera_bot_limit = -6300;
+	
+		cameraRect.y = 5000;
+		//cameraRect.y = -450;
+		//cameraRect.h = -3800;
+		cameraRect.h = -6300;
 
 		App->audio->PlayMusic("Assets/audio/music/athena.ogg", 0.0f);
 		App->pickups->CreatePickup("psi", { 1583, 2736 });

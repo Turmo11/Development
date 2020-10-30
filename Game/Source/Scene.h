@@ -15,7 +15,7 @@ public:
 	virtual ~Scene();
 
 	// Called before render is available
-	bool Awake();
+	bool Awake(pugi::xml_node& conf);
 
 	// Called before the first frame
 	bool Start();
@@ -40,19 +40,17 @@ public:
 
 public:
 
-	int		camera_left_limit;
-	int		camera_right_limit;
-	int		camera_bot_limit;
-	int		camera_top_limit;
+	int		currentLevel;
 
-	bool	level_completed; //used to check if the player has collected all the pickups
+	bool	levelCompleted; //used to check if the player has collected all the pickups
 
-	int		current_level;
+	SDL_Rect		cameraRect;
+	
 	
 
 private:
 
-	SDL_Rect		background_rect;
+	SDL_Rect		backgroundRect;
 	SDL_Texture*	background;
 
 };
