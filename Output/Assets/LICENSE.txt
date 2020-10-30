@@ -1,0 +1,2 @@
+All of the assets including the sprites, UI and music are licensed under a [Creative Commons Attribution 4.0 International License](https://creativecommons.org/licenses/by/4.0/).
+Author: [Turmo11](https://github.com/Turmo11)
