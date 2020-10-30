@@ -11,7 +11,7 @@ This content was generated for the Game Development subject under the supervisio
 ## Context
 
 <img align="right" width="64" height="128" src="https://github.com/Turmo11/Metamorphosis/blob/master/Screenshots/goal.gif">
-You are a fallen greek soul attempting to escape the underworld, in order to do so you must ascend the God's Tower and fight your way into Elysium. To accomplish that, you must go through every level and complete an offering to the assigned god/dess. If you want to complete an offering you must first gather the different pieces which make the word for your offering, and then get to the top of the level to ascend to the next level. Good luck! 
+You are a fallen greek soul attempting to escape the underworld, in order to do so you must ascend the God's Tower and fight your way into Elysium. To accomplish that, you must go through every level and complete an offering to the assigned god/dess. If you want to complete an offering you must first gather the different pieces which make the word for your offering, and then get to the top of the level to ascend to the next one. Good luck! 
 
 
 ## Key Features
