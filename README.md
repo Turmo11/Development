@@ -28,7 +28,7 @@ Here are some of the main features of the game
 
 ### Player Movement
  - A/D - Horizontal Movement
- - W - Jump
+ - Space - Jump
  - WASD - Movement when godmode activated
  
   <img width="170" height="170" src="https://github.com/Turmo11/Metamorphosis/blob/master/Screenshots/player_run.gif"> <img width="170" height="170" src="https://github.com/Turmo11/Metamorphosis/blob/master/Screenshots/player_god.gif">
