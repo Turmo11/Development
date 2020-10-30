@@ -30,6 +30,12 @@ Here are some of the main features of the game
  - A/D - Horizontal Movement
  - W - Jump
  - WASD - Movement when godmode activated
+  <img width="128" height="128" src="https://github.com/Turmo11/Metamorphosis/blob/master/Docs/player_run.gif">
+
+
+
+ 
+ 
  
 ### Debug Keys
  - F1 - Start from the first level
