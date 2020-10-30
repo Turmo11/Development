@@ -419,8 +419,9 @@ void E_Player::OnCollision(Collider* A, Collider* B) {
 				{
 					player.speed.y = 0;
 				}
-
-				App->fade_to_black->FadeToBlackPlayerOnly();
+				ResetPlayer();
+				App->fade_to_black->FadeToBlackScene("GameOverScene");
+				LOG("FadeToGAMEOVER)");
 			}
 		}
 	}

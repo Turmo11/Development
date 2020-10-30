@@ -70,7 +70,7 @@ bool LogoScene::Update(float dt)
 	App->render->camera.y = 0;
 
 	SDL_SetTextureAlphaMod(logo_texture, accumulatedTime * 10.0f);
-	App->render->Blit(logo_texture, 300, 50, &logo_rect, false);
+	App->render->Blit(logo_texture, 275, 50, &logo_rect, false);
 
 	p2SString title("Metamorphosis - Camera:(%d,%d)", App->render->camera.x, App->render->camera.y);
 

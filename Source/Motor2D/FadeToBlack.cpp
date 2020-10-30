@@ -227,55 +227,62 @@ bool FadeToBlack::FadeToBlackScene(char* scene, float time)
 
 bool FadeToBlack::SwitchScenes(char* scene)
 {
-	if(scene == "TitleScene")
+	if (active_scene != scene)
 	{
-		App->scene->active = false;
-		App->title_scene->active = true;
-		App->game_over_scene->active = false;
-		App->logo_scene->active = false;
+		if (scene == "TitleScene")
+		{
+			App->scene->CleanUp();
+			App->scene->active = false;
+			App->title_scene->active = true;
+			App->game_over_scene->active = false;
+			App->logo_scene->active = false;
 
-		App->player->active = false;
-		App->pickups->active = false;
-		App->walking_enemy->active = false;
-		App->map->active = false;
+			App->player->active = false;
+			App->pickups->active = false;
+			App->walking_enemy->active = false;
+			App->map->active = false;
+		}
+		if (scene == "GameOverScene")
+		{
+			App->scene->CleanUp();
+			App->scene->active = false;
+			App->title_scene->active = false;
+			App->game_over_scene->active = true;
+			App->logo_scene->active = false;
+
+			App->player->active = false;
+			App->pickups->active = false;
+			App->walking_enemy->active = false;
+			App->map->active = false;
+		}
+		if (scene == "LogoScene")
+		{
+			App->scene->CleanUp();
+			App->scene->active = false;
+			App->title_scene->active = false;
+			App->game_over_scene->active = false;
+			App->logo_scene->active = true;
+
+			App->player->active = false;
+			App->pickups->active = false;
+			App->walking_enemy->active = false;
+			App->map->active = false;
+		}
+		if (scene == "Scene")
+		{
+			App->scene->active = true;
+			App->title_scene->active = false;
+			App->game_over_scene->active = false;
+			App->logo_scene->active = false;
+
+			App->player->active = true;
+			App->pickups->active = true;
+			App->walking_enemy->active = true;
+			App->map->active = true;
+		}
+
+		active_scene = scene;
 	}
-	if (scene == "GameOverScene")
-	{
-		App->scene->active = false;
-		App->title_scene->active = false;
-		App->game_over_scene->active = true;
-		App->logo_scene->active = false;
 
-		App->player->active = false;
-		App->pickups->active = false;
-		App->walking_enemy->active = false;
-		App->map->active = false;
-	}
-	if (scene == "LogoScene")
-	{
-		App->scene->active = false;
-		App->title_scene->active = false;
-		App->game_over_scene->active = false;
-		App->logo_scene->active = true;
-
-		App->player->active = false;
-		App->pickups->active = false;
-		App->walking_enemy->active = false;
-		App->map->active = false;
-	}
-	if (scene == "Scene")
-	{
-		App->scene->active = true;
-		App->title_scene->active = false;
-		App->game_over_scene->active = false;
-		App->logo_scene->active = false;
-
-		App->player->active = true;
-		App->pickups->active = true;
-		App->walking_enemy->active = true;
-		App->map->active = true;
-	}
-
-	active_scene = scene;
 	return true;
 }
