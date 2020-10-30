@@ -21,8 +21,15 @@ LogoScene::~LogoScene()
 {}
 
 // Called before render is available
-bool LogoScene::Awake()
+bool LogoScene::Awake(pugi::xml_node& config)
 {
+	logoRect.x = config.child("logoRect").attribute("x").as_int();
+	logoRect.y = config.child("logoRect").attribute("y").as_int();
+	logoRect.h = config.child("logoRect").attribute("h").as_int();
+	logoRect.w = config.child("logoRect").attribute("w").as_int();
+
+	duration = config.child("duration").attribute("value").as_float();
+
 	LOG("Loading LogoScene");
 	bool ret = true;
 
@@ -34,15 +41,15 @@ bool LogoScene::Start()
 {
 	App->fade_to_black->active_scene = "LogoScene";
 
-	accumulatedTime = 0.f;
-	duration = 20.0f;
+	accumulatedTime = 0.0f;
+	//duration = 20.0f;
 
-	logo_texture = App->tex->Load("Assets/textures/UI/uwu_logo.png");
+	logoTexture = App->tex->Load("Assets/textures/UI/uwu_logo.png");
 
-	logo_rect.h = 640;
-	logo_rect.w = 640;
-	logo_rect.x = 0;
-	logo_rect.y = 0;
+	//logoRect.h = 640;
+	//logoRect.w = 640;
+	//logoRect.x = 0;
+	//logoRect.y = 0;
 
 	App->render->camera.x = 0;
 	App->render->camera.y = 0;
@@ -63,8 +70,8 @@ bool LogoScene::Update(float dt)
 	App->render->camera.x = 0;
 	App->render->camera.y = 0;
 
-	SDL_SetTextureAlphaMod(logo_texture, accumulatedTime * 10.0f);
-	App->render->Blit(logo_texture, 275, 50, &logo_rect, false);
+	SDL_SetTextureAlphaMod(logoTexture, accumulatedTime * 10.0f);
+	App->render->Blit(logoTexture, 275, 50, &logoRect, false);
 
 	p2SString title("Metamorphosis - Camera:(%d,%d)", App->render->camera.x, App->render->camera.y);
 

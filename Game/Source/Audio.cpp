@@ -20,7 +20,7 @@ Audio::~Audio()
 // Called before render is available
 bool Audio::Awake(pugi::xml_node& config)
 {
-
+	volume = config.child("volume").attribute("value").as_float();
 	maxVolume = config.child("maxVolume").attribute("value").as_float();
 	
 	LOG("Loading Audio Mixer");
@@ -58,9 +58,6 @@ bool Audio::Awake(pugi::xml_node& config)
 
 bool Audio::Start()
 {
-	volume = 0.1f;
-
-
 	SetFxVolume(volume);
 	SetMusicVolume(volume);
 	return true;

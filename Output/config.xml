@@ -12,6 +12,7 @@
   </renderer>
 
   <audio>
+    <volume value ="0.1f"/>
     <maxVolume value ="1.0f"/>
   </audio>
 
@@ -23,9 +24,12 @@
     <fullscreen_window value="false"/>
   </window>
 
+ <LogoScene>
+    <duration value="20.0f"/>
+    <logoRect x="0" y="0" h="640" w="640"/>
+  </LogoScene>
+
   <scene>
-    <volume value="0.1f"/>
-    <maxVolume value="1.0f"/>
     <currentLevel value="1"/>
     <backgroundRect x="0" y="0" h="6816" w="3072"/>
     <cameraRect x="0" y="5000" h="-3800" w="-3150"/>

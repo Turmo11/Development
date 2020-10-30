@@ -15,7 +15,7 @@ public:
 	virtual ~LogoScene();
 
 	// Called before render is available
-	bool Awake();
+	bool Awake(pugi::xml_node& conf);
 
 	// Called before the first frame
 	bool Start();
@@ -39,8 +39,8 @@ public:
 
 private:
 
-	SDL_Rect		logo_rect;
-	SDL_Texture*	logo_texture;
+	SDL_Rect		logoRect;
+	SDL_Texture*	logoTexture;
 
 	float	accumulatedTime;
 	float	duration;
