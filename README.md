@@ -42,10 +42,10 @@ Here are some of the main features of the game
  
 ## Developers
 
-In this project we didn't have very defined roles, since we both worked on the project's design and programming, therefore we will only mention any additional roles
+In this project we didn't have very defined roles, since we both worked on the project's design and programming, however we still wrote them in order to mention any additional roles
 
- - [Guillem Turmo](<https://github.com/Turmo11>) - Art, Music
- - [Òscar Tarrés](<https://github.com/oscarta3>) - ~
+ - [Guillem Turmo](<https://github.com/Turmo11>) - Developer, Designer, Art, Music
+ - [Òscar Tarrés](<https://github.com/oscarta3>) - Developer, Designer
 
 
 ## License
