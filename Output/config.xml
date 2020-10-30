@@ -11,6 +11,10 @@
     <camera x="0" y="0"/>
   </renderer>
 
+  <audio>
+    <maxVolume value ="1.0f"/>
+  </audio>
+
   <window>
     <resolution width="1224" height="768" scale="1"/>
     <fullscreen value="false"/>

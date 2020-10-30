@@ -114,7 +114,7 @@ void GameOverScene::DebugKeys()
 	//Volume
 	if (App->input->GetKey(SDL_SCANCODE_KP_PLUS) == KEY_DOWN)
 	{
-		if (App->audio->volume < App->audio->max_volume)
+		if (App->audio->volume < App->audio->maxVolume)
 		{
 			App->audio->volume += 0.1f;
 			App->audio->SetFxVolume(App->audio->volume);
@@ -131,9 +131,9 @@ void GameOverScene::DebugKeys()
 			App->audio->SetMusicVolume(App->audio->volume);
 		}
 	}
-	if (App->audio->volume > App->audio->max_volume)
+	if (App->audio->volume > App->audio->maxVolume)
 	{
-		App->audio->volume = App->audio->max_volume;
+		App->audio->volume = App->audio->maxVolume;
 	}
 	if (App->audio->volume < 0.0f)
 	{
