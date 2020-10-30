@@ -2,7 +2,10 @@
 
 ## Description
 
-Metamorphosis is a 2D platformer game developed by two students from the [Bachelor's degrees in Video Game Design and Development at CITM/TTC](<https://www.citm.upc.edu/ing/estudis/graus-videojocs/>). 
+Metamorphosis is a 2D platformer game developed by a team of two students from the [Bachelor's degrees in Video Game Design and Development at CITM/TTC](<https://www.citm.upc.edu/ing/estudis/graus-videojocs/>). 
+
+<img src="https://github.com/Turmo11/Metamorphosis/blob/master/Screenshots/uwu_logo_black.png">
+
 
 This content was generated for the Game Development subject under the supervision of lecturer [Ramón Santamaria](<https://www.linkedin.com/in/raysan/>). 
 
