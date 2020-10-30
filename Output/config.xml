@@ -19,6 +19,15 @@
     <fullscreen_window value="false"/>
   </window>
 
+  <scene>
+    <volume value="0.1f"/>
+    <maxVolume value="1.0f"/>
+    <currentLevel value="1"/>
+    <backgroundRect x="0" y="0" h="6816" w="3072"/>
+    <cameraRect x="0" y="5000" h="-3800" w="-3150"/>
+    <levelCompleted value="false"/>
+  </scene>
+
   <player>
     <acceleration x="2" y="18"/>
     <gravity value="0.75" />
