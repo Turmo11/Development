@@ -25,7 +25,21 @@ Here are some of the main features of the game
 ### Player Movement
  - A/D - Horizontal Movement
  - W - Jump
-
+ - WASD - Movement when godmode activated
+ 
+### Debug Keys
+ - F1 - Start from the first level
+ - F2 - Start from the second level
+ - F3 - Start from the current level
+ - F4 - Toggle Fullscreen
+ - F7 - TitleScreen
+ - F8 - GameOverScreen
+ - F9 - Toggle DebugColliders
+ - F10 - Godmode
+ - - Turn volume down
+ - + Turn volume up
+ - * Automatically gather up all the pieces
+ 
 ## Developers
 
 In this project we didn't have very defined roles, since we both worked on the project's design and programming, therefore we will only mention any additional roles
@@ -37,5 +51,3 @@ In this project we didn't have very defined roles, since we both worked on the p
 ## License
 
 This project is licensed under an unmodified MIT license, which is an OSI-certified license that allows static linking with closed source software. Check [LICENSE](LICENSE) for further details.
-
-{AdditionalLicenses}
