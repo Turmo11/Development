@@ -46,9 +46,9 @@ Here are some of the main features of the game
  - F8 - GameOverScreen
  - F9 - Toggle DebugColliders
  - F10 - Godmode
- - - Turn volume down
- - + Turn volume up
- - * Automatically gather up all the pieces
+ - (-) Turn volume down
+ - (+) Turn volume up
+ - (*)  Automatically gather up all the pieces
  
 ## Developers
 
