@@ -7,8 +7,7 @@
 // This is needed here because SDL redefines main function
 // do not add any other libraries here, instead put them in their modules
 #include "External/SDL/include/SDL.h"
-//#pragma comment( lib, "External/SDL/libx86/SDL2.lib" )
-//#pragma comment( lib, "External/SDL/libx86/SDL2main.lib" )
+
 
 enum MainState
 {

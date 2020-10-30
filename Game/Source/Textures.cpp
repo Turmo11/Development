@@ -5,7 +5,6 @@
 #include "Textures.h"
 
 #include "External/SDL_image/include/SDL_image.h"
-//#pragma comment( lib, "External/SDL_image/libx86/SDL2_image.lib" )
 
 Textures::Textures() : Module()
 {

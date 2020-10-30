@@ -9,7 +9,7 @@
 
 struct Collider;
 
-enum class player_states {
+enum class PlayerStates {
 
 	IDLE = 0,
 	RUNNING,
@@ -24,7 +24,7 @@ enum class player_states {
 
 struct Player 
 {
-	player_states		current_state;
+	PlayerStates		current_state;
 
 	p2Point<float>		position;
 	p2Point<float>		speed;
@@ -112,13 +112,13 @@ public:
 
 private:
 
-	enum class ascending
+	enum class Ascending
 	{
 		NONE,
 		ASCENDING,
 		ASCENDED
 
-	} current_step = ascending::NONE;
+	} current_step = Ascending::NONE;
 
 	float x_axis, y_axis;
 	Uint32		start_time = 0;

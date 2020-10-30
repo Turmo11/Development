@@ -60,7 +60,7 @@ bool Collisions::PreUpdate() {
 			c2 = collider_iterator2->data;
 
 			if (c1 != c2) {
-				if (c1->CheckCollision(c2->rect) == true && (c1->type == object_type::PLAYER || c2->type == object_type::PLAYER))
+				if (c1->CheckCollision(c2->rect) == true && (c1->type == ObjectType::PLAYER || c2->type == ObjectType::PLAYER))
 				{
 					if (c1->callback)
 						c1->callback->OnCollision(c1, c2);
@@ -104,25 +104,25 @@ void Collisions::DebugDraw() {
 
 		switch (collider_iterator->data->type)
 		{
-		case object_type::PLAYER: // yellow
+		case ObjectType::PLAYER: // yellow
 			App->render->DrawQuad(collider_iterator->data->rect, 255, 255, 0, alpha);
 			break;
-		case object_type::GROUND: // light green
+		case ObjectType::GROUND: // light green
 			App->render->DrawQuad(collider_iterator->data->rect, 194, 255, 198, alpha);
 			break;
-		case object_type::PLATFORM: // light blue
+		case ObjectType::PLATFORM: // light blue
 			App->render->DrawQuad(collider_iterator->data->rect, 85, 170, 255, alpha);
 			break;
-		case object_type::LETTER: // pink
+		case ObjectType::LETTER: // pink
 			App->render->DrawQuad(collider_iterator->data->rect, 255, 0, 255, alpha);
 			break;
-		case object_type::ENEMY: // purple
+		case ObjectType::ENEMY: // purple
 			App->render->DrawQuad(collider_iterator->data->rect, 85, 0, 255, alpha);
 			break;
-		case object_type::GOAL: // red
+		case ObjectType::GOAL: // red
 			App->render->DrawQuad(collider_iterator->data->rect, 255, 0, 0, alpha);
 			break;
-		case object_type::DEATH: // black
+		case ObjectType::DEATH: // black
 			App->render->DrawQuad(collider_iterator->data->rect, 0, 0, 0, alpha);
 			break;
 
@@ -143,7 +143,7 @@ bool Collisions::CleanUp() {
 };
 
 
-Collider* Collisions::AddCollider(SDL_Rect rect, object_type type, Module* callback, Properties* userdata)
+Collider* Collisions::AddCollider(SDL_Rect rect, ObjectType type, Module* callback, Properties* userdata)
 {
 	Collider* ret = new Collider;
 

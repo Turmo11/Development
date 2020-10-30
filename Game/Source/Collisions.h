@@ -4,7 +4,7 @@
 #include "Module.h"
 #include "External/SDL/include/SDL.h"
 
-enum class object_type;
+enum class ObjectType;
 struct Object;
 struct Properties;
 
@@ -13,11 +13,11 @@ struct Collider
 {
 	SDL_Rect	rect;					//Collider box
 	bool		to_delete = false;			//deletes collider if true
-	object_type type;				//enum class collider type defined in map.h
+	ObjectType type;				//enum class collider type defined in map.h
 	Module*	callback = nullptr;	
 	Properties* userdata;
 
-	Collider(SDL_Rect rectangle, object_type type, Module* callback = nullptr) :
+	Collider(SDL_Rect rectangle, ObjectType type, Module* callback = nullptr) :
 		rect(rectangle),
 		type(type),
 		callback(callback)
@@ -61,7 +61,7 @@ public:
 	// Called before quitting
 	bool CleanUp();
 
-	Collider* AddCollider(SDL_Rect rect, object_type type, Module* callback, Properties* userdata = nullptr);
+	Collider* AddCollider(SDL_Rect rect, ObjectType type, Module* callback, Properties* userdata = nullptr);
 	void LoadFromMap(); //Loads colliders from tiled map
 	
 

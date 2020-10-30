@@ -43,7 +43,7 @@ struct Properties //Properties
 
 
 //Objects for collisions
-enum class object_type
+enum class ObjectType
 {
 	UNKNOWN = 0,
 	PLAYER,
@@ -59,7 +59,7 @@ struct Object
 {
 	uint				id;
 	p2SString			name;
-	object_type			type;
+	ObjectType			type;
 	SDL_Rect*			collider;
 	SDL_Texture*		texture;
 	Properties			properties;
@@ -148,7 +148,7 @@ struct TileSet
 
 };
 
-enum class map_types
+enum class MapTypes
 {
 	UNKNOWN = 0,
 	ORTHOGONAL,
@@ -167,7 +167,7 @@ struct MapData
 	p2Point<float>			starting_position;
 
 	SDL_Color				background_color;
-	map_types				type;
+	MapTypes				type;
 	p2List<TileSet*>		tilesets;
 	p2List<MapLayer*>		layers;
 	p2List<ObjectGroup*>	object_groups;

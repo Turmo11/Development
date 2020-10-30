@@ -85,7 +85,7 @@ void Pickups::CreatePickup(p2SString name, iPoint position)
 	new_pickup->pickup_hitbox.w = 32;
 	new_pickup->pickup_hitbox.h = 32;
 
-	new_pickup->pickup_collider = App->collisions->AddCollider(new_pickup->pickup_hitbox, object_type::LETTER, this);
+	new_pickup->pickup_collider = App->collisions->AddCollider(new_pickup->pickup_hitbox, ObjectType::LETTER, this);
 
 	new_pickup->collected = false;
 
@@ -110,7 +110,7 @@ void Pickups::DrawAnimations()
 
 void Pickups::OnCollision(Collider* A, Collider* B)
 {
-	if (A->type == object_type::LETTER && B->type == object_type::PLAYER)
+	if (A->type == ObjectType::LETTER && B->type == ObjectType::PLAYER)
 	{
 		A->to_delete = true;
 		GetCollected();

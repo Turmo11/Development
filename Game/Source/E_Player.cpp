@@ -62,7 +62,7 @@ bool E_Player::Load(pugi::xml_node& node) {
 	player.grounded = flags.attribute("playerGrounded").as_bool();
 	player.god_mode = flags.attribute("godmode").as_bool();
 
-	player.current_state = player_states::IDLE;
+	player.current_state = PlayerStates::IDLE;
 	player.disabled = false;
 
 	return true;
@@ -103,11 +103,11 @@ bool E_Player::PreUpdate()
 
 	if (!CheckAirborne()) //Setting grounded states
 	{
-		player.current_state = player_states::IDLE;
+		player.current_state = PlayerStates::IDLE;
 
 		if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT || App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT)
 		{
-			player.current_state = player_states::CROUCH;
+			player.current_state = PlayerStates::CROUCH;
 			player.able_to_drop = true;
 		}
 
@@ -116,12 +116,12 @@ bool E_Player::PreUpdate()
 			|| App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT
 			|| App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
 		{
-			player.current_state = player_states::RUNNING;
+			player.current_state = PlayerStates::RUNNING;
 		}
 
 		if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN) //Jump if not on godmode
 		{
-			player.current_state = player_states::JUMP;
+			player.current_state = PlayerStates::JUMP;
 			player.speed.y = 0;
 		}
 	}
@@ -164,7 +164,7 @@ bool E_Player::Update(float dt)
 			//State machine
 			switch (player.current_state)
 			{
-			case player_states::IDLE:
+			case PlayerStates::IDLE:
 
 				//LOG("Current State: IDLE");
 				player.animation = "idle";
@@ -172,27 +172,27 @@ bool E_Player::Update(float dt)
 
 
 				break;
-			case player_states::RUNNING:
+			case PlayerStates::RUNNING:
 
 				//LOG("Current State: RUNNING");
 				player.animation = "run";
 
 
 				break;
-			case player_states::CROUCH:
+			case PlayerStates::CROUCH:
 
 				//LOG("Current State: CROUCH");
 				//player.animation = "crouch";
 
 				break;
-			case player_states::JUMP:
+			case PlayerStates::JUMP:
 
 				//LOG("Current State: JUMP");
 				player.speed.y -= player.acceleration.y;
 				player.jumping = true;
 
 				break;
-			case player_states::FALL:
+			case PlayerStates::FALL:
 
 				//LOG("Current State: FALL");
 				player.jumping = true;
@@ -204,11 +204,11 @@ bool E_Player::Update(float dt)
 			if (player.grounded)
 			{
 				player.jumping = false;
-				player.current_state = player_states::IDLE;
+				player.current_state = PlayerStates::IDLE;
 			}
 			else
 			{
-				player.current_state = player_states::FALL;
+				player.current_state = PlayerStates::FALL;
 			}
 
 			//Jump logic
@@ -299,7 +299,7 @@ bool E_Player::SummonPlayer()
 
 	player.player_hitbox = { (int)player.position.x, (int)player.position.y, player.hitbox_width, player.hitbox_height };
 
-	player.player_collider = App->collisions->AddCollider(player.player_hitbox, object_type::PLAYER, this);
+	player.player_collider = App->collisions->AddCollider(player.player_hitbox, ObjectType::PLAYER, this);
 
 	//booleans
 	player.moving_right = false;
@@ -330,19 +330,19 @@ void E_Player::ResetPlayer()
 //Collisions
 void E_Player::OnCollision(Collider* A, Collider* B) {
 
-	if (B->type == object_type::PLAYER) {
+	if (B->type == ObjectType::PLAYER) {
 		Collider temp = *A;
 		A = B;
 		B = &temp;
 	}
-	if (A->type != object_type::PLAYER) {
+	if (A->type != ObjectType::PLAYER) {
 		return;
 	}
 
 	if (!player.god_mode && !player.disabled)
 	{
 		// ------------ Player Colliding with the ground ------------------
-		if (A->type == object_type::PLAYER && B->type == object_type::GROUND) {
+		if (A->type == ObjectType::PLAYER && B->type == ObjectType::GROUND) {
 
 			//Colliding from above
 			if (A->rect.y + A->rect.h - player.max_speed.y - 2 < B->rect.y
@@ -387,7 +387,7 @@ void E_Player::OnCollision(Collider* A, Collider* B) {
 		if (!player.able_to_drop)
 		{
 			// ------------ Player Colliding with platforms ------------------
-			if (A->type == object_type::PLAYER && B->type == object_type::PLATFORM) {
+			if (A->type == ObjectType::PLAYER && B->type == ObjectType::PLATFORM) {
 
 				//Colliding from above
 				if (A->rect.y + A->rect.h - player.max_speed.y - 5 < B->rect.y
@@ -409,7 +409,7 @@ void E_Player::OnCollision(Collider* A, Collider* B) {
 
 
 		// ------------ Player Colliding with death limit ------------------
-		if (A->type == object_type::PLAYER && B->type == object_type::DEATH) {
+		if (A->type == ObjectType::PLAYER && B->type == ObjectType::DEATH) {
 
 			//from above
 			if (A->rect.y + A->rect.h - player.max_speed.y - 5 < B->rect.y
@@ -429,7 +429,7 @@ void E_Player::OnCollision(Collider* A, Collider* B) {
 	if (App->scene->level_completed)
 	{
 		// ------------ Player Colliding with the goal ------------------
-		if (A->type == object_type::PLAYER && B->type == object_type::GOAL) {
+		if (A->type == ObjectType::PLAYER && B->type == ObjectType::GOAL) {
 
 			//Colliding from above
 			if (A->rect.y + A->rect.h - player.max_speed.y - 2 < B->rect.y
@@ -519,7 +519,7 @@ void E_Player::GodMode()
 //Checks if the player is in the air
 bool E_Player::CheckAirborne()
 {
-	if (player.current_state != player_states::JUMP && player.current_state != player_states::FALL)
+	if (player.current_state != PlayerStates::JUMP && player.current_state != PlayerStates::FALL)
 	{
 		return false;
 	}
@@ -586,9 +586,9 @@ void E_Player::Ascend(float time)
 
 	switch (current_step)
 	{
-	case ascending::NONE:
+	case Ascending::NONE:
 	{
-		current_step = ascending::ASCENDING;
+		current_step = Ascending::ASCENDING;
 		player.animation = "god";
 		start_time = SDL_GetTicks();
 		total_time = (Uint32)(time * 0.5f * 1000.0f);
@@ -600,21 +600,21 @@ void E_Player::Ascend(float time)
 		break;
 	}
 
-	case ascending::ASCENDING:
+	case Ascending::ASCENDING:
 	{
 		Uint32 now = SDL_GetTicks() - start_time;
 		if (now >= total_time)
 		{
 
-			current_step = ascending::ASCENDED;
+			current_step = Ascending::ASCENDED;
 		}
 		break;
 	}
-	case ascending::ASCENDED:
+	case Ascending::ASCENDED:
 	{
 		player.ascending = false;
 		App->fade_to_black->DoFadeToBlack(App->scene->current_level + 1);
-		current_step = ascending::NONE;
+		current_step = Ascending::NONE;
 	}
 	}
 

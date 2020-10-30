@@ -225,12 +225,12 @@ iPoint Map::MapToWorld(int x, int y) const
 {
 	iPoint ret;
 
-	if (data.type == map_types::ORTHOGONAL)
+	if (data.type == MapTypes::ORTHOGONAL)
 	{
 		ret.x = x * data.tile_width;
 		ret.y = y * data.tile_height;
 	}
-	else if (data.type == map_types::ISOMETRIC)
+	else if (data.type == MapTypes::ISOMETRIC)
 	{
 		ret.x = (x - y) * (data.tile_width * 0.5f);
 		ret.y = (x + y) * (data.tile_height * 0.5f);
@@ -248,12 +248,12 @@ iPoint Map::WorldToMap(int x, int y) const
 {
 	iPoint ret(0, 0);
 
-	if (data.type == map_types::ORTHOGONAL)
+	if (data.type == MapTypes::ORTHOGONAL)
 	{
 		ret.x = x / data.tile_width;
 		ret.y = y / data.tile_height;
 	}
-	else if (data.type == map_types::ISOMETRIC)
+	else if (data.type == MapTypes::ISOMETRIC)
 	{
 
 		float half_width = data.tile_width * 0.5f;
@@ -493,19 +493,19 @@ bool Map::LoadMap()
 
 		if (orientation == "orthogonal")
 		{
-			data.type = map_types::ORTHOGONAL;
+			data.type = MapTypes::ORTHOGONAL;
 		}
 		else if (orientation == "isometric")
 		{
-			data.type = map_types::ISOMETRIC;
+			data.type = MapTypes::ISOMETRIC;
 		}
 		else if (orientation == "staggered")
 		{
-			data.type = map_types::STAGGERED;
+			data.type = MapTypes::STAGGERED;
 		}
 		else
 		{
-			data.type = map_types::UNKNOWN;
+			data.type = MapTypes::UNKNOWN;
 		}
 	}
 
@@ -637,15 +637,15 @@ bool Map::LoadObjectLayers(pugi::xml_node& node, ObjectGroup* object_group)
 
 		if (type == "ground")
 		{
-		object_group->objects[i].type = object_type::GROUND;
+		object_group->objects[i].type = ObjectType::GROUND;
 		}
 		else if (type == "platform")
 		{
-			object_group->objects[i].type = object_type::PLATFORM;
+			object_group->objects[i].type = ObjectType::PLATFORM;
 		}
 		else if (type == "letter")
 		{
-			object_group->objects[i].type = object_type::LETTER;
+			object_group->objects[i].type = ObjectType::LETTER;
 
 			Properties::Property* temp = new Properties::Property;
 			temp->name = iterator_node.child("properties").child("property").attribute("name").as_string();
@@ -654,11 +654,11 @@ bool Map::LoadObjectLayers(pugi::xml_node& node, ObjectGroup* object_group)
 		}
 		else if (type == "enemy")
 		{
-			object_group->objects[i].type = object_type::ENEMY;
+			object_group->objects[i].type = ObjectType::ENEMY;
 		}
 		else if (type == "goal")
 		{
-			object_group->objects[i].type = object_type::GOAL;
+			object_group->objects[i].type = ObjectType::GOAL;
 
 			Properties::Property* temp = new Properties::Property;
 			temp->name = iterator_node.child("properties").child("property").attribute("name").as_string();
@@ -667,7 +667,7 @@ bool Map::LoadObjectLayers(pugi::xml_node& node, ObjectGroup* object_group)
 		}
 		else if (type == "death")
 		{
-			object_group->objects[i].type = object_type::DEATH;
+			object_group->objects[i].type = ObjectType::DEATH;
 			Properties::Property* temp = new Properties::Property;
 			temp->name = iterator_node.child("properties").child("property").attribute("name").as_string();
 			temp->data.v_string = iterator_node.child("properties").child("property").attribute("value").as_string();
@@ -675,7 +675,7 @@ bool Map::LoadObjectLayers(pugi::xml_node& node, ObjectGroup* object_group)
 		}
 		else
 		{
-			object_group->objects[i].type = object_type::UNKNOWN;
+			object_group->objects[i].type = ObjectType::UNKNOWN;
 		}
 
 	}

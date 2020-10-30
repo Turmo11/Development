@@ -73,7 +73,7 @@ void WalkingEnemy::CreateEnemy(enemy_type type, iPoint position)
 	new_enemy->hitbox.w = 38;
 	new_enemy->hitbox.h = 38;
 
-	new_enemy->collider = App->collisions->AddCollider(new_enemy->hitbox, object_type::ENEMY, this);
+	new_enemy->collider = App->collisions->AddCollider(new_enemy->hitbox, ObjectType::ENEMY, this);
 
 	new_enemy->dead = false;
 
@@ -101,7 +101,7 @@ void WalkingEnemy::DrawAnimations()
 
 void WalkingEnemy::OnCollision(Collider* A, Collider* B)
 {
-	if (A->type == object_type::ENEMY && B->type == object_type::PLAYER)
+	if (A->type == ObjectType::ENEMY && B->type == ObjectType::PLAYER)
 	{
 		A->to_delete = true;
 		GetKilled();
