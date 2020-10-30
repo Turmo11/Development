@@ -40,9 +40,9 @@ public:
 
 public:
 
-	int		currentLevel;
+	int				currentLevel;
 
-	bool	levelCompleted; //used to check if the player has collected all the pickups
+	bool			levelCompleted; //used to check if the player has collected all the pickups
 
 	SDL_Rect		cameraRect;
 	

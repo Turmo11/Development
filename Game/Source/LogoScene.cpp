@@ -39,17 +39,11 @@ bool LogoScene::Awake(pugi::xml_node& config)
 // Called before the first frame
 bool LogoScene::Start()
 {
-	App->fade_to_black->active_scene = "LogoScene";
+	App->fadeToBlack->activeScene = "LogoScene";
 
 	accumulatedTime = 0.0f;
-	//duration = 20.0f;
 
 	logoTexture = App->tex->Load("Assets/textures/UI/uwu_logo.png");
-
-	//logoRect.h = 640;
-	//logoRect.w = 640;
-	//logoRect.x = 0;
-	//logoRect.y = 0;
 
 	App->render->camera.x = 0;
 	App->render->camera.y = 0;
@@ -105,7 +99,7 @@ void LogoScene::DebugKeys()
 	//Debug keys
 	if (App->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN)
 	{
-		App->fade_to_black->FadeToBlackScene("TitleScene");
+		App->fadeToBlack->FadeToBlackScene("TitleScene");
 
 	}
 	if (App->input->GetKey(SDL_SCANCODE_F4) == KEY_DOWN)
@@ -149,8 +143,7 @@ void LogoScene::AutomaticTransition()
 
 	if (accumulatedTime >= duration)
 	{
-		App->fade_to_black->FadeToBlackScene("TitleScene");
-
+		App->fadeToBlack->FadeToBlackScene("TitleScene");
 	}
 }
 

@@ -1,5 +1,5 @@
-#ifndef __WALKING_ENEMY_H__
-#define __WALKING_ENEMY_H__
+#ifndef __walkingEnemy_H__
+#define __walkingEnemy_H__
 
 #include "p2Point.h"
 #include "External/PugiXml/src/pugixml.hpp"
@@ -29,7 +29,7 @@ struct Enemy
 
 	bool			dead;
 
-	AnimationInfo	anim_info;
+	AnimationInfo	animInfo;
 
 };
 
@@ -63,7 +63,6 @@ public:
 public:
 
 	p2List<Enemy*>	enemy_list;
-
 
 };
 

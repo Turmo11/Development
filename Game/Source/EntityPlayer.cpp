@@ -26,8 +26,8 @@ EntityPlayer::EntityPlayer() : Module()
 EntityPlayer::~EntityPlayer()
 {}
 
-bool EntityPlayer::Save(pugi::xml_node& node) const {
-
+bool EntityPlayer::Save(pugi::xml_node& node) const 
+{
 	LOG("Saving Player...");
 	pugi::xml_node position = node.append_child("position");
 	position.append_attribute("x") = player.position.x;
@@ -35,16 +35,16 @@ bool EntityPlayer::Save(pugi::xml_node& node) const {
 
 	pugi::xml_node flags = node.append_child("flags");
 	flags.append_attribute("jumping") = player.jumping;
-	flags.append_attribute("able_to_drop") = player.able_to_drop;
+	flags.append_attribute("ableToDrop") = player.ableToDrop;
 	flags.append_attribute("grounded") = player.grounded;
 	flags.append_attribute("flip") = player.flip;
-	flags.append_attribute("god_mode") = player.god_mode;
+	flags.append_attribute("godMode") = player.godMode;
 
 	return true;
 }
 
-bool EntityPlayer::Load(pugi::xml_node& node) {
-
+bool EntityPlayer::Load(pugi::xml_node& node) 
+{
 	LOG("Loading Player...");
 
 	player.disabled = true;
@@ -57,12 +57,12 @@ bool EntityPlayer::Load(pugi::xml_node& node) {
 	player.position.y = position.attribute("y").as_float() - 1;
 
 	pugi::xml_node flags = node.child("flags");
-	player.able_to_drop = flags.attribute("drop_plat").as_bool();
+	player.ableToDrop = flags.attribute("dropPlat").as_bool();
 	player.jumping = flags.attribute("jumping").as_bool();
 	player.grounded = flags.attribute("playerGrounded").as_bool();
-	player.god_mode = flags.attribute("godmode").as_bool();
+	player.godMode = flags.attribute("godMode").as_bool();
 
-	player.current_state = PlayerStates::IDLE;
+	player.currentState = PlayerStates::IDLE;
 	player.disabled = false;
 
 	return true;
@@ -72,18 +72,17 @@ bool EntityPlayer::Awake(pugi::xml_node& config)
 {
 	player.speed.x = config.child("speed").attribute("x").as_float();
 	player.speed.y = config.child("speed").attribute("y").as_float();
-	player.max_speed.x = config.child("max_speed").attribute("x").as_float();
-	player.max_speed.y = config.child("max_speed").attribute("y").as_float();
+	player.maxSpeed.x = config.child("maxSpeed").attribute("x").as_float();
+	player.maxSpeed.y = config.child("maxSpeed").attribute("y").as_float();
 	player.acceleration.x = config.child("acceleration").attribute("x").as_float();
 	player.acceleration.y = config.child("acceleration").attribute("y").as_float();
 
 	player.gravity = config.child("gravity").attribute("value").as_float();
 
-	player.hitbox_width = config.child("hitbox").attribute("w").as_int();
-	player.hitbox_height = config.child("hitbox").attribute("h").as_int();
+	player.hitboxWidth = config.child("hitbox").attribute("w").as_int();
+	player.hitboxHeight = config.child("hitbox").attribute("h").as_int();
 
 	return true;
-
 }
 
 bool EntityPlayer::Start()
@@ -103,12 +102,12 @@ bool EntityPlayer::PreUpdate()
 
 	if (!CheckAirborne()) //Setting grounded states
 	{
-		player.current_state = PlayerStates::IDLE;
+		player.currentState = PlayerStates::IDLE;
 
 		if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT || App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT)
 		{
-			player.current_state = PlayerStates::CROUCH;
-			player.able_to_drop = true;
+			player.currentState = PlayerStates::CROUCH;
+			player.ableToDrop = true;
 		}
 
 		if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT
@@ -116,23 +115,25 @@ bool EntityPlayer::PreUpdate()
 			|| App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT
 			|| App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
 		{
-			player.current_state = PlayerStates::RUNNING;
+			player.currentState = PlayerStates::RUNNING;
 		}
 
 		if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN) //Jump if not on godmode
 		{
-			player.current_state = PlayerStates::JUMP;
+			player.currentState = PlayerStates::JUMP;
 			player.speed.y = 0;
 		}
 	}
+
 	if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT) //If player has to drop from platform
 	{
-		player.able_to_drop = true;
+		player.ableToDrop = true;
 	}
 	else
 	{
-		player.able_to_drop = false;
+		player.ableToDrop = false;
 	}
+
 	if (App->input->GetKey(SDL_SCANCODE_F10) == KEY_DOWN) // Able/Disable GodMode
 	{
 		player.speed.x = 0;
@@ -140,6 +141,7 @@ bool EntityPlayer::PreUpdate()
 		GodMode();
 
 	}
+
 	return true;
 }
 
@@ -159,10 +161,10 @@ bool EntityPlayer::Update(float dt)
 
 		HorizontalMovement();
 
-		if (!player.god_mode)
+		if (!player.godMode)
 		{
 			//State machine
-			switch (player.current_state)
+			switch (player.currentState)
 			{
 			case PlayerStates::IDLE:
 
@@ -204,11 +206,11 @@ bool EntityPlayer::Update(float dt)
 			if (player.grounded)
 			{
 				player.jumping = false;
-				player.current_state = PlayerStates::IDLE;
+				player.currentState = PlayerStates::IDLE;
 			}
 			else
 			{
-				player.current_state = PlayerStates::FALL;
+				player.currentState = PlayerStates::FALL;
 			}
 
 			//Jump logic
@@ -216,9 +218,9 @@ bool EntityPlayer::Update(float dt)
 			{
 				player.speed.y += player.gravity; // Speed.y is +gravity when not grounded
 
-				if (player.speed.y >= player.max_speed.y) // Speed.y is capped an maxSpeed
+				if (player.speed.y >= player.maxSpeed.y) // Speed.y is capped an maxSpeed
 				{
-					player.speed.y = player.max_speed.y;
+					player.speed.y = player.maxSpeed.y;
 				}
 
 				if (player.speed.y < 0) // If on jump is going up uses jump animation
@@ -231,7 +233,7 @@ bool EntityPlayer::Update(float dt)
 				}
 			}
 
-			if (player.colliding_wall)
+			if (player.collidingWall)
 			{
 				player.speed.x = 0;
 			}
@@ -252,7 +254,6 @@ bool EntityPlayer::Update(float dt)
 		}
 	}
 
-
 	//Update position
 	player.position.y += player.speed.y;
 	player.position.x += player.speed.x;
@@ -260,12 +261,10 @@ bool EntityPlayer::Update(float dt)
 	//Draw player
 	App->map->DrawAnimation(player.animation, "playerx96", player.flip);
 
-
 	//Update player collider and position
+	player.playerCollider->SetPos(player.position.x + 30, player.position.y);
 
-	player.player_collider->SetPos(player.position.x + 30, player.position.y);
-
-	player.colliding_wall = false;
+	player.collidingWall = false;
 
 	SetCamera();
 	if (player.ascending)
@@ -288,30 +287,29 @@ bool EntityPlayer::PostUpdate()
 
 bool EntityPlayer::CleanUp()
 {
-
 	return true;
 }
 
 //Setting up the player on start
 bool EntityPlayer::SummonPlayer()
 {
-	player.position = App->map->data.starting_position;
+	player.position = App->map->data.startingPosition;
 
-	player.player_hitbox = { (int)player.position.x, (int)player.position.y, player.hitbox_width, player.hitbox_height };
+	player.playerHitbox = { (int)player.position.x, (int)player.position.y, player.hitboxWidth, player.hitboxHeight };
 
-	player.player_collider = App->collisions->AddCollider(player.player_hitbox, ObjectType::PLAYER, this);
+	player.playerCollider = App->collisions->AddCollider(player.playerHitbox, ObjectType::PLAYER, this);
 
 	//booleans
-	player.moving_right = false;
-	player.moving_left = false;
+	player.movingRight = false;
+	player.movingLeft = false;
 	player.jumping = false;
 	player.grounded = false;
-	player.colliding_wall = false;
-	player.able_to_drop = false;
+	player.collidingWall = false;
+	player.ableToDrop = false;
 
 	player.disabled = false;
 	player.locked = false;
-	player.god_mode = false;
+	player.godMode = false;
 	player.ascending = false;
 
 	player.flip = false;
@@ -322,14 +320,13 @@ bool EntityPlayer::SummonPlayer()
 //Setting up the player on death
 void EntityPlayer::ResetPlayer()
 {
-
-	player.player_collider->to_delete = true;
+	player.playerCollider->toDelete = true;
 	SummonPlayer();
 }
 
 //Collisions
-void EntityPlayer::OnCollision(Collider* A, Collider* B) {
-
+void EntityPlayer::OnCollision(Collider* A, Collider* B) 
+{
 	if (B->type == ObjectType::PLAYER) {
 		Collider temp = *A;
 		A = B;
@@ -339,13 +336,13 @@ void EntityPlayer::OnCollision(Collider* A, Collider* B) {
 		return;
 	}
 
-	if (!player.god_mode && !player.disabled)
+	if (!player.godMode && !player.disabled)
 	{
 		// ------------ Player Colliding with the ground ------------------
 		if (A->type == ObjectType::PLAYER && B->type == ObjectType::GROUND) {
 
 			//Colliding from above
-			if (A->rect.y + A->rect.h - player.max_speed.y - 2 < B->rect.y
+			if (A->rect.y + A->rect.h - player.maxSpeed.y - 2 < B->rect.y
 				&& A->rect.x < B->rect.x + B->rect.w
 				&& A->rect.x + A->rect.w > B->rect.x)
 			{
@@ -354,7 +351,7 @@ void EntityPlayer::OnCollision(Collider* A, Collider* B) {
 					player.speed.y = 0;
 				}
 
-				player.position.y = B->rect.y - player.player_collider->rect.h + 1;
+				player.position.y = B->rect.y - player.playerCollider->rect.h + 1;
 				player.grounded = true;
 				player.jumping = false;
 			}
@@ -362,7 +359,7 @@ void EntityPlayer::OnCollision(Collider* A, Collider* B) {
 			else if (A->rect.y + (A->rect.h * 1.0f / 4.0f) < B->rect.y + B->rect.h
 				&& A->rect.y + (A->rect.h * 3.0f / 4.0f) > B->rect.y)
 			{
-				player.colliding_wall = true;
+				player.collidingWall = true;
 				LOG("Touching WALL");
 
 				if ((A->rect.x + A->rect.w) < (B->rect.x + B->rect.w / 4))
@@ -379,18 +376,18 @@ void EntityPlayer::OnCollision(Collider* A, Collider* B) {
 			//from below
 			else if (A->rect.y < (B->rect.y + B->rect.h))
 			{
-				player.speed.y = player.max_speed.y / 8;
+				player.speed.y = player.maxSpeed.y / 8;
 				player.position.y = B->rect.y + B->rect.h;
 			}
 		}
 
-		if (!player.able_to_drop)
+		if (!player.ableToDrop)
 		{
 			// ------------ Player Colliding with platforms ------------------
 			if (A->type == ObjectType::PLAYER && B->type == ObjectType::PLATFORM) {
 
 				//Colliding from above
-				if (A->rect.y + A->rect.h - player.max_speed.y - 5 < B->rect.y
+				if (A->rect.y + A->rect.h - player.maxSpeed.y - 5 < B->rect.y
 					&& A->rect.x < B->rect.x + B->rect.w
 					&& A->rect.x + A->rect.w > B->rect.x)
 				{
@@ -399,7 +396,7 @@ void EntityPlayer::OnCollision(Collider* A, Collider* B) {
 						player.speed.y = 0;
 					}
 
-					player.position.y = B->rect.y - player.player_collider->rect.h + 1;
+					player.position.y = B->rect.y - player.playerCollider->rect.h + 1;
 					player.grounded = true;
 					player.jumping = false;
 				}
@@ -407,12 +404,11 @@ void EntityPlayer::OnCollision(Collider* A, Collider* B) {
 
 		}
 
-
 		// ------------ Player Colliding with death limit ------------------
 		if (A->type == ObjectType::PLAYER && B->type == ObjectType::DEATH) {
 
 			//from above
-			if (A->rect.y + A->rect.h - player.max_speed.y - 5 < B->rect.y
+			if (A->rect.y + A->rect.h - player.maxSpeed.y - 5 < B->rect.y
 				&& A->rect.x < B->rect.x + B->rect.w
 				&& A->rect.x + A->rect.w > B->rect.x)
 			{
@@ -421,7 +417,7 @@ void EntityPlayer::OnCollision(Collider* A, Collider* B) {
 					player.speed.y = 0;
 				}
 				ResetPlayer();
-				App->fade_to_black->FadeToBlackScene("GameOverScene");
+				App->fadeToBlack->FadeToBlackScene("GameOverScene");
 			}
 		}
 	}
@@ -432,7 +428,7 @@ void EntityPlayer::OnCollision(Collider* A, Collider* B) {
 		if (A->type == ObjectType::PLAYER && B->type == ObjectType::GOAL) {
 
 			//Colliding from above
-			if (A->rect.y + A->rect.h - player.max_speed.y - 2 < B->rect.y
+			if (A->rect.y + A->rect.h - player.maxSpeed.y - 2 < B->rect.y
 				&& A->rect.x < B->rect.x + B->rect.w
 				&& A->rect.x + A->rect.w > B->rect.x)
 			{
@@ -446,7 +442,6 @@ void EntityPlayer::OnCollision(Collider* A, Collider* B) {
 			}
 		}
 	}
-
 }
 
 //Handles movement on the x-axis and sets the proper flip
@@ -454,13 +449,13 @@ void EntityPlayer::HorizontalMovement()
 {
 	if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT /*|| App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT*/)
 	{
-		player.moving_right = true;
+		player.movingRight = true;
 		MoveRight();
 		player.flip = false;
 	}
 	else if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT /*|| App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT*/)
 	{
-		player.moving_left = true;
+		player.movingLeft = true;
 		MoveLeft();
 		player.flip = true;
 	}
@@ -475,51 +470,50 @@ void EntityPlayer::MoveRight() // Move Right the player at set speed
 {
 	player.speed.x += player.acceleration.x;
 
-	if (player.speed.x > player.max_speed.x)
+	if (player.speed.x > player.maxSpeed.x)
 	{
-		player.speed.x = player.max_speed.x;
+		player.speed.x = player.maxSpeed.x;
 	}
-
 }
 
 void EntityPlayer::MoveLeft() // Move Left the player at speed
 {
 	player.speed.x -= player.acceleration.x;
 
-	if (player.speed.x < -player.max_speed.x)
+	if (player.speed.x < -player.maxSpeed.x)
 	{
-		player.speed.x = -player.max_speed.x;
+		player.speed.x = -player.maxSpeed.x;
 	}
 }
 
 void EntityPlayer::MoveDown() // Move Right the player at set speed
 {
-	player.position.y += (player.max_speed.y);
+	player.position.y += (player.maxSpeed.y);
 }
 
 void EntityPlayer::MoveUp() // Move Right the player at set speed
 {
-	player.position.y -= (player.max_speed.y);
+	player.position.y -= (player.maxSpeed.y);
 }
 
 //Toggles god mode
 void EntityPlayer::GodMode()
 {
-	if (player.god_mode)
+	if (player.godMode)
 	{
-		player.god_mode = false;
+		player.godMode = false;
 	}
 	else
 	{
 		LOG("GodMode Activated!");
-		player.god_mode = true;
+		player.godMode = true;
 	}
 }
 
 //Checks if the player is in the air
 bool EntityPlayer::CheckAirborne()
 {
-	if (player.current_state != PlayerStates::JUMP && player.current_state != PlayerStates::FALL)
+	if (player.currentState != PlayerStates::JUMP && player.currentState != PlayerStates::FALL)
 	{
 		return false;
 	}
@@ -541,39 +535,37 @@ void EntityPlayer::SetCamera()
 	}
 	else
 	{
-		x_axis = (-player.position.x) + (App->win->screen_surface->w / 2);
-		y_axis = (-player.position.y) + (App->win->screen_surface->h * .5);
-
+		xAxis = (-player.position.x) + (App->win->screenSurface->w / 2);
+		yAxis = (-player.position.y) + (App->win->screenSurface->h * .5);
 
 		//Checks camera x limits
-		if (App->render->camera.x <= App->scene->cameraRect.x && App->render->camera.x >= (App->scene->cameraRect.w + App->win->screen_surface->w))
+		if (App->render->camera.x <= App->scene->cameraRect.x && App->render->camera.x >= (App->scene->cameraRect.w + App->win->screenSurface->w))
 		{
-			App->render->camera.x = (int)x_axis;
-
+			App->render->camera.x = (int)xAxis;
 		}
-		if (App->render->camera.x >= App->scene->cameraRect.x && player.position.x < (App->win->screen_surface->w / 2) + 1)
+
+		if (App->render->camera.x >= App->scene->cameraRect.x && player.position.x < (App->win->screenSurface->w / 2) + 1)
 		{
 			App->render->camera.x = App->scene->cameraRect.x - 1;
-
 		}
-		else if (player.position.x > (-(App->scene->cameraRect.w) - (App->win->screen_surface->w / 2)))
+		else if (player.position.x > (-(App->scene->cameraRect.w) - (App->win->screenSurface->w / 2)))
 		{
-			App->render->camera.x = App->scene->cameraRect.w + App->win->screen_surface->w + 2;
-
+			App->render->camera.x = App->scene->cameraRect.w + App->win->screenSurface->w + 2;
 		}
 
 		//Checks camera y limits
-		if (App->render->camera.y <= App->scene->cameraRect.y && App->render->camera.y >= (App->scene->cameraRect.h + App->win->screen_surface->h))
+		if (App->render->camera.y <= App->scene->cameraRect.y && App->render->camera.y >= (App->scene->cameraRect.h + App->win->screenSurface->h))
 		{
-			App->render->camera.y = (int)y_axis;
+			App->render->camera.y = (int)yAxis;
 		}
+
 		if (App->render->camera.y >= App->scene->cameraRect.y)
 		{
 			App->render->camera.y = App->scene->cameraRect.y;
 		}
-		else if (App->render->camera.y < (App->scene->cameraRect.h + App->win->screen_surface->h))
+		else if (App->render->camera.y < (App->scene->cameraRect.h + App->win->screenSurface->h))
 		{
-			App->render->camera.y = App->scene->cameraRect.h + App->win->screen_surface->h;;
+			App->render->camera.y = App->scene->cameraRect.h + App->win->screenSurface->h;;
 		}
 	}
 }
@@ -581,17 +573,16 @@ void EntityPlayer::SetCamera()
 //Player completes level
 void EntityPlayer::Ascend(float time)
 {
+	player.position.y -= (player.maxSpeed.y / 8);
 
-	player.position.y -= (player.max_speed.y / 8);
-
-	switch (current_step)
+	switch (currentStep)
 	{
 	case Ascending::NONE:
 	{
-		current_step = Ascending::ASCENDING;
+		currentStep = Ascending::ASCENDING;
 		player.animation = "god";
-		start_time = SDL_GetTicks();
-		total_time = (Uint32)(time * 0.5f * 1000.0f);
+		startTime = SDL_GetTicks();
+		totalTime = (Uint32)(time * 0.5f * 1000.0f);
 
 
 		player.locked = true;
@@ -602,27 +593,19 @@ void EntityPlayer::Ascend(float time)
 
 	case Ascending::ASCENDING:
 	{
-		Uint32 now = SDL_GetTicks() - start_time;
-		if (now >= total_time)
+		Uint32 now = SDL_GetTicks() - startTime;
+		if (now >= totalTime)
 		{
 
-			current_step = Ascending::ASCENDED;
+			currentStep = Ascending::ASCENDED;
 		}
 		break;
 	}
 	case Ascending::ASCENDED:
 	{
 		player.ascending = false;
-		App->fade_to_black->DoFadeToBlack(App->scene->currentLevel + 1);
-		current_step = Ascending::NONE;
+		App->fadeToBlack->DoFadeToBlack(App->scene->currentLevel + 1);
+		currentStep = Ascending::NONE;
 	}
 	}
-
-
-
-
-
-
-
-
 }

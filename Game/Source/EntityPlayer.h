@@ -24,11 +24,11 @@ enum class PlayerStates {
 
 struct Player 
 {
-	PlayerStates		current_state;
+	PlayerStates		currentState;
 
 	p2Point<float>		position;
 	p2Point<float>		speed;
-	p2Point<float>		max_speed;
+	p2Point<float>		maxSpeed;
 	p2Point<float>		acceleration;
 	
 	p2SString			animation;
@@ -36,25 +36,25 @@ struct Player
 	float				gravity;
 
 	//Booleans
-	bool				moving_right;
-	bool				moving_left;
+	bool				movingRight;
+	bool				movingLeft;
 	bool				jumping;
 	bool				grounded;
-	bool				colliding_wall;
-	bool				able_to_drop;
+	bool				collidingWall;
+	bool				ableToDrop;
 
 	bool				disabled;		//used during screen transitions or deaths when we want to take away the control from the player
 	bool				locked;			//used during cutscenes when we want to take away the control from the player
-	bool				god_mode;
+	bool				godMode;
 	bool				ascending;
 
 	bool				flip;			 //used to handle texture flips
 
 	//Collider
-	int					hitbox_width;
-	int					hitbox_height;
-	SDL_Rect			player_hitbox;
-	Collider*			player_collider;
+	int					hitboxWidth;
+	int					hitboxHeight;
+	SDL_Rect			playerHitbox;
+	Collider*			playerCollider;
 };
 
 // ----------------------------------------------------
@@ -118,11 +118,11 @@ private:
 		ASCENDING,
 		ASCENDED
 
-	} current_step = Ascending::NONE;
+	} currentStep = Ascending::NONE;
 
-	float x_axis, y_axis;
-	Uint32		start_time = 0;
-	Uint32		total_time = 0;
+	float xAxis, yAxis;
+	Uint32		startTime = 0;
+	Uint32		totalTime = 0;
 };
 
 

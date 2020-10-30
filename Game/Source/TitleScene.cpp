@@ -32,7 +32,7 @@ bool TitleScene::Awake()
 // Called before the first frame
 bool TitleScene::Start()
 {
-	App->fade_to_black->active_scene = "TitleScene";
+	App->fadeToBlack->activeScene = "TitleScene";
 
 	background = App->tex->Load("Assets/textures/UI/title.png");
 
@@ -43,8 +43,8 @@ bool TitleScene::Start()
 
 	App->audio->StopMusic();
 
-	App->render->camera.x = App->render->starting_cam_pos.x;
-	App->render->camera.y = App->render->starting_cam_pos.y;
+	App->render->camera.x = App->render->startingCamPos.x;
+	App->render->camera.y = App->render->startingCamPos.y;
 
 	return true;
 }
@@ -79,8 +79,6 @@ bool TitleScene::PostUpdate()
 		ret = false;
 
 	return ret;
-
-
 }
 
 // Called before quitting
@@ -96,16 +94,16 @@ void TitleScene::DebugKeys()
 	//Debug keys
 	if (App->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN)
 	{
-		App->fade_to_black->FadeToBlackScene("Scene");
+		App->fadeToBlack->FadeToBlackScene("Scene");
 		App->audio->ResumeMusic();
 	}
 	if (App->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN)
 	{
-		App->fade_to_black->DoFadeToBlack(1);
+		App->fadeToBlack->DoFadeToBlack(1);
 	}
 	if (App->input->GetKey(SDL_SCANCODE_F2) == KEY_DOWN)
 	{
-		App->fade_to_black->DoFadeToBlack(2);
+		App->fadeToBlack->DoFadeToBlack(2);
 	}
 	if (App->input->GetKey(SDL_SCANCODE_F4) == KEY_DOWN)
 	{

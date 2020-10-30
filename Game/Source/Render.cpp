@@ -43,12 +43,12 @@ bool Render::Awake(pugi::xml_node& config)
 	}
 	else
 	{
-		camera.w = App->win->screen_surface->w;
-		camera.h = App->win->screen_surface->h;
+		camera.w = App->win->screenSurface->w;
+		camera.h = App->win->screenSurface->h;
 		camera.x = config.child("camera").attribute("x").as_int();
 		camera.y = config.child("camera").attribute("y").as_int();
-		starting_cam_pos.x = camera.x;
-		starting_cam_pos.y = camera.y;
+		startingCamPos.x = camera.x;
+		startingCamPos.y = camera.y;
 		LOG("Successfully rendered, camera position = (%d, %d)", camera.x, camera.y);
 	}
 
@@ -78,15 +78,15 @@ bool Render::Update(float dt)
 
 bool Render::PostUpdate()
 {
-	if (App->fade_to_black->active_scene == "Scene")
+	if (App->fadeToBlack->activeScene == "Scene")
 	{
 		SDL_SetRenderDrawColor(renderer, 135, 206, 235, background.a);
 	}
-	else if (App->fade_to_black->active_scene == "TitleScene")
+	else if (App->fadeToBlack->activeScene == "TitleScene")
 	{
 		SDL_SetRenderDrawColor(renderer, 34, 32, 52, background.a);
 	}
-	else if (App->fade_to_black->active_scene == "GameOverScene")
+	else if (App->fadeToBlack->activeScene == "GameOverScene")
 	{
 		SDL_SetRenderDrawColor(renderer, 0, 0, 0, background.a);
 	}
@@ -142,7 +142,7 @@ void Render::ResetViewPort()
 
 // Blit to screen
 // Blit to screen
-bool Render::Blit(SDL_Texture* texture, int x, int y, const SDL_Rect* section, bool flip, float speed, double angle, int pivot_x, int pivot_y) const
+bool Render::Blit(SDL_Texture* texture, int x, int y, const SDL_Rect* section, bool flip, float speed, double angle, int pivotX, int pivotY) const
 {
 	bool ret = true;
 	uint scale = App->win->GetScale();
@@ -184,10 +184,10 @@ bool Render::Blit(SDL_Texture* texture, int x, int y, const SDL_Rect* section, b
 	SDL_Point* p = NULL;
 	SDL_Point pivot;
 
-	if (pivot_x != INT_MAX && pivot_y != INT_MAX)
+	if (pivotX != INT_MAX && pivotY != INT_MAX)
 	{
-		pivot.x = pivot_x;
-		pivot.y = pivot_y;
+		pivot.x = pivotX;
+		pivot.y = pivotY;
 		p = &pivot;
 	}
 
@@ -200,7 +200,7 @@ bool Render::Blit(SDL_Texture* texture, int x, int y, const SDL_Rect* section, b
 	return ret;
 }
 
-bool Render::DrawQuad(const SDL_Rect& rect, Uint8 r, Uint8 g, Uint8 b, Uint8 a, bool filled, bool use_camera) const
+bool Render::DrawQuad(const SDL_Rect& rect, Uint8 r, Uint8 g, Uint8 b, Uint8 a, bool filled, bool useCamera) const
 {
 	bool ret = true;
 	uint scale = App->win->GetScale();
@@ -209,7 +209,7 @@ bool Render::DrawQuad(const SDL_Rect& rect, Uint8 r, Uint8 g, Uint8 b, Uint8 a, 
 	SDL_SetRenderDrawColor(renderer, r, g, b, a);
 
 	SDL_Rect rec(rect);
-	if(use_camera)
+	if(useCamera)
 	{
 		rec.x = (int)(camera.x + rect.x * scale);
 		rec.y = (int)(camera.y + rect.y * scale);
@@ -228,7 +228,7 @@ bool Render::DrawQuad(const SDL_Rect& rect, Uint8 r, Uint8 g, Uint8 b, Uint8 a, 
 	return ret;
 }
 
-bool Render::DrawLine(int x1, int y1, int x2, int y2, Uint8 r, Uint8 g, Uint8 b, Uint8 a, bool use_camera) const
+bool Render::DrawLine(int x1, int y1, int x2, int y2, Uint8 r, Uint8 g, Uint8 b, Uint8 a, bool useCamera) const
 {
 	bool ret = true;
 	uint scale = App->win->GetScale();
@@ -238,7 +238,7 @@ bool Render::DrawLine(int x1, int y1, int x2, int y2, Uint8 r, Uint8 g, Uint8 b,
 
 	int result = -1;
 
-	if(use_camera)
+	if(useCamera)
 		result = SDL_RenderDrawLine(renderer, camera.x + x1 * scale, camera.y + y1 * scale, camera.x + x2 * scale, camera.y + y2 * scale);
 	else
 		result = SDL_RenderDrawLine(renderer, x1 * scale, y1 * scale, x2 * scale, y2 * scale);
@@ -252,7 +252,7 @@ bool Render::DrawLine(int x1, int y1, int x2, int y2, Uint8 r, Uint8 g, Uint8 b,
 	return ret;
 }
 
-bool Render::DrawCircle(int x, int y, int radius, Uint8 r, Uint8 g, Uint8 b, Uint8 a, bool use_camera) const
+bool Render::DrawCircle(int x, int y, int radius, Uint8 r, Uint8 g, Uint8 b, Uint8 a, bool useCamera) const
 {
 	bool ret = true;
 	uint scale = App->win->GetScale();

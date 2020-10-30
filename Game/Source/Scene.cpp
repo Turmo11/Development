@@ -48,20 +48,14 @@ bool Scene::Awake(pugi::xml_node& config)
 // Called before the first frame
 bool Scene::Start()
 {
-	App->fade_to_black->active_scene = "Scene";
-
-	backgroundRect.h = 6816;
-	backgroundRect.w = 3072;
-	backgroundRect.x = 0;
-	backgroundRect.y = 0;
+	App->fadeToBlack->activeScene = "Scene";
 
 	background = App->tex->Load("Assets/textures/tower.png");
 
-	currentLevel = 1;
 	SetUp(currentLevel);
 	
-	App->render->camera.x = App->render->starting_cam_pos.x;
-	App->render->camera.y = App->render->starting_cam_pos.y;
+	App->render->camera.x = App->render->startingCamPos.x;
+	App->render->camera.y = App->render->startingCamPos.y;
 
 	levelCompleted = false;
 	
@@ -93,7 +87,7 @@ bool Scene::Update(float dt)
 
 	p2SString title("Map:%dx%d Tiles:%dx%d Tilesets:%d Camera:(%d,%d) Player:(%.2f,%.2f)",
 					App->map->data.width, App->map->data.height,
-					App->map->data.tile_width, App->map->data.tile_height,
+					App->map->data.tileWidth, App->map->data.tileHeight,
 					App->map->data.tilesets.count(), App->render->camera.x, App->render->camera.y,
 					App->player->player.position.x, App->player->player.position.y);
 
@@ -104,16 +98,12 @@ bool Scene::Update(float dt)
 // Called each loop iteration
 bool Scene::PostUpdate()
 {
-	
-
 	bool ret = true;
 
 	if(App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
 		ret = false;
 
 	return ret;
-
-
 }
 
 // Called before quitting
@@ -126,15 +116,15 @@ bool Scene::CleanUp()
 
 void Scene::CheckLevelProgress()
 {
-	p2List_item<Pickup*>* pickup_iterator = App->pickups->pickup_list.start;
+	p2List_item<Pickup*>* pickupIterator = App->pickups->pickupList.start;
 
-	while (pickup_iterator != NULL)
+	while (pickupIterator != NULL)
 	{
-		if (!pickup_iterator->data->collected)
+		if (!pickupIterator->data->collected)
 		{
 			return;
 		}
-		pickup_iterator = pickup_iterator->next;
+		pickupIterator = pickupIterator->next;
 	}
 	levelCompleted = true;
 }
@@ -144,15 +134,15 @@ void Scene::DebugKeys()
 	//Debug keys
 	if (App->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN)
 	{
-		App->fade_to_black->DoFadeToBlack(1);
+		App->fadeToBlack->DoFadeToBlack(1);
 	}
 	if (App->input->GetKey(SDL_SCANCODE_F2) == KEY_DOWN)
 	{
-		App->fade_to_black->DoFadeToBlack(2);
+		App->fadeToBlack->DoFadeToBlack(2);
 	}
 	if (App->input->GetKey(SDL_SCANCODE_F3) == KEY_DOWN)
 	{
-		App->fade_to_black->DoFadeToBlack(currentLevel);
+		App->fadeToBlack->DoFadeToBlack(currentLevel);
 	}
 	if (App->input->GetKey(SDL_SCANCODE_F4) == KEY_DOWN)
 	{
@@ -168,11 +158,11 @@ void Scene::DebugKeys()
 	}
 	if (App->input->GetKey(SDL_SCANCODE_F7) == KEY_DOWN)
 	{
-		App->fade_to_black->FadeToBlackScene("TitleScene");
+		App->fadeToBlack->FadeToBlackScene("TitleScene");
 	}
 	if (App->input->GetKey(SDL_SCANCODE_F8) == KEY_DOWN)
 	{
-		App->fade_to_black->FadeToBlackScene("GameOverScene");
+		App->fadeToBlack->FadeToBlackScene("GameOverScene");
 	}
 	if (App->input->GetKey(SDL_SCANCODE_KP_MULTIPLY) == KEY_DOWN)
 	{
@@ -212,7 +202,7 @@ void Scene::DebugKeys()
 void Scene::SetUp(int level)
 {
 	App->pickups->CleanUp();
-	App->walking_enemy->CleanUp();
+	App->walkingEnemy->CleanUp();
 
 	LOG("SetUp level = %d", level);
 
@@ -244,8 +234,8 @@ void Scene::SetUp(int level)
 		App->pickups->CreatePickup("rho", { 2960, 784 });
 		App->pickups->CreatePickup("eta", { 656, 1936 });
 		App->pickups->SetGoal({ 1552, 656 });
-		//App->walking_enemy->CreateEnemy(EnemyType::SOUL, { 925, 3475 });
-		//App->walking_enemy->CreateEnemy(EnemyType::SOUL, { 976, 3536 });
+		//App->walkingEnemy->CreateEnemy(EnemyType::SOUL, { 925, 3475 });
+		//App->walkingEnemy->CreateEnemy(EnemyType::SOUL, { 976, 3536 });
 		break;
 
 	case 2:
@@ -266,8 +256,8 @@ void Scene::SetUp(int level)
 		//App->pickups->CreatePickup("rho", { 2960, 784 });
 		//App->pickups->CreatePickup("eta", { 656, 1936 });
 		//App->pickups->SetGoal({ 1552, 656 });
-		////App->walking_enemy->CreateEnemy(EnemyType::SOUL, { 925, 3475 });
-		//App->walking_enemy->CreateEnemy(EnemyType::SOUL, { 976, 3536 });
+		////App->walkingEnemy->CreateEnemy(EnemyType::SOUL, { 925, 3475 });
+		//App->walkingEnemy->CreateEnemy(EnemyType::SOUL, { 976, 3536 });
 		break;
 
 	default:

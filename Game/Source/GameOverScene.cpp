@@ -32,7 +32,7 @@ bool GameOverScene::Awake()
 // Called before the first frame
 bool GameOverScene::Start()
 {
-	App->fade_to_black->active_scene = "GameOverScene";
+	App->fadeToBlack->activeScene = "GameOverScene";
 
 	background = App->tex->Load("Assets/textures/UI/gameover.png");
 
@@ -78,8 +78,6 @@ bool GameOverScene::PostUpdate()
 		ret = false;
 
 	return ret;
-
-
 }
 
 // Called before quitting
@@ -95,16 +93,16 @@ void GameOverScene::DebugKeys()
 	//Debug keys
 	if (App->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN)
 	{
-		App->fade_to_black->FadeToBlackScene("TitleScene");
+		App->fadeToBlack->FadeToBlackScene("TitleScene");
 	
 	}
 	if (App->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN)
 	{
-		App->fade_to_black->DoFadeToBlack(1);
+		App->fadeToBlack->DoFadeToBlack(1);
 	}
 	if (App->input->GetKey(SDL_SCANCODE_F2) == KEY_DOWN)
 	{
-		App->fade_to_black->DoFadeToBlack(2);
+		App->fadeToBlack->DoFadeToBlack(2);
 	}
 	if (App->input->GetKey(SDL_SCANCODE_F4) == KEY_DOWN)
 	{

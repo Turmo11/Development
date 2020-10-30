@@ -22,6 +22,7 @@ public:
 	// Called before render is available
 	bool Awake(pugi::xml_node&);
 	bool Start();
+
 	// Called before quitting
 	bool CleanUp();
 
@@ -30,9 +31,10 @@ public:
 	bool Save(pugi::xml_node&) const;
 
 	// Play a music file
-	bool PlayMusic(const char* path, float fade_time = DEFAULT_MUSIC_FADE_TIME);
+	bool PlayMusic(const char* path, float fadeTime = DEFAULT_MUSIC_FADE_TIME);
 	void StopMusic();
 	void ResumeMusic();
+
 	// Load a WAV in memory
 	unsigned int LoadFx(const char* path);
 
@@ -40,8 +42,8 @@ public:
 	bool PlayFx(unsigned int fx, int repeat = 0);
 
 	// Set Volumes - If vol < 0 just return current value; 
-	int SetMusicVolume(float m_volume);
-	int SetFxVolume(float fx_volume);
+	int SetMusicVolume(float mVolume);
+	int SetFxVolume(float fxVolume);
 
 private:
 

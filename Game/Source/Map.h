@@ -10,9 +10,9 @@
 struct AnimationInfo;
 // ----------------------------------------------------
 union value {
-	const char*		v_string;
-	int				v_int;
-	float			v_float;
+	const char*		vString;
+	int				vInt;
+	float			vFloat;
 };
 
 struct Properties //Properties
@@ -27,18 +27,18 @@ struct Properties //Properties
 	Properties::~Properties()															//Deletes every property and frees all allocated memory.
 	{
 		p2List_item<Property*>* item;
-		item = property_list.start;
+		item = propertyList.start;
 		while (item != NULL)
 		{
 			RELEASE(item->data);
 			item = item->next;
 		}
-		property_list.clear();												//Clears property_list by deleting all items in the list and freeing all allocated memory.
+		propertyList.clear();												//Clears propertyList by deleting all items in the list and freeing all allocated memory.
 	}
 
-	value Get(const char* name, value* default_value = nullptr) const;
+	value Get(const char* name, value* defaultValue = nullptr) const;
 
-	p2List<Property*>	property_list;
+	p2List<Property*>	propertyList;
 };
 
 
@@ -70,14 +70,14 @@ struct ObjectGroup
 	uint				id;
 	p2SString			name;
 	Object*				objects;
-	uint				objects_size;
+	uint				objectsSize;
 };
 
 struct Animations
 {
 	p2SString			name = "idle";
 	uint				id;				//Tile which is animated
-	uint				n_frames;	//Number of frames of the animation
+	uint				nFrames;	//Number of frames of the animation
 	uint*				frames;
 	uint				speed;
 };
@@ -113,35 +113,35 @@ struct TileSet
 
 	p2SString			name;
 	int					firstgid;
-	int					tile_width;
-	int					tile_height;
+	int					tileWidth;
+	int					tileHeight;
 	int					margin;
 	int					spacing;
 	SDL_Texture*		texture;
-	int					tex_width;
-	int					tex_height;
-	int					num_tiles_width;
-	int					num_tiles_height;
-	int					offset_x;
-	int					offset_y;
+	int					texWidth;
+	int					texHeight;
+	int					numTilesWidth;
+	int					numTilesHeight;
+	int					offsetX;
+	int					offsetY;
 	p2List<Animations*> animations;
 
-	SDL_Rect* player_tile_rect = new SDL_Rect;
-	SDL_Rect* PlayerTileRect(uint tile_id) {
+	SDL_Rect* playerTileRect = new SDL_Rect;
+	SDL_Rect* PlayerTileRect(uint tileId) {
 
-		SDL_Rect* ret = player_tile_rect;
+		SDL_Rect* ret = playerTileRect;
 
-		int num_t_width = tex_width / tile_width;
-		int num_t_height = tex_height / tile_height;
+		int numTWidth = texWidth / tileWidth;
+		int numTHeight = texHeight / tileHeight;
 
-		int x = tile_id % num_t_width;
-		int y = tile_id / num_t_width;
+		int x = tileId % numTWidth;
+		int y = tileId / numTWidth;
 
 
-		ret->x = x * tile_width;
-		ret->y = y * tile_height;
-		ret->w = tile_width;
-		ret->h = tile_height;
+		ret->x = x * tileWidth;
+		ret->y = y * tileHeight;
+		ret->w = tileWidth;
+		ret->h = tileHeight;
 
 		return ret;
 	}
@@ -160,17 +160,17 @@ struct MapData
 {
 	int						width;
 	int						height;
-	int						tile_width;
-	int						tile_height;
+	int						tileWidth;
+	int						tileHeight;
 
 	p2SString				name;
-	p2Point<float>			starting_position;
+	p2Point<float>			startingPosition;
 
-	SDL_Color				background_color;
+	SDL_Color				backgroundColor;
 	MapTypes				type;
 	p2List<TileSet*>		tilesets;
 	p2List<MapLayer*>		layers;
-	p2List<ObjectGroup*>	object_groups;
+	p2List<ObjectGroup*>	objectGroups;
 };
 
 // ----------------------------------------------------
@@ -189,7 +189,7 @@ public:
 	// Called each loop iteration
 	void Draw();
 	void DrawAnimation(p2SString name, p2SString tileset, bool flip = false);
-	void DrawStaticAnimation(p2SString name, p2SString tileset, iPoint position, AnimationInfo* anim_info);
+	void DrawStaticAnimation(p2SString name, p2SString tileset, iPoint position, AnimationInfo* animInfo);
 	// Called before quitting
 	bool CleanUp();
 
@@ -206,12 +206,12 @@ public:
 private:
 
 	bool LoadMap();
-	bool LoadTilesetDetails(pugi::xml_node& tileset_node, TileSet* set);
-	bool LoadTilesetImage(pugi::xml_node& tileset_node, TileSet* set);
+	bool LoadTilesetDetails(pugi::xml_node& tilesetNode, TileSet* set);
+	bool LoadTilesetImage(pugi::xml_node& tilesetNode, TileSet* set);
 	bool LoadLayer(pugi::xml_node& node, MapLayer* layer);
 	bool LoadObjectLayers(pugi::xml_node& node, ObjectGroup* group);
 	bool LoadProperties(pugi::xml_node& node, Properties& properties);
-	bool LoadTilesetAnimation(pugi::xml_node& tileset_node, TileSet* set);
+	bool LoadTilesetAnimation(pugi::xml_node& tilesetNode, TileSet* set);
 
 
 
@@ -221,22 +221,22 @@ public:
 
 	MapData data;
 
-	float parallax_velocity = 0.05f;
+	float parallaxVelocity;
 
 private:
 
 	int i = 0;
 
-	int frame_count = 1;
+	int frameCount = 1;
 
-	pugi::xml_document	map_file;
+	pugi::xml_document	mapFile;
 	p2SString			folder;
-	bool				map_loaded;
+	bool				mapLoaded;
 
-	float parallax, normal_speed, second_parallax, third_parallax;
+	float parallax, normalSpeed, secondParallax;
 
-	p2SString prev_anim_name = "idle";
-	p2SString prev_s_anim_name;
+	p2SString prevAnimName = "idle";
+	p2SString prevSAnimName;
 };
 
 #endif // __MAP_H__

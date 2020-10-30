@@ -40,7 +40,7 @@
     <acceleration x="2" y="18"/>
     <gravity value="0.75" />
     <speed x="0" y="0" />
-    <max_speed x="10" y="50"/>
+    <maxSpeed x="10" y="50"/>
     <hitbox w="30" h="96"/>
   </player>
 
@@ -53,7 +53,7 @@
   <map>
     <folder>Assets/maps/</folder>
     <parallax value="0.6f"/>
-    <second_parallax value="0.2f"/>
-    <normal_speed value="1.0f"/>
+    <secondParallax value="0.2f"/>
+    <normalSpeed value="1.0f"/>
   </map>
 </config>

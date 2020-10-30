@@ -12,15 +12,15 @@ struct Properties;
 struct Collider
 {
 	SDL_Rect	rect;					//Collider box
-	bool		to_delete = false;			//deletes collider if true
-	ObjectType type;				//enum class collider type defined in map.h
-	Module*	callback = nullptr;	
-	Properties* userdata;
+	bool		toDelete = false;			//deletes collider if true
+	ObjectType	type;				//enum class collider type defined in map.h
+	Module*		callBack = nullptr;	
+	Properties* userData;
 
-	Collider(SDL_Rect rectangle, ObjectType type, Module* callback = nullptr) :
+	Collider(SDL_Rect rectangle, ObjectType type, Module* callBack = nullptr) :
 		rect(rectangle),
 		type(type),
-		callback(callback)
+		callBack(callBack)
 	{}
 
 	Collider(Object object);
@@ -61,7 +61,7 @@ public:
 	// Called before quitting
 	bool CleanUp();
 
-	Collider* AddCollider(SDL_Rect rect, ObjectType type, Module* callback, Properties* userdata = nullptr);
+	Collider* AddCollider(SDL_Rect rect, ObjectType type, Module* callBack, Properties* userData = nullptr);
 	void LoadFromMap(); //Loads colliders from tiled map
 	
 
@@ -72,7 +72,7 @@ private:
 public:
 
 	p2List<Collider*> colliders;
-	bool debug_colliders;
+	bool debugColliders;
 
 private:
 

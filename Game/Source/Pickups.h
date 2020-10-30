@@ -12,14 +12,14 @@ struct Collider;
 struct AnimationInfo
 {
 	int			i = 0;
-	p2SString	prev_s_anim_name = "shine";
-	float		frame_count = 1;
+	p2SString	prevSAnimName = "shine";
+	float		frameCount = 1;
 };
 
 struct Goal
 {
 	iPoint			position;
-	AnimationInfo	anim_info;
+	AnimationInfo	animInfo;
 };
 
 struct Pickup
@@ -27,12 +27,12 @@ struct Pickup
 	p2SString		name;
 
 	iPoint			position;
-	SDL_Rect		pickup_hitbox;
-	Collider*		pickup_collider;
+	SDL_Rect		pickupHitbox;
+	Collider*		pickupCollider;
 
 	bool			collected;
 
-	AnimationInfo	anim_info;
+	AnimationInfo	animInfo;
 
 };
 
@@ -68,9 +68,9 @@ public:
 
 public:
 
-	p2List<Pickup*>	pickup_list;
+	p2List<Pickup*>	pickupList;
 	
-	p2List<Goal*> goal_list;
+	p2List<Goal*> goalList;
 };
 
 #endif

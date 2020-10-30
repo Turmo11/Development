@@ -38,8 +38,8 @@ public:
 
 private:
 
-	SDL_Rect	backgroundRect;
-	SDL_Texture* background;
+	SDL_Rect		backgroundRect;
+	SDL_Texture*	background;
 
 };
 

@@ -24,6 +24,7 @@ bool Audio::Awake(pugi::xml_node& config)
 	maxVolume = config.child("maxVolume").attribute("value").as_float();
 	
 	LOG("Loading Audio Mixer");
+
 	bool ret = true;
 	SDL_Init(0);
 
@@ -109,7 +110,7 @@ bool Audio::CleanUp()
 }
 
 // Play a music file
-bool Audio::PlayMusic(const char* path, float fade_time)
+bool Audio::PlayMusic(const char* path, float fadeTime)
 {
 	bool ret = true;
 
@@ -118,9 +119,9 @@ bool Audio::PlayMusic(const char* path, float fade_time)
 
 	if (music != NULL)
 	{
-		if (fade_time > 0.0f)
+		if (fadeTime > 0.0f)
 		{
-			Mix_FadeOutMusic(int(fade_time * 1000.0f));
+			Mix_FadeOutMusic(int(fadeTime * 1000.0f));
 		}
 		else
 		{
@@ -140,9 +141,9 @@ bool Audio::PlayMusic(const char* path, float fade_time)
 	}
 	else
 	{
-		if (fade_time > 0.0f)
+		if (fadeTime > 0.0f)
 		{
-			if (Mix_FadeInMusic(music, -1, (int)(fade_time * 1000.0f)) < 0)
+			if (Mix_FadeInMusic(music, -1, (int)(fadeTime * 1000.0f)) < 0)
 			{
 				LOG("Cannot fade in music %s. Mix_GetError(): %s", path, Mix_GetError());
 				ret = false;
@@ -212,11 +213,11 @@ bool Audio::PlayFx(unsigned int id, int repeat)
 	return ret;
 }
 
-int Audio::SetMusicVolume(float m_volume)
+int Audio::SetMusicVolume(float mVolume)
 {
-	if (m_volume >= 0.0f)
+	if (mVolume >= 0.0f)
 	{
-		return Mix_VolumeMusic(MIX_MAX_VOLUME * m_volume);
+		return Mix_VolumeMusic(MIX_MAX_VOLUME * mVolume);
 	}
 	else 
 	{
@@ -224,11 +225,11 @@ int Audio::SetMusicVolume(float m_volume)
 	}
 }
 
-int Audio::SetFxVolume(float fx_volume)
+int Audio::SetFxVolume(float fxVolume)
 {
-	if (fx_volume >= 0.0f)
+	if (fxVolume >= 0.0f)
 	{
-		return Mix_Volume(-1, MIX_MAX_VOLUME * fx_volume);
+		return Mix_Volume(-1, MIX_MAX_VOLUME * fxVolume);
 	}
 	else
 	{

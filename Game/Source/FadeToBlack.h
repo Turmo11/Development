@@ -28,20 +28,20 @@ private:
 		FADE_TO,
 		FADE_FROM
 		
-	} current_step = FadeStep::NONE;
+	} currentStep = FadeStep::NONE;
 
 public:
 
-	int			next_level;
-	bool		fading_player;
-	bool		scene_switch;
+	int			nextLevel;
+	bool		fadingPlayer;
+	bool		sceneSwitch;
 	char*		wantToSwitchScene;
-	char*		active_scene;
+	char*		activeScene;
 
 private:
 	
-	Uint32		start_time = 0;
-	Uint32		total_time = 0;
+	Uint32		startTime = 0;
+	Uint32		totalTime = 0;
 	SDL_Rect	screen;
 	
 	

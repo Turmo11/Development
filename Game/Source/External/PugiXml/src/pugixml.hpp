@@ -870,13 +870,13 @@ namespace pugi
 		xml_tree_walker();
 		virtual ~xml_tree_walker();
 
-		// Callback that is called when traversal begins
+		// callback that is called when traversal begins
 		virtual bool begin(xml_node& node);
 
-		// Callback that is called for each node traversed
+		// callback that is called for each node traversed
 		virtual bool for_each(xml_node& node) = 0;
 
-		// Callback that is called when traversal ends
+		// callback that is called when traversal ends
 		virtual bool end(xml_node& node);
 	};
 

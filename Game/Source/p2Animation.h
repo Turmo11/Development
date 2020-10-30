@@ -43,18 +43,18 @@ public:
 	}
 
 
-	void PushBack(const SDL_Rect& rect, int offset_x = 0, int offset_y = 0)
+	void PushBack(const SDL_Rect& rect, int offsetX = 0, int offsetY = 0)
 	{
 		frames[last_frame] = rect;
-		offset[last_frame].x = offset_x;
-		offset[last_frame].y = offset_y;
+		offset[last_frame].x = offsetX;
+		offset[last_frame].y = offsetY;
 		last_frame++;
 	}
 
 	//NEW-------------------------------------
-	void SetOffset(int frame, int offset_x = 0, int offset_y = 0) {
-		offset[frame].x = offset_x;
-		offset[frame].y = offset_y;
+	void SetOffset(int frame, int offsetX = 0, int offsetY = 0) {
+		offset[frame].x = offsetX;
+		offset[frame].y = offsetY;
 	}
 
 	void SetSpeed(float new_speed) {

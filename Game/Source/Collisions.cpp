@@ -5,38 +5,36 @@
 #include "Input.h"
 #include "p2Log.h"
 
-Collisions::Collisions() : Module(), debug_colliders(false)
+Collisions::Collisions() : Module(), debugColliders(false)
 {
 	name.create("collisions");
-
 }
 
-bool Collisions::Init() {
-
+bool Collisions::Init()
+{
 	return true;
 };
 
-bool Collisions::Awake(pugi::xml_node& config) {
-
-
+bool Collisions::Awake(pugi::xml_node& config) 
+{
 	return true;
 };
 
-bool Collisions::Start() {
-
-	debug_colliders = false;
+bool Collisions::Start() 
+{
+	debugColliders = false;
 	LoadFromMap();
 
 	return true;
 };
 
-bool Collisions::PreUpdate() {
-
-	//Deletes any collider waiting to be destroyed (to_delete == true)
+bool Collisions::PreUpdate() 
+{
+	//Deletes any collider waiting to be destroyed (toDelete == true)
 	p2List_item<Collider*>* collider_iterator = colliders.start;
-	while (collider_iterator != nullptr) {
-
-		if (collider_iterator->data->to_delete == true)
+	while (collider_iterator != nullptr) 
+	{
+		if (collider_iterator->data->toDelete == true)
 		{
 			colliders.del(collider_iterator);
 		}
@@ -49,58 +47,66 @@ bool Collisions::PreUpdate() {
 	Collider* c2;
 
 	collider_iterator = colliders.start;
-	while (collider_iterator != nullptr) {
-
+	while (collider_iterator != nullptr) 
+	{
 		c1 = collider_iterator->data;
 
 		p2List_item<Collider*>* collider_iterator2 = colliders.start;
 
-		while (collider_iterator2 != nullptr) {
+		while (collider_iterator2 != nullptr) 
+		{
 
 			c2 = collider_iterator2->data;
 
-			if (c1 != c2) {
+			if (c1 != c2) 
+			{
 				if (c1->CheckCollision(c2->rect) == true && (c1->type == ObjectType::PLAYER || c2->type == ObjectType::PLAYER))
 				{
-					if (c1->callback)
-						c1->callback->OnCollision(c1, c2);
+					if (c1->callBack)
+						c1->callBack->OnCollision(c1, c2);
 
-					if (c2->callback)
-						c2->callback->OnCollision(c2, c1);
+					if (c2->callBack)
+						c2->callBack->OnCollision(c2, c1);
 				}
 			}
 			collider_iterator2 = collider_iterator2->next;
 		}
 		collider_iterator = collider_iterator->next;
 	}
+
 	return true;
 };
 
-bool Collisions::Update(float dt) {
-
+bool Collisions::Update(float dt) 
+{
 	DebugDraw();
 	//LOG("Collider mov test - Collider %d pos x = %d, y = %d", colliders.start->data->type, colliders.start->data->rect.x, colliders.start->data->rect.y);
+
 	return true;
 };
 
-void Collisions::DebugDraw() {
+void Collisions::DebugDraw() 
+{
 	if (App->input->GetKey(SDL_SCANCODE_F9) == KEY_DOWN)
 	{
-		if (debug_colliders)
+		if (debugColliders)
 		{
-			debug_colliders = false;
+			debugColliders = false;
 		}
 		else
 		{
-			debug_colliders = true;
+			debugColliders = true;
 		}
 	}
-	if (debug_colliders == false)
+
+	if (debugColliders == false)
 		return;
 
 	Uint8 alpha = 80; 	//Alpha value for all debug colliders
 	p2List_item<Collider*>* collider_iterator = colliders.start;
-	while (collider_iterator != nullptr) {
+
+	while (collider_iterator != nullptr) 
+	{
 
 		switch (collider_iterator->data->type)
 		{
@@ -129,28 +135,27 @@ void Collisions::DebugDraw() {
 		}
 		collider_iterator = collider_iterator->next;
 	}
-
 }
 
-bool Collisions::PostUpdate() {
-
+bool Collisions::PostUpdate() 
+{
 	return true;
 };
 
-bool Collisions::CleanUp() {
-
+bool Collisions::CleanUp() 
+{
 	return true;
 };
 
 
-Collider* Collisions::AddCollider(SDL_Rect rect, ObjectType type, Module* callback, Properties* userdata)
+Collider* Collisions::AddCollider(SDL_Rect rect, ObjectType type, Module* callBack, Properties* userData)
 {
 	Collider* ret = new Collider;
 
-	ret->callback = callback;
+	ret->callBack = callBack;
 	ret->rect = rect;
 	ret->type = type;
-	ret->userdata = userdata;
+	ret->userData = userData;
 
 	colliders.add(ret);
 
@@ -159,10 +164,11 @@ Collider* Collisions::AddCollider(SDL_Rect rect, ObjectType type, Module* callba
 
 
 //Loads colliders from tiled map
-void Collisions::LoadFromMap() {
-	p2List_item<ObjectGroup*>* list_i = App->map->data.object_groups.start;
+void Collisions::LoadFromMap() 
+{
+	p2List_item<ObjectGroup*>* list_i = App->map->data.objectGroups.start;
 	while (list_i != nullptr) {
-		for (int i = 0; i < list_i->data->objects_size; i++) {
+		for (int i = 0; i < list_i->data->objectsSize; i++) {
 
 			AddCollider(*list_i->data->objects[i].collider, list_i->data->objects[i].type, nullptr, &list_i->data->objects[i].properties);
 		}
@@ -173,13 +179,12 @@ void Collisions::LoadFromMap() {
 //  Struct Collider Methods --------------------------------------
 bool Collider::CheckCollision(const SDL_Rect& r) const
 {
-
 	return ((r.x + r.w > rect.x) && (r.x < rect.x + rect.w) &&
 		(r.y + r.h > rect.y) && (r.y < rect.y + rect.h));
-
 }
 
-Collider::Collider(Object object) {
+Collider::Collider(Object object) 
+{
 	rect = *object.collider;
 	type = object.type;
 }

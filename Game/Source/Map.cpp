@@ -8,7 +8,7 @@
 #include "Pickups.h"
 #include <math.h>
 
-Map::Map() : Module(), map_loaded(false)
+Map::Map() : Module(), mapLoaded(false)
 {
 	name.create("map");
 }
@@ -26,9 +26,8 @@ bool Map::Awake(pugi::xml_node& config)
 	folder.create(config.child("folder").child_value());
 
 	parallax = config.child("parallax").attribute("value").as_float();
-	second_parallax = config.child("second_parallax").attribute("value").as_float();
-	third_parallax = config.child("third_parallax").attribute("value").as_float();
-	normal_speed = config.child("normal_speed").attribute("value").as_float();
+	secondParallax = config.child("secondParallax").attribute("value").as_float();
+	normalSpeed = config.child("normalSpeed").attribute("value").as_float();
 
 	return ret;
 }
@@ -53,7 +52,7 @@ bool Map::Load(pugi::xml_node& node)
 
 void Map::Draw()
 {
-	if (map_loaded == false)
+	if (mapLoaded == false)
 		return;
 
 	// TODO 4: Make sure we draw all the layers and not just the first one
@@ -64,23 +63,23 @@ void Map::Draw()
 			for (int x = 0; x < data.width; ++x)
 			{
 				if (layer->data->name == "Parallax")
-					parallax_velocity = parallax;
+					parallaxVelocity = parallax;
 					
 				else if (layer->data->name == "SecondParallax")
-					parallax_velocity = second_parallax;
+					parallaxVelocity = secondParallax;
 				else
-					parallax_velocity = normal_speed;
+					parallaxVelocity = normalSpeed;
 
-				int tile_id = layer->data->Get(x, y);
-				if (tile_id > 0)
+				int tileId = layer->data->Get(x, y);
+				if (tileId > 0)
 				{
-					TileSet* tileset = GetTilesetFromTileId(tile_id);
+					TileSet* tileset = GetTilesetFromTileId(tileId);
 					if (tileset != nullptr)
 					{
-						SDL_Rect r = tileset->GetTileRect(tile_id);
+						SDL_Rect r = tileset->GetTileRect(tileId);
 						iPoint pos = MapToWorld(x, y);
 
-						App->render->Blit(tileset->texture, pos.x, pos.y, &r, SDL_FLIP_NONE, parallax_velocity);
+						App->render->Blit(tileset->texture, pos.x, pos.y, &r, SDL_FLIP_NONE, parallaxVelocity);
 					}
 				}
 			}
@@ -92,110 +91,110 @@ void Map::Draw()
 void Map::DrawAnimation(p2SString name, p2SString tileset, bool flip)
 {
 
-	TileSet* anim_tileset = nullptr;
+	TileSet* animTileset = nullptr;
 
-	p2List_item<TileSet*>* tileset_iterator = data.tilesets.start;
+	p2List_item<TileSet*>* tilesetIterator = data.tilesets.start;
 
-	while (tileset_iterator != NULL)
+	while (tilesetIterator != NULL)
 	{
-		if (tileset_iterator->data->name == tileset)
+		if (tilesetIterator->data->name == tileset)
 		{
-			anim_tileset = tileset_iterator->data;
+			animTileset = tilesetIterator->data;
 		}
-		tileset_iterator = tileset_iterator->next;
+		tilesetIterator = tilesetIterator->next;
 	}
 
 	// I have the adventurer Tileset inside I have animation
-	Animations* current_anim = nullptr;
+	Animations* currentAnim = nullptr;
 
-	p2List_item<Animations*>* anim_iterator;
-	anim_iterator = anim_tileset->animations.start;
+	p2List_item<Animations*>* animIterator;
+	animIterator = animTileset->animations.start;
 
-	while (anim_iterator)
+	while (animIterator)
 	{
-		if (name == anim_iterator->data->name)
+		if (name == animIterator->data->name)
 		{
-			current_anim = anim_iterator->data; //gets the animation with the name we sent
+			currentAnim = animIterator->data; //gets the animation with the name we sent
 		}
-		anim_iterator = anim_iterator->next;
+		animIterator = animIterator->next;
 	}
 
-	if (prev_anim_name != current_anim->name) // So that when animations change they start from frame 0
+	if (prevAnimName != currentAnim->name) // So that when animations change they start from frame 0
 	{
 		i = 0;
-		frame_count = 1;
+		frameCount = 1;
 	}
 
-	prev_anim_name = current_anim->name;
+	prevAnimName = currentAnim->name;
 
-	App->render->Blit(anim_tileset->texture,									//Texture of the animation(tileset) 
+	App->render->Blit(animTileset->texture,									//Texture of the animation(tileset) 
 	App->player->player.position.x, App->player->player.position.y,			//drawn at player position
-	anim_tileset->PlayerTileRect(current_anim->frames[i]), flip);			//draw frames tile id
+	animTileset->PlayerTileRect(currentAnim->frames[i]), flip);			//draw frames tile id
 
-	if (frame_count % (current_anim->speed / 10) == 0)	//counts frames each loop (60 fps using vsync) Magic Numbers
+	if (frameCount % (currentAnim->speed / 10) == 0)	//counts frames each loop (60 fps using vsync) Magic Numbers
 	{
 		i++;
 	}
-	if (i >= current_anim->n_frames)		//Iterate from 0 to n_frames (number of frames in animation)
+	if (i >= currentAnim->nFrames)		//Iterate from 0 to nFrames (number of frames in animation)
 	{				
 		i = 0;
 	}
 
-	frame_count++;
+	frameCount++;
 }
 
-void Map::DrawStaticAnimation(p2SString name, p2SString tileset, iPoint position, AnimationInfo* anim_info)
+void Map::DrawStaticAnimation(p2SString name, p2SString tileset, iPoint position, AnimationInfo* animInfo)
 {
 
-	TileSet* s_anim_tileset = nullptr;
+	TileSet* sAnimTileset = nullptr;
 
-	p2List_item<TileSet*>* tileset_iterator = data.tilesets.start;
+	p2List_item<TileSet*>* tilesetIterator = data.tilesets.start;
 
-	while (tileset_iterator != NULL)
+	while (tilesetIterator != NULL)
 	{
-		if (tileset_iterator->data->name == tileset)
+		if (tilesetIterator->data->name == tileset)
 		{
-			s_anim_tileset = tileset_iterator->data;
+			sAnimTileset = tilesetIterator->data;
 		}
-		tileset_iterator = tileset_iterator->next;
+		tilesetIterator = tilesetIterator->next;
 	}
 
-	Animations* current_anim = nullptr;
+	Animations* currentAnim = nullptr;
 
-	p2List_item<Animations*>* anim_iterator;
-	anim_iterator = s_anim_tileset->animations.start;
+	p2List_item<Animations*>* animIterator;
+	animIterator = sAnimTileset->animations.start;
 
-	while (anim_iterator)
+	while (animIterator)
 	{
-		if (name == anim_iterator->data->name)
+		if (name == animIterator->data->name)
 		{
-			current_anim = anim_iterator->data; //gets the animation with the name we sent
+			currentAnim = animIterator->data; //gets the animation with the name we sent
 		}
-		anim_iterator = anim_iterator->next;
+		animIterator = animIterator->next;
 	}
 
-	if (anim_info->prev_s_anim_name != current_anim->name) // So that when animations change they start from frame 0
+	if (animInfo->prevSAnimName != currentAnim->name) // So that when animations change they start from frame 0
 	{
-		anim_info->i = 0;
-		anim_info->frame_count = 1;
+		animInfo->i = 0;
+		animInfo->frameCount = 1;
 	}
 
-	anim_info->prev_s_anim_name = current_anim->name;
+	animInfo->prevSAnimName = currentAnim->name;
 
-	App->render->Blit(s_anim_tileset->texture, position.x - 16, position.y - 16, s_anim_tileset->PlayerTileRect(current_anim->frames[anim_info->i]));			
+	App->render->Blit(sAnimTileset->texture, position.x - 16, position.y - 16, sAnimTileset->PlayerTileRect(currentAnim->frames[animInfo->i]));			
 
-	if (anim_info->frame_count > current_anim->speed / 10)	//counts time for each frame of animation
+	if (animInfo->frameCount > currentAnim->speed / 10)	//counts time for each frame of animation
 	{
-		anim_info->i++;
-		anim_info->frame_count = 1;
+		animInfo->i++;
+		animInfo->frameCount = 1;
 	}
 
-	if (anim_info->i >= current_anim->n_frames)  //Iterate from 0 to nFrames (number of frames in animation)
+	if (animInfo->i >= currentAnim->nFrames)  //Iterate from 0 to nFrames (number of frames in animation)
 	{
-		anim_info->i = 0;
+		animInfo->i = 0;
 	}
 
-	anim_info->frame_count++;
+	animInfo->frameCount++;
 }
 
 
@@ -206,15 +205,18 @@ TileSet* Map::GetTilesetFromTileId(int id) const
 	TileSet* ret = nullptr;
 
 	p2List_item<TileSet*>* i = data.tilesets.start;
-	while (i->next != nullptr) {
+	while (i->next != nullptr) 
+	{
 
-		if (id >= i->data->firstgid && id < i->next->data->firstgid) {
+		if (id >= i->data->firstgid && id < i->next->data->firstgid) 
+		{
 			ret = i->data;
 			break;
 		}
 		i = i->next;
 	}
-	if (ret == nullptr) {
+	if (ret == nullptr) 
+	{
 		ret = data.tilesets.end->data;
 	}
 
@@ -227,13 +229,13 @@ iPoint Map::MapToWorld(int x, int y) const
 
 	if (data.type == MapTypes::ORTHOGONAL)
 	{
-		ret.x = x * data.tile_width;
-		ret.y = y * data.tile_height;
+		ret.x = x * data.tileWidth;
+		ret.y = y * data.tileHeight;
 	}
 	else if (data.type == MapTypes::ISOMETRIC)
 	{
-		ret.x = (x - y) * (data.tile_width * 0.5f);
-		ret.y = (x + y) * (data.tile_height * 0.5f);
+		ret.x = (x - y) * (data.tileWidth * 0.5f);
+		ret.y = (x + y) * (data.tileHeight * 0.5f);
 	}
 	else
 	{
@@ -250,16 +252,16 @@ iPoint Map::WorldToMap(int x, int y) const
 
 	if (data.type == MapTypes::ORTHOGONAL)
 	{
-		ret.x = x / data.tile_width;
-		ret.y = y / data.tile_height;
+		ret.x = x / data.tileWidth;
+		ret.y = y / data.tileHeight;
 	}
+
 	else if (data.type == MapTypes::ISOMETRIC)
 	{
-
-		float half_width = data.tile_width * 0.5f;
-		float half_height = data.tile_height * 0.5f;
-		ret.x = int((x / half_width + y / half_height) / 2);
-		ret.y = int((y / half_height - (x / half_width)) / 2);
+		float halfWidth = data.tileWidth * 0.5f;
+		float halfHeight = data.tileHeight * 0.5f;
+		ret.x = int((x / halfWidth + y / halfHeight) / 2);
+		ret.y = int((y / halfHeight - (x / halfWidth)) / 2);
 	}
 	else
 	{
@@ -272,12 +274,13 @@ iPoint Map::WorldToMap(int x, int y) const
 
 SDL_Rect TileSet::GetTileRect(int id) const
 {
-	int relative_id = id - firstgid;
+	int relativeId = id - firstgid;
 	SDL_Rect rect;
-	rect.w = tile_width;
-	rect.h = tile_height;
-	rect.x = margin + ((rect.w + spacing) * (relative_id % num_tiles_width));
-	rect.y = margin + ((rect.h + spacing) * (relative_id / num_tiles_width));
+	rect.w = tileWidth;
+	rect.h = tileHeight;
+	rect.x = margin + ((rect.w + spacing) * (relativeId % numTilesWidth));
+	rect.y = margin + ((rect.h + spacing) * (relativeId / numTilesWidth));
+
 	return rect;
 }
 
@@ -293,7 +296,7 @@ bool Map::CleanUp()
 	while (item != NULL)
 	{
 		item->data->animations.clear();
-		delete item->data->player_tile_rect;
+		delete item->data->playerTileRect;
 		
 
 		SDL_DestroyTexture(item->data->texture);
@@ -316,7 +319,7 @@ bool Map::CleanUp()
 
 	//Object cleanup
 	p2List_item<ObjectGroup*>* item3;
-	item3 = App->map->data.object_groups.start;
+	item3 = App->map->data.objectGroups.start;
 
 	while (item3 != NULL)
 	{
@@ -328,27 +331,27 @@ bool Map::CleanUp()
 		item3 = item3->next;
 	}
 
-	App->map->data.object_groups.clear();
+	App->map->data.objectGroups.clear();
 
 	// Clean up the pugui tree
-	map_file.reset();
+	mapFile.reset();
 
 	return true;
 }
 
 // Load new map
-bool Map::Load(const char* file_name)
+bool Map::Load(const char* fileCName)
 {
 	bool ret = true;
-	p2SString tmp("%s%s", folder.GetString(), file_name);
+	p2SString tmp("%s%s", folder.GetString(), fileCName);
 
-	p2SString* fileName = new p2SString(file_name);
+	p2SString* fileName = new p2SString(fileCName);
 
-	pugi::xml_parse_result result = map_file.load_file(tmp.GetString());
+	pugi::xml_parse_result result = mapFile.load_file(tmp.GetString());
 
 	if (result == NULL)
 	{
-		LOG("Could not load map xml file %s. pugi error: %s", file_name, result.description());
+		LOG("Could not load map xml file %s. pugi error: %s", fileCName, result.description());
 		ret = false;
 	}
 
@@ -361,7 +364,7 @@ bool Map::Load(const char* file_name)
 
 	// Load all tilesets info ----------------------------------------------
 	pugi::xml_node tileset;
-	for (tileset = map_file.child("map").child("tileset"); tileset && ret; tileset = tileset.next_sibling("tileset"))
+	for (tileset = mapFile.child("map").child("tileset"); tileset && ret; tileset = tileset.next_sibling("tileset"))
 	{
 		TileSet* set = new TileSet();
 
@@ -385,36 +388,36 @@ bool Map::Load(const char* file_name)
 
 	// Load layer info ----------------------------------------------
 	pugi::xml_node layer;
-	for (layer = map_file.child("map").child("layer"); layer && ret; layer = layer.next_sibling("layer"))
+	for (layer = mapFile.child("map").child("layer"); layer && ret; layer = layer.next_sibling("layer"))
 	{
-		MapLayer* map_layer = new MapLayer();
+		MapLayer* mapLayers = new MapLayer();
 
-		ret = LoadLayer(layer, map_layer);
+		ret = LoadLayer(layer, mapLayers);
 
 		if (ret == true)
-			data.layers.add(map_layer);
+			data.layers.add(mapLayers);
 	}
 
 	// Load Collider info
-	pugi::xml_node object_group;
+	pugi::xml_node objectGroup;
 
-	for (object_group = map_file.child("map").child("objectgroup"); object_group && ret; object_group = object_group.next_sibling("objectgroup"))
+	for (objectGroup = mapFile.child("map").child("objectgroup"); objectGroup && ret; objectGroup = objectGroup.next_sibling("objectgroup"))
 	{
-		ObjectGroup* new_object_group = new ObjectGroup();
+		ObjectGroup* newObjectGroup = new ObjectGroup();
 
 		if (ret == true)
 		{
-			ret = LoadObjectLayers(object_group, new_object_group);
+			ret = LoadObjectLayers(objectGroup, newObjectGroup);
 		}
 
-		data.object_groups.add(new_object_group);
+		data.objectGroups.add(newObjectGroup);
 	}
 
 	if (ret == true)
 	{
-		LOG("Successfully parsed map XML file: %s", file_name);
+		LOG("Successfully parsed map XML file: %s", fileCName);
 		LOG("width: %d height: %d", data.width, data.height);
-		LOG("tile_width: %d tile_height: %d", data.tile_width, data.tile_height);
+		LOG("tileWidth: %d tileHeight: %d", data.tileWidth, data.tileHeight);
 
 		p2List_item<TileSet*>* item = data.tilesets.start;
 		while (item != NULL)
@@ -422,23 +425,23 @@ bool Map::Load(const char* file_name)
 			TileSet* s = item->data;
 			LOG("Tileset ----");
 			LOG("name: %s firstgid: %d", s->name.GetString(), s->firstgid);
-			LOG("tile width: %d tile height: %d", s->tile_width, s->tile_height);
+			LOG("tile width: %d tile height: %d", s->tileWidth, s->tileHeight);
 			LOG("spacing: %d margin: %d", s->spacing, s->margin);
 			item = item->next;
 		}
 
-		p2List_item<MapLayer*>* item_layer = data.layers.start;
-		while (item_layer != NULL)
+		p2List_item<MapLayer*>* itemLayer = data.layers.start;
+		while (itemLayer != NULL)
 		{
-			MapLayer* l = item_layer->data;
+			MapLayer* l = itemLayer->data;
 			LOG("Layer ----");
 			LOG("name: %s", l->name.GetString());
 			LOG("tile width: %d tile height: %d", l->width, l->height);
-			item_layer = item_layer->next;
+			itemLayer = itemLayer->next;
 		}
 	}
 
-	map_loaded = ret;
+	mapLoaded = ret;
 
 	return ret;
 }
@@ -447,7 +450,7 @@ bool Map::Load(const char* file_name)
 bool Map::LoadMap()
 {
 	bool ret = true;
-	pugi::xml_node map = map_file.child("map");
+	pugi::xml_node map = mapFile.child("map");
 
 	if (map == NULL)
 	{
@@ -456,37 +459,37 @@ bool Map::LoadMap()
 	}
 	else
 	{
-		data.starting_position.x = map.child("properties").child("property").attribute("value").as_float();
-		data.starting_position.y = map.child("properties").child("property").next_sibling().attribute("value").as_float();
+		data.startingPosition.x = map.child("properties").child("property").attribute("value").as_float();
+		data.startingPosition.y = map.child("properties").child("property").next_sibling().attribute("value").as_float();
 
 		data.width = map.attribute("width").as_int();
 		data.height = map.attribute("height").as_int();
-		data.tile_width = map.attribute("tilewidth").as_int();
-		data.tile_height = map.attribute("tileheight").as_int();
-		p2SString bg_color(map.attribute("backgroundcolor").as_string());
+		data.tileWidth = map.attribute("tilewidth").as_int();
+		data.tileHeight = map.attribute("tileheight").as_int();
+		p2SString bgColor(map.attribute("backgroundcolor").as_string());
 
-		data.background_color.r = 0;
-		data.background_color.g = 0;
-		data.background_color.b = 0;
-		data.background_color.a = 0;
+		data.backgroundColor.r = 0;
+		data.backgroundColor.g = 0;
+		data.backgroundColor.b = 0;
+		data.backgroundColor.a = 0;
 
-		if (bg_color.Length() > 0)
+		if (bgColor.Length() > 0)
 		{
 			p2SString red, green, blue;
-			bg_color.SubString(1, 2, red);
-			bg_color.SubString(3, 4, green);
-			bg_color.SubString(5, 6, blue);
+			bgColor.SubString(1, 2, red);
+			bgColor.SubString(3, 4, green);
+			bgColor.SubString(5, 6, blue);
 
 			int v = 0;
 
 			sscanf_s(red.GetString(), "%x", &v);
-			if (v >= 0 && v <= 255) data.background_color.r = v;
+			if (v >= 0 && v <= 255) data.backgroundColor.r = v;
 
 			sscanf_s(green.GetString(), "%x", &v);
-			if (v >= 0 && v <= 255) data.background_color.g = v;
+			if (v >= 0 && v <= 255) data.backgroundColor.g = v;
 
 			sscanf_s(blue.GetString(), "%x", &v);
-			if (v >= 0 && v <= 255) data.background_color.b = v;
+			if (v >= 0 && v <= 255) data.backgroundColor.b = v;
 		}
 
 		p2SString orientation(map.attribute("orientation").as_string());
@@ -513,36 +516,36 @@ bool Map::LoadMap()
 }
 
 // Load Tileset data
-bool Map::LoadTilesetDetails(pugi::xml_node& tileset_node, TileSet* set)
+bool Map::LoadTilesetDetails(pugi::xml_node& tilesetNode, TileSet* set)
 {
 	bool ret = true;
-	set->name.create(tileset_node.attribute("name").as_string());
-	set->firstgid = tileset_node.attribute("firstgid").as_int();
-	set->tile_width = tileset_node.attribute("tilewidth").as_int();
-	set->tile_height = tileset_node.attribute("tileheight").as_int();
-	set->margin = tileset_node.attribute("margin").as_int();
-	set->spacing = tileset_node.attribute("spacing").as_int();
-	pugi::xml_node offset = tileset_node.child("tileoffset");
+	set->name.create(tilesetNode.attribute("name").as_string());
+	set->firstgid = tilesetNode.attribute("firstgid").as_int();
+	set->tileWidth = tilesetNode.attribute("tilewidth").as_int();
+	set->tileHeight = tilesetNode.attribute("tileheight").as_int();
+	set->margin = tilesetNode.attribute("margin").as_int();
+	set->spacing = tilesetNode.attribute("spacing").as_int();
+	pugi::xml_node offset = tilesetNode.child("tileoffset");
 
 	if (offset != NULL)
 	{
-		set->offset_x = offset.attribute("x").as_int();
-		set->offset_y = offset.attribute("y").as_int();
+		set->offsetX = offset.attribute("x").as_int();
+		set->offsetY = offset.attribute("y").as_int();
 	}
 	else
 	{
-		set->offset_x = 0;
-		set->offset_y = 0;
+		set->offsetX = 0;
+		set->offsetY = 0;
 	}
 
 	return ret;
 }
 
 //Load Tileset Image
-bool Map::LoadTilesetImage(pugi::xml_node& tileset_node, TileSet* set)
+bool Map::LoadTilesetImage(pugi::xml_node& tilesetNode, TileSet* set)
 {
 	bool ret = true;
-	pugi::xml_node image = tileset_node.child("image");
+	pugi::xml_node image = tilesetNode.child("image");
 
 	if (image == NULL)
 	{
@@ -554,22 +557,22 @@ bool Map::LoadTilesetImage(pugi::xml_node& tileset_node, TileSet* set)
 		set->texture = App->tex->Load(PATH(folder.GetString(), image.attribute("source").as_string()));
 		int w, h;
 		SDL_QueryTexture(set->texture, NULL, NULL, &w, &h);
-		set->tex_width = image.attribute("width").as_int();
+		set->texWidth = image.attribute("width").as_int();
 
-		if (set->tex_width <= 0)
+		if (set->texWidth <= 0)
 		{
-			set->tex_width = w;
+			set->texWidth = w;
 		}
 
-		set->tex_height = image.attribute("height").as_int();
+		set->texHeight = image.attribute("height").as_int();
 
-		if (set->tex_height <= 0)
+		if (set->texHeight <= 0)
 		{
-			set->tex_height = h;
+			set->texHeight = h;
 		}
 
-		set->num_tiles_width = set->tex_width / set->tile_width;
-		set->num_tiles_height = set->tex_height / set->tile_height;
+		set->numTilesWidth = set->texWidth / set->tileWidth;
+		set->numTilesHeight = set->texHeight / set->tileHeight;
 	}
 
 	return ret;
@@ -584,9 +587,9 @@ bool Map::LoadLayer(pugi::xml_node& node, MapLayer* layer)
 	layer->width = node.attribute("width").as_int();
 	layer->height = node.attribute("height").as_int();
 	LoadProperties(node, layer->properties);
-	pugi::xml_node layer_data = node.child("data");
+	pugi::xml_node layerData = node.child("data");
 
-	if (layer_data == NULL)
+	if (layerData == NULL)
 	{
 		LOG("Error parsing map xml file: Cannot find 'layer/data' tag.");
 		ret = false;
@@ -598,7 +601,7 @@ bool Map::LoadLayer(pugi::xml_node& node, MapLayer* layer)
 		memset(layer->data, 0, layer->width*layer->height);
 
 		int i = 0;
-		for (pugi::xml_node tile = layer_data.child("tile"); tile; tile = tile.next_sibling("tile"))
+		for (pugi::xml_node tile = layerData.child("tile"); tile; tile = tile.next_sibling("tile"))
 		{
 			layer->data[i++] = tile.attribute("gid").as_int(0);
 		}
@@ -608,74 +611,74 @@ bool Map::LoadLayer(pugi::xml_node& node, MapLayer* layer)
 }
 
 //Load object layer for colliders
-bool Map::LoadObjectLayers(pugi::xml_node& node, ObjectGroup* object_group)
+bool Map::LoadObjectLayers(pugi::xml_node& node, ObjectGroup* objectGroup)
 {
-	object_group->name = node.attribute("name").as_string();
-	object_group->id = node.attribute("id").as_uint();
+	objectGroup->name = node.attribute("name").as_string();
+	objectGroup->id = node.attribute("id").as_uint();
 
-	int AmountObjects = 0;
-	for (pugi::xml_node iterator_node = node.child("object"); iterator_node; iterator_node = iterator_node.next_sibling("object"), AmountObjects++) {}
+	int amountObjects = 0;
+	for (pugi::xml_node iteratorNode = node.child("object"); iteratorNode; iteratorNode = iteratorNode.next_sibling("object"), amountObjects++) {}
 
-	object_group->objects_size = AmountObjects;
-	object_group->objects = new Object[AmountObjects];
-	memset(object_group->objects, 0, AmountObjects * sizeof(Object));
+	objectGroup->objectsSize = amountObjects;
+	objectGroup->objects = new Object[amountObjects];
+	memset(objectGroup->objects, 0, amountObjects * sizeof(Object));
 
 	int i = 0;
-	for (pugi::xml_node iterator_node = node.child("object"); iterator_node; iterator_node = iterator_node.next_sibling("object"), i++) {
+	for (pugi::xml_node iteratorNode = node.child("object"); iteratorNode; iteratorNode = iteratorNode.next_sibling("object"), i++) {
 		SDL_Rect* collider = new SDL_Rect;
 
-		collider->x = iterator_node.attribute("x").as_uint();
-		collider->y = iterator_node.attribute("y").as_uint();
-		collider->w = iterator_node.attribute("width").as_uint();
-		collider->h = iterator_node.attribute("height").as_uint();
+		collider->x = iteratorNode.attribute("x").as_uint();
+		collider->y = iteratorNode.attribute("y").as_uint();
+		collider->w = iteratorNode.attribute("width").as_uint();
+		collider->h = iteratorNode.attribute("height").as_uint();
 
-		object_group->objects[i].collider = collider;
-		object_group->objects[i].id = iterator_node.attribute("id").as_uint();
-		object_group->objects[i].name = iterator_node.attribute("name").as_string();
+		objectGroup->objects[i].collider = collider;
+		objectGroup->objects[i].id = iteratorNode.attribute("id").as_uint();
+		objectGroup->objects[i].name = iteratorNode.attribute("name").as_string();
 
-		p2SString type(iterator_node.attribute("type").as_string());
+		p2SString type(iteratorNode.attribute("type").as_string());
 
 		if (type == "ground")
 		{
-		object_group->objects[i].type = ObjectType::GROUND;
+		objectGroup->objects[i].type = ObjectType::GROUND;
 		}
 		else if (type == "platform")
 		{
-			object_group->objects[i].type = ObjectType::PLATFORM;
+			objectGroup->objects[i].type = ObjectType::PLATFORM;
 		}
 		else if (type == "letter")
 		{
-			object_group->objects[i].type = ObjectType::LETTER;
+			objectGroup->objects[i].type = ObjectType::LETTER;
 
 			Properties::Property* temp = new Properties::Property;
-			temp->name = iterator_node.child("properties").child("property").attribute("name").as_string();
-			temp->data.v_string = iterator_node.child("properties").child("property").attribute("value").as_string();
-			object_group->objects[i].properties.property_list.add(temp);
+			temp->name = iteratorNode.child("properties").child("property").attribute("name").as_string();
+			temp->data.vString = iteratorNode.child("properties").child("property").attribute("value").as_string();
+			objectGroup->objects[i].properties.propertyList.add(temp);
 		}
 		else if (type == "enemy")
 		{
-			object_group->objects[i].type = ObjectType::ENEMY;
+			objectGroup->objects[i].type = ObjectType::ENEMY;
 		}
 		else if (type == "goal")
 		{
-			object_group->objects[i].type = ObjectType::GOAL;
+			objectGroup->objects[i].type = ObjectType::GOAL;
 
 			Properties::Property* temp = new Properties::Property;
-			temp->name = iterator_node.child("properties").child("property").attribute("name").as_string();
-			temp->data.v_string = iterator_node.child("properties").child("property").attribute("value").as_string();
-			object_group->objects[i].properties.property_list.add(temp);
+			temp->name = iteratorNode.child("properties").child("property").attribute("name").as_string();
+			temp->data.vString = iteratorNode.child("properties").child("property").attribute("value").as_string();
+			objectGroup->objects[i].properties.propertyList.add(temp);
 		}
 		else if (type == "death")
 		{
-			object_group->objects[i].type = ObjectType::DEATH;
+			objectGroup->objects[i].type = ObjectType::DEATH;
 			Properties::Property* temp = new Properties::Property;
-			temp->name = iterator_node.child("properties").child("property").attribute("name").as_string();
-			temp->data.v_string = iterator_node.child("properties").child("property").attribute("value").as_string();
-			object_group->objects[i].properties.property_list.add(temp);
+			temp->name = iteratorNode.child("properties").child("property").attribute("name").as_string();
+			temp->data.vString = iteratorNode.child("properties").child("property").attribute("value").as_string();
+			objectGroup->objects[i].properties.propertyList.add(temp);
 		}
 		else
 		{
-			object_group->objects[i].type = ObjectType::UNKNOWN;
+			objectGroup->objects[i].type = ObjectType::UNKNOWN;
 		}
 
 	}
@@ -700,7 +703,7 @@ bool Map::LoadProperties(pugi::xml_node& node, Properties& properties)							//R
 
 			p->name = property.attribute("name").as_string();
 
-			properties.property_list.add(p);
+			properties.propertyList.add(p);
 		}
 	}
 
@@ -708,9 +711,9 @@ bool Map::LoadProperties(pugi::xml_node& node, Properties& properties)							//R
 }
 
 // Returns a property
-value Properties::Get(const char* name, value* default_value) const
+value Properties::Get(const char* name, value* defaultValue) const
 {
-	p2List_item<Property*>* item = property_list.start;
+	p2List_item<Property*>* item = propertyList.start;
 
 	while (item)
 	{
@@ -719,39 +722,39 @@ value Properties::Get(const char* name, value* default_value) const
 		item = item->next;
 	}
 
-	return *default_value;
+	return *defaultValue;
 }
 
 // Load Animations from tileset
-bool Map::LoadTilesetAnimation(pugi::xml_node& tileset_node, TileSet* set)
+bool Map::LoadTilesetAnimation(pugi::xml_node& tilesetNode, TileSet* set)
 {
 	bool ret = true;
 
-	for (pugi::xml_node iterator_node = tileset_node.child("tile"); iterator_node; iterator_node = iterator_node.next_sibling("tile")) { //Iterator for all animation childs
+	for (pugi::xml_node iteratorNode = tilesetNode.child("tile"); iteratorNode; iteratorNode = iteratorNode.next_sibling("tile")) //Iterator for all animation childs
+	{ 
+		Animations* newAnimation = new Animations;
 
-		Animations* new_animation = new Animations;
+		newAnimation->id = iteratorNode.attribute("id").as_uint(); // Get the id of the animated tile
 
-		new_animation->id = iterator_node.attribute("id").as_uint(); // Get the id of the animated tile
+		newAnimation->name = iteratorNode.child("properties").child("property").attribute("name").as_string(); //Get the name of the animation inside extra attribute
 
-		new_animation->name = iterator_node.child("properties").child("property").attribute("name").as_string(); //Get the name of the animation inside extra attribute
+		newAnimation->name = iteratorNode.child("properties").child("property").attribute("value").as_string(); //Get the name of the animation inside extra attribute
 
-		new_animation->name = iterator_node.child("properties").child("property").attribute("value").as_string(); //Get the name of the animation inside extra attribute
+		newAnimation->frames = new uint[24]; // new array for frames
 
-		new_animation->frames = new uint[24]; // new array for frames
-
-		memset(new_animation->frames, 0, 24); // allocate the new array
+		memset(newAnimation->frames, 0, 24); // allocate the new array
 
 		int j = 0;
-		for (pugi::xml_node iterator_node_anim = iterator_node.child("animation").child("frame"); iterator_node_anim; j++) { //Enters the frame of the animation child inside the tile we are in
-
-			new_animation->frames[j] = iterator_node_anim.attribute("tileid").as_uint(); //Set frames ids
-			new_animation->speed = iterator_node_anim.attribute("duration").as_uint();//set animation speed
-			iterator_node_anim = iterator_node_anim.next_sibling("frame"); // next frame
+		for (pugi::xml_node iteratorNodeAnim = iteratorNode.child("animation").child("frame"); iteratorNodeAnim; j++) //Enters the frame of the animation child inside the tile we are in
+		{ 
+			newAnimation->frames[j] = iteratorNodeAnim.attribute("tileid").as_uint(); //Set frames ids
+			newAnimation->speed = iteratorNodeAnim.attribute("duration").as_uint();//set animation speed
+			iteratorNodeAnim = iteratorNodeAnim.next_sibling("frame"); // next frame
 		}
 
-		new_animation->n_frames = j;
+		newAnimation->nFrames = j;
 
-		set->animations.add(new_animation);
+		set->animations.add(newAnimation);
 	}
 
 	return ret;

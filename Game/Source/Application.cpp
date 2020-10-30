@@ -38,16 +38,16 @@ Application::Application(int argc, char* args[]) : argc(argc), args(args)
 	audio			= new Audio();
 	
 	scene			= new Scene();
-	title_scene		= new TitleScene();
-	game_over_scene = new GameOverScene();
+	titleScene		= new TitleScene();
+	gameOverScene   = new GameOverScene();
 	logo_scene		= new LogoScene();
 
 	map				= new Map();
 	player			= new EntityPlayer();
 	pickups			= new Pickups();
 	collisions		= new Collisions();
-	fade_to_black	= new FadeToBlack();
-	walking_enemy	= new WalkingEnemy();
+	fadeToBlack	    = new FadeToBlack();
+	walkingEnemy	= new WalkingEnemy();
 	
 	// Ordered for awake / Start / Update
 	// Reverse order of CleanUp
@@ -59,11 +59,11 @@ Application::Application(int argc, char* args[]) : argc(argc), args(args)
 
 	//player and scenes
 	AddModule(scene);
-	AddModule(game_over_scene);
-	AddModule(title_scene);
+	AddModule(gameOverScene);
+	AddModule(titleScene);
 	AddModule(logo_scene);
-	AddModule(walking_enemy);
-	AddModule(fade_to_black);
+	AddModule(walkingEnemy);
+	AddModule(fadeToBlack);
 	AddModule(pickups);
 	AddModule(player);
 
@@ -150,8 +150,8 @@ bool Application::Start()
 		item = item->next;
 	}
 	scene->active = false;
-	title_scene->active = false;
-	game_over_scene->active = false;
+	titleScene->active = false;
+	gameOverScene->active = false;
 	player->active = false;
 	pickups->active = false;
 	map->active = false;

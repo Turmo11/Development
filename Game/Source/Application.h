@@ -89,15 +89,15 @@ public:
 	Textures*		tex;
 	Audio*			audio;
 	Scene*			scene;
-	TitleScene*		title_scene;
-	GameOverScene*  game_over_scene;
+	TitleScene*		titleScene;
+	GameOverScene*  gameOverScene;
 	LogoScene*		logo_scene;
 	Map*			map;
-	EntityPlayer*		player;
+	EntityPlayer*	player;
 	Pickups*		pickups;
 	Collisions*		collisions;
-	WalkingEnemy*	walking_enemy;
-	FadeToBlack*	fade_to_black;
+	WalkingEnemy*	walkingEnemy;
+	FadeToBlack*	fadeToBlack;
 	
 
 private:

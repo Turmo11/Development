@@ -20,8 +20,6 @@ WalkingEnemy::~WalkingEnemy()
 
 bool WalkingEnemy::Start()
 {
-
-
 	return true;
 }
 
@@ -78,7 +76,6 @@ void WalkingEnemy::CreateEnemy(EnemyType type, iPoint position)
 	new_enemy->dead = false;
 
 	enemy_list.add(new_enemy);
-
 }
 
 void WalkingEnemy::DrawAnimations()
@@ -91,7 +88,7 @@ void WalkingEnemy::DrawAnimations()
 		{
 			if (enemy_iterator->data->type == EnemyType::SOUL)
 			{
-				App->map->DrawStaticAnimation("soul", "soul_enemyx64", enemy_iterator->data->position, &enemy_iterator->data->anim_info);
+				App->map->DrawStaticAnimation("soul", "soul_enemyx64", enemy_iterator->data->position, &enemy_iterator->data->animInfo);
 			}
 
 		}
@@ -103,7 +100,7 @@ void WalkingEnemy::OnCollision(Collider* A, Collider* B)
 {
 	if (A->type == ObjectType::ENEMY && B->type == ObjectType::PLAYER)
 	{
-		A->to_delete = true;
+		A->toDelete = true;
 		GetKilled();
 	}
 }
@@ -114,7 +111,7 @@ void WalkingEnemy::GetKilled()
 
 	while (enemy_iterator != NULL)
 	{
-		if (enemy_iterator->data->collider->to_delete)
+		if (enemy_iterator->data->collider->toDelete)
 		{
 			enemy_iterator->data->dead = true;
 			
