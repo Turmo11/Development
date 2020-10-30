@@ -61,3 +61,5 @@ In this project we didn't have very defined roles, since we both worked on the p
 ## License
 
 This project is licensed under an unmodified MIT license, which is an OSI-certified license that allows static linking with closed source software. Check [LICENSE](LICENSE) for further details.
+
+All of the assets including the sprites, UI and music is licensed under a [Creative Commons Attribution 4.0 International License](https://creativecommons.org/licenses/by/4.0/).
