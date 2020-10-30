@@ -64,6 +64,25 @@ bool Audio::Start()
 	return true;
 }
 
+// Load Game State
+bool Audio::Load(pugi::xml_node& data)
+{
+	volume = data.attribute("volume").as_float();
+	SetFxVolume(volume);
+	SetMusicVolume(volume);
+	LOG("Loading Volume");
+	return true;
+}
+
+// Save Game State
+bool Audio::Save(pugi::xml_node& data) const
+{
+	data.append_attribute("volume") = volume;
+
+	return true;
+}
+
+
 // Called before quitting
 bool Audio::CleanUp()
 {

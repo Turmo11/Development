@@ -41,7 +41,7 @@ bool Scene::Start()
 	background_rect.x = 0;
 	background_rect.y = 0;
 
-	background = App->tex->Load("Assets/textures/tower3.png");
+	background = App->tex->Load("Assets/textures/tower.png");
 
 	current_level = 1;
 	SetUp(current_level);

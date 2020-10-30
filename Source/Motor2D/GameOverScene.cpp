@@ -34,7 +34,7 @@ bool GameOverScene::Start()
 {
 	App->fade_to_black->active_scene = "GameOverScene";
 
-	background = App->tex->Load("Assets/textures/gameover.png");
+	background = App->tex->Load("Assets/textures/UI/gameover.png");
 
 	background_rect.h = 512;
 	background_rect.w = 1024;
@@ -56,6 +56,7 @@ bool GameOverScene::PreUpdate()
 // Called each loop iteration
 bool GameOverScene::Update(float dt)
 {
+	App->audio->StopMusic();
 	DebugKeys();
 	App->render->camera.x = 0;
 	App->render->camera.y = 0;

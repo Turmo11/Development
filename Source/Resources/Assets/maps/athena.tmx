@@ -36,49 +36,7 @@
    </animation>
   </tile>
  </tileset>
- <tileset firstgid="67" name="playerx96" tilewidth="96" tileheight="96" tilecount="32" columns="4">
-  <image source="../textures/player/playerx96.png" width="384" height="768"/>
-  <tile id="0">
-   <properties>
-    <property name="idle" value="idle"/>
-   </properties>
-   <animation>
-    <frame tileid="0" duration="150"/>
-    <frame tileid="1" duration="150"/>
-    <frame tileid="2" duration="150"/>
-    <frame tileid="3" duration="150"/>
-    <frame tileid="4" duration="150"/>
-    <frame tileid="5" duration="150"/>
-    <frame tileid="6" duration="150"/>
-   </animation>
-  </tile>
-  <tile id="8">
-   <properties>
-    <property name="run" value="run"/>
-   </properties>
-   <animation>
-    <frame tileid="8" duration="70"/>
-    <frame tileid="9" duration="70"/>
-    <frame tileid="10" duration="70"/>
-    <frame tileid="11" duration="70"/>
-    <frame tileid="12" duration="70"/>
-    <frame tileid="13" duration="70"/>
-    <frame tileid="14" duration="70"/>
-    <frame tileid="15" duration="70"/>
-   </animation>
-  </tile>
-  <tile id="16">
-   <properties>
-    <property name="god" value="god"/>
-   </properties>
-   <animation>
-    <frame tileid="16" duration="100"/>
-    <frame tileid="17" duration="100"/>
-    <frame tileid="18" duration="100"/>
-   </animation>
-  </tile>
- </tileset>
- <tileset firstgid="99" name="letter_tileset" tilewidth="64" tileheight="64" tilecount="40" columns="5">
+ <tileset firstgid="67" name="letter_tileset" tilewidth="64" tileheight="64" tilecount="40" columns="5">
   <image source="../textures/letters/athena.png" width="320" height="512"/>
   <tile id="0">
    <properties>
@@ -149,7 +107,7 @@
    </animation>
   </tile>
  </tileset>
- <tileset firstgid="139" name="soul_enemyx64" tilewidth="64" tileheight="64" tilecount="12" columns="4">
+ <tileset firstgid="107" name="soul_enemyx64" tilewidth="64" tileheight="64" tilecount="12" columns="4">
   <image source="../textures/enemies/soul_enemyx64.png" width="256" height="192"/>
   <tile id="0">
    <properties>
@@ -171,7 +129,7 @@
    </animation>
   </tile>
  </tileset>
- <tileset firstgid="151" name="playerx96" tilewidth="96" tileheight="96" tilecount="32" columns="4">
+ <tileset firstgid="119" name="playerx96" tilewidth="96" tileheight="96" tilecount="32" columns="4">
   <image source="../textures/player/playerx96.png" width="384" height="768"/>
   <tile id="0">
    <properties>
