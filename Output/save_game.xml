@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<game_state>
+	<input />
+	<window />
+	<textures />
+	<audio volume="0.600000024" />
+	<map>
+		<map_name filename="tutorial.tmx" />
+	</map>
+	<scene />
+	<GameOverScene />
+	<TitleScene />
+	<LogoScene />
+	<enemy />
+	<fade />
+	<pickups />
+	<player>
+		<position x="440" y="3489" />
+		<flags jumping="false" able_to_drop="false" grounded="true" flip="false" god_mode="false" />
+	</player>
+	<collisions />
+	<renderer>
+		<camera x="-1" y="-3032" />
+	</renderer>
+</game_state>

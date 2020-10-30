@@ -1,0 +1,42 @@
+<!-- Config file for the game -->
+
+<config>
+  <app>
+    <title>Metamorphosis</title>
+    <organization>UPC</organization>
+  </app>
+	
+  <renderer>
+    <vsync value="true"/>
+    <camera x="0" y="0"/>
+  </renderer>
+
+  <window>
+    <resolution width="1224" height="768" scale="1"/>
+    <fullscreen value="false"/>
+    <borderless value="false"/>
+    <resizable value="false"/>
+    <fullscreen_window value="false"/>
+  </window>
+
+  <player>
+    <acceleration x="2" y="18"/>
+    <gravity value="0.75" />
+    <speed x="0" y="0" />
+    <max_speed x="10" y="50"/>
+    <hitbox w="30" h="96"/>
+  </player>
+
+  <file_system>
+    <path>data.zip</path>
+    <load_file>save_game.xml</load_file>
+    <save_file>save_game.xml</save_file>
+  </file_system>
+
+  <map>
+    <folder>Assets/maps/</folder>
+    <parallax value="0.6f"/>
+    <second_parallax value="0.2f"/>
+    <normal_speed value="1.0f"/>
+  </map>
+</config>
