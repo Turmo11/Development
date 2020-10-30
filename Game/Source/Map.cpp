@@ -4,7 +4,7 @@
 #include "Render.h"
 #include "Textures.h"
 #include "Map.h"
-#include "E_PLayer.h"
+#include "EntityPlayer.h"
 #include "Pickups.h"
 #include <math.h>
 

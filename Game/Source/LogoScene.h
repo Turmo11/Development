@@ -1,5 +1,5 @@
-#ifndef __LogoScene_H__
-#define __LogoScene_H__
+#ifndef __LOGO_SCENE_H__
+#define __LOGO_SCENE_H__
 
 #include "Module.h"
 

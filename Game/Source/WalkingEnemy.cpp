@@ -57,7 +57,7 @@ bool WalkingEnemy::CleanUp()
 	return true;
 }
 
-void WalkingEnemy::CreateEnemy(enemy_type type, iPoint position)
+void WalkingEnemy::CreateEnemy(EnemyType type, iPoint position)
 {
 	Enemy* new_enemy = new Enemy;
 
@@ -89,7 +89,7 @@ void WalkingEnemy::DrawAnimations()
 	{
 		if (!enemy_iterator->data->dead)
 		{
-			if (enemy_iterator->data->type == enemy_type::SOUL)
+			if (enemy_iterator->data->type == EnemyType::SOUL)
 			{
 				App->map->DrawStaticAnimation("soul", "soul_enemyx64", enemy_iterator->data->position, &enemy_iterator->data->anim_info);
 			}

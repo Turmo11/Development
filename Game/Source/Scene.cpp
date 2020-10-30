@@ -8,7 +8,7 @@
 #include "Window.h"
 #include "Map.h"
 #include "Scene.h"
-#include "E_PLayer.h"
+#include "EntityPlayer.h"
 #include "Pickups.h"
 #include "WalkingEnemy.h"
 #include "FadeToBlack.h"
@@ -232,8 +232,8 @@ void Scene::SetUp(int level)
 		App->pickups->CreatePickup("rho", { 2960, 784 });
 		App->pickups->CreatePickup("eta", { 656, 1936 });
 		App->pickups->SetGoal({ 1552, 656 });
-		//App->walking_enemy->CreateEnemy(enemy_type::SOUL, { 925, 3475 });
-		//App->walking_enemy->CreateEnemy(enemy_type::SOUL, { 976, 3536 });
+		//App->walking_enemy->CreateEnemy(EnemyType::SOUL, { 925, 3475 });
+		//App->walking_enemy->CreateEnemy(EnemyType::SOUL, { 976, 3536 });
 		break;
 
 	case 2:
@@ -255,8 +255,8 @@ void Scene::SetUp(int level)
 		//App->pickups->CreatePickup("rho", { 2960, 784 });
 		//App->pickups->CreatePickup("eta", { 656, 1936 });
 		//App->pickups->SetGoal({ 1552, 656 });
-		////App->walking_enemy->CreateEnemy(enemy_type::SOUL, { 925, 3475 });
-		//App->walking_enemy->CreateEnemy(enemy_type::SOUL, { 976, 3536 });
+		////App->walking_enemy->CreateEnemy(EnemyType::SOUL, { 925, 3475 });
+		//App->walking_enemy->CreateEnemy(EnemyType::SOUL, { 976, 3536 });
 		break;
 
 	default:

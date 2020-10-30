@@ -1,6 +1,6 @@
 
-#ifndef __Player_H__
-#define __Player_H__
+#ifndef __PLAYER_H__
+#define __PLAYER_H__
 
 #include "External/PugiXml/src/pugixml.hpp"
 #include "p2List.h"
@@ -58,15 +58,15 @@ struct Player
 };
 
 // ----------------------------------------------------
-class E_Player : public Module
+class EntityPlayer : public Module
 {
 public:
 
 	//Constructor
-	E_Player();
+	EntityPlayer();
 
 	// Destructor
-	virtual ~E_Player();
+	virtual ~EntityPlayer();
 
 	//Save and Load
 	bool Save(pugi::xml_node&) const;
@@ -102,7 +102,7 @@ public:
 
 	bool CheckAirborne();
 
-	void E_Player::OnCollision(Collider* A, Collider* B);
+	void EntityPlayer::OnCollision(Collider* A, Collider* B);
 
 	void SetCamera();
 

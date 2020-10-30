@@ -4,7 +4,7 @@
 #include "Render.h"
 #include "Audio.h"
 #include "Textures.h"
-#include "E_Player.h"
+#include "EntityPlayer.h"
 #include "Window.h"
 #include "Map.h"
 #include "Input.h"
@@ -17,16 +17,16 @@
 #include <time.h>
 
 
-E_Player::E_Player() : Module()
+EntityPlayer::EntityPlayer() : Module()
 {
 	name.create("player");
 }
 
 // Destructor
-E_Player::~E_Player()
+EntityPlayer::~EntityPlayer()
 {}
 
-bool E_Player::Save(pugi::xml_node& node) const {
+bool EntityPlayer::Save(pugi::xml_node& node) const {
 
 	LOG("Saving Player...");
 	pugi::xml_node position = node.append_child("position");
@@ -43,7 +43,7 @@ bool E_Player::Save(pugi::xml_node& node) const {
 	return true;
 }
 
-bool E_Player::Load(pugi::xml_node& node) {
+bool EntityPlayer::Load(pugi::xml_node& node) {
 
 	LOG("Loading Player...");
 
@@ -68,7 +68,7 @@ bool E_Player::Load(pugi::xml_node& node) {
 	return true;
 }
 
-bool E_Player::Awake(pugi::xml_node& config)
+bool EntityPlayer::Awake(pugi::xml_node& config)
 {
 	player.speed.x = config.child("speed").attribute("x").as_float();
 	player.speed.y = config.child("speed").attribute("y").as_float();
@@ -86,13 +86,13 @@ bool E_Player::Awake(pugi::xml_node& config)
 
 }
 
-bool E_Player::Start()
+bool EntityPlayer::Start()
 {
 	SummonPlayer();
 	return true;
 }
 
-bool E_Player::PreUpdate()
+bool EntityPlayer::PreUpdate()
 {
 	if (player.disabled) //if the player is disable, it stops updating the logic
 	{
@@ -143,7 +143,7 @@ bool E_Player::PreUpdate()
 	return true;
 }
 
-bool E_Player::Update(float dt)
+bool EntityPlayer::Update(float dt)
 {
 	if (player.disabled) //if the player is disable, it stops updating the logic
 	{
@@ -276,7 +276,7 @@ bool E_Player::Update(float dt)
 	return true;
 }
 
-bool E_Player::PostUpdate()
+bool EntityPlayer::PostUpdate()
 {
 	if (player.disabled) //if the player is disable, it stops updating the logic
 	{
@@ -286,14 +286,14 @@ bool E_Player::PostUpdate()
 	return true;
 }
 
-bool E_Player::CleanUp()
+bool EntityPlayer::CleanUp()
 {
 
 	return true;
 }
 
 //Setting up the player on start
-bool E_Player::SummonPlayer()
+bool EntityPlayer::SummonPlayer()
 {
 	player.position = App->map->data.starting_position;
 
@@ -320,7 +320,7 @@ bool E_Player::SummonPlayer()
 }
 
 //Setting up the player on death
-void E_Player::ResetPlayer()
+void EntityPlayer::ResetPlayer()
 {
 
 	player.player_collider->to_delete = true;
@@ -328,7 +328,7 @@ void E_Player::ResetPlayer()
 }
 
 //Collisions
-void E_Player::OnCollision(Collider* A, Collider* B) {
+void EntityPlayer::OnCollision(Collider* A, Collider* B) {
 
 	if (B->type == ObjectType::PLAYER) {
 		Collider temp = *A;
@@ -450,7 +450,7 @@ void E_Player::OnCollision(Collider* A, Collider* B) {
 }
 
 //Handles movement on the x-axis and sets the proper flip
-void E_Player::HorizontalMovement()
+void EntityPlayer::HorizontalMovement()
 {
 	if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT /*|| App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT*/)
 	{
@@ -471,7 +471,7 @@ void E_Player::HorizontalMovement()
 }
 
 //Movement basic functions
-void E_Player::MoveRight() // Move Right the player at set speed
+void EntityPlayer::MoveRight() // Move Right the player at set speed
 {
 	player.speed.x += player.acceleration.x;
 
@@ -482,7 +482,7 @@ void E_Player::MoveRight() // Move Right the player at set speed
 
 }
 
-void E_Player::MoveLeft() // Move Left the player at speed
+void EntityPlayer::MoveLeft() // Move Left the player at speed
 {
 	player.speed.x -= player.acceleration.x;
 
@@ -492,18 +492,18 @@ void E_Player::MoveLeft() // Move Left the player at speed
 	}
 }
 
-void E_Player::MoveDown() // Move Right the player at set speed
+void EntityPlayer::MoveDown() // Move Right the player at set speed
 {
 	player.position.y += (player.max_speed.y);
 }
 
-void E_Player::MoveUp() // Move Right the player at set speed
+void EntityPlayer::MoveUp() // Move Right the player at set speed
 {
 	player.position.y -= (player.max_speed.y);
 }
 
 //Toggles god mode
-void E_Player::GodMode()
+void EntityPlayer::GodMode()
 {
 	if (player.god_mode)
 	{
@@ -517,7 +517,7 @@ void E_Player::GodMode()
 }
 
 //Checks if the player is in the air
-bool E_Player::CheckAirborne()
+bool EntityPlayer::CheckAirborne()
 {
 	if (player.current_state != PlayerStates::JUMP && player.current_state != PlayerStates::FALL)
 	{
@@ -530,7 +530,7 @@ bool E_Player::CheckAirborne()
 }
 
 //Centering camera on the player
-void E_Player::SetCamera()
+void EntityPlayer::SetCamera()
 {
 	if (App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT ||
 		App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT ||
@@ -579,7 +579,7 @@ void E_Player::SetCamera()
 }
 
 //Player completes level
-void E_Player::Ascend(float time)
+void EntityPlayer::Ascend(float time)
 {
 
 	player.position.y -= (player.max_speed.y / 8);

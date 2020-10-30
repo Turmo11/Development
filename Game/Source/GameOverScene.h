@@ -1,5 +1,5 @@
-#ifndef __GameOverScene_H__
-#define __GameOverScene_H__
+#ifndef __GAME_OVER_SCENE_H__
+#define __GAME_OVER_SCENE_H__
 
 #include "Module.h"
 

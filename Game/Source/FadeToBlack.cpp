@@ -6,7 +6,7 @@
 #include "Window.h"
 #include "p2Log.h"
 #include "Render.h"
-#include "E_PLayer.h"
+#include "EntityPlayer.h"
 #include "Collisions.h"
 #include "Pickups.h"
 #include "WalkingEnemy.h"
@@ -56,7 +56,7 @@ bool FadeToBlack::Start()
 bool FadeToBlack::Update(float dt)
 {
 
-	if (current_step == fade_step::NONE)
+	if (current_step == FadeStep::NONE)
 		return true;
 
 	Uint32 now = SDL_GetTicks() - start_time;
@@ -64,7 +64,7 @@ bool FadeToBlack::Update(float dt)
 
 	switch (current_step)
 	{
-	case fade_step::FADE_TO:
+	case FadeStep::FADE_TO:
 	{
 		if (now >= total_time)
 		{
@@ -87,16 +87,16 @@ bool FadeToBlack::Update(float dt)
 			}
 			total_time += total_time;
 			start_time = SDL_GetTicks();
-			current_step = fade_step::FADE_FROM;
+			current_step = FadeStep::FADE_FROM;
 		}
 	} break;
 
-	case fade_step::FADE_FROM:
+	case FadeStep::FADE_FROM:
 	{
 		normalized = 1.0f - normalized;
 
 		if (now >= total_time)
-			current_step = fade_step::NONE;
+			current_step = FadeStep::NONE;
 		App->player->player.disabled = false;
 		fading_player = false;
 		scene_switch = false;
@@ -116,9 +116,9 @@ bool FadeToBlack::DoFadeToBlack(int level, float time)
 
 	next_level = level;
 
-	if (current_step == fade_step::NONE)
+	if (current_step == FadeStep::NONE)
 	{
-		current_step = fade_step::FADE_TO;
+		current_step = FadeStep::FADE_TO;
 		start_time = SDL_GetTicks();
 		total_time = (Uint32)(time * 0.5f * 1000.0f);
 		ret = true;
@@ -136,9 +136,9 @@ bool FadeToBlack::FadeToBlackPlayerOnly(float time)
 
 	fading_player = true;
 
-	if (current_step == fade_step::NONE)
+	if (current_step == FadeStep::NONE)
 	{
-		current_step = fade_step::FADE_TO;
+		current_step = FadeStep::FADE_TO;
 		start_time = SDL_GetTicks();
 		total_time = (Uint32)(time * 0.5f * 1000.0f);
 		ret = true;
@@ -213,9 +213,9 @@ bool FadeToBlack::FadeToBlackScene(char* scene, float time)
 	scene_switch = true;
 	wantToSwitchScene = scene;
 
-	if (current_step == fade_step::NONE)
+	if (current_step == FadeStep::NONE)
 	{
-		current_step = fade_step::FADE_TO;
+		current_step = FadeStep::FADE_TO;
 		start_time = SDL_GetTicks();
 		total_time = (Uint32)(time * 0.5f * 1000.0f);
 		ret = true;

@@ -16,7 +16,7 @@ class TitleScene;
 class GameOverScene;
 class LogoScene;
 class Map;
-class E_Player;
+class EntityPlayer;
 class Pickups;
 class Collisions;
 class WalkingEnemy;
@@ -93,7 +93,7 @@ public:
 	GameOverScene*  game_over_scene;
 	LogoScene*		logo_scene;
 	Map*			map;
-	E_Player*		player;
+	EntityPlayer*		player;
 	Pickups*		pickups;
 	Collisions*		collisions;
 	WalkingEnemy*	walking_enemy;

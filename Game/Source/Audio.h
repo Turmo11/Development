@@ -1,5 +1,5 @@
-#ifndef __Audio_H__
-#define __Audio_H__
+#ifndef __AUDIO_H__
+#define __AUDIO_H__
 
 #include "Module.h"
 #include "External/SDL_mixer\include\SDL_mixer.h"
@@ -51,7 +51,7 @@ private:
 public:
 
 	float volume;
-	float max_volume;
+	const float max_volume = 1.0f;
 };
 
 #endif // __Audio_H__

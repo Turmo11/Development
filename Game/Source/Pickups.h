@@ -1,5 +1,5 @@
-#ifndef __Pickups_H__
-#define __Pickups_H__
+#ifndef __PICKUPS_H__
+#define __PICKUPS_H__
 
 #include "p2Point.h"
 #include "External/PugiXml/src/pugixml.hpp"

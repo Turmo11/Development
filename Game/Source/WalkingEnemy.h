@@ -1,5 +1,5 @@
-#ifndef __WalkingEnemy_H__
-#define __WalkingEnemy_H__
+#ifndef __WALKING_ENEMY_H__
+#define __WALKING_ENEMY_H__
 
 #include "p2Point.h"
 #include "External/PugiXml/src/pugixml.hpp"
@@ -11,7 +11,7 @@ struct SDL_Texture;
 struct Collider;
 struct AnimationInfo;
 
-enum class enemy_type 
+enum class EnemyType 
 {
 	UNKNOWN = 0,
 	SOUL
@@ -21,7 +21,7 @@ enum class enemy_type
 
 struct Enemy
 {
-	enemy_type		type;
+	EnemyType		type;
 
 	iPoint			position;
 	SDL_Rect		hitbox;
@@ -55,7 +55,7 @@ public:
 
 public:
 
-	void CreateEnemy(enemy_type type, iPoint position);
+	void CreateEnemy(EnemyType type, iPoint position);
 	void OnCollision(Collider* A, Collider* B);
 	void DrawAnimations();
 	void GetKilled();

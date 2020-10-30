@@ -1,5 +1,5 @@
-#ifndef __p2SString_H__
-#define __p2SString_H__
+#ifndef __P2_SSTRING_H__
+#define __P2_SSTRING_H__
 
 #include <stdlib.h>
 #include <stdarg.h>

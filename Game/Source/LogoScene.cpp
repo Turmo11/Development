@@ -7,7 +7,7 @@
 #include "Render.h"
 #include "Window.h"
 #include "LogoScene.h"
-#include "E_PLayer.h"
+#include "EntityPlayer.h"
 #include "FadeToBlack.h"
 #include "Scene.h"
 

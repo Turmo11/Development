@@ -1,5 +1,5 @@
-#ifndef __Collisions_H__
-#define __Collisions_H__
+#ifndef __COLLISIONS_H__
+#define __COLLISIONS_H__
 
 #include "Module.h"
 #include "External/SDL/include/SDL.h"

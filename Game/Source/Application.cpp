@@ -15,7 +15,7 @@
 #include "LogoScene.h"
 
 #include "Map.h"
-#include "E_PLayer.h"
+#include "EntityPlayer.h"
 #include "Pickups.h"
 #include "Collisions.h"
 #include "WalkingEnemy.h"
@@ -43,7 +43,7 @@ Application::Application(int argc, char* args[]) : argc(argc), args(args)
 	logo_scene		= new LogoScene();
 
 	map				= new Map();
-	player			= new E_Player();
+	player			= new EntityPlayer();
 	pickups			= new Pickups();
 	collisions		= new Collisions();
 	fade_to_black	= new FadeToBlack();

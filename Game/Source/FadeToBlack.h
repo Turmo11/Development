@@ -22,13 +22,13 @@ public:
 
 private:
 
-	enum class fade_step
+	enum class FadeStep
 	{
 		NONE,
 		FADE_TO,
 		FADE_FROM
 		
-	} current_step = fade_step::NONE;
+	} current_step = FadeStep::NONE;
 
 public:
 
