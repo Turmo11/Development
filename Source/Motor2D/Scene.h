@@ -47,9 +47,6 @@ public:
 
 	bool	level_completed; //used to check if the player has collected all the pickups
 
-	float	volume;
-	float	max_volume;
-
 	int		current_level;
 	
 

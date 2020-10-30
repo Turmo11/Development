@@ -374,6 +374,7 @@ void E_Player::OnCollision(Collider* A, Collider* B) {
 				{ //Player to the right
 					player.position.x = B->rect.x + B->rect.w - 20;
 				}
+
 			}
 			//from below
 			else if (A->rect.y < (B->rect.y + B->rect.h))
@@ -421,7 +422,6 @@ void E_Player::OnCollision(Collider* A, Collider* B) {
 				}
 				ResetPlayer();
 				App->fade_to_black->FadeToBlackScene("GameOverScene");
-				LOG("FadeToGAMEOVER)");
 			}
 		}
 	}
@@ -589,7 +589,7 @@ void E_Player::Ascend(float time)
 	case ascending::NONE:
 	{
 		current_step = ascending::ASCENDING;
-		player.animation = "idle";
+		player.animation = "god";
 		start_time = SDL_GetTicks();
 		total_time = (Uint32)(time * 0.5f * 1000.0f);
 

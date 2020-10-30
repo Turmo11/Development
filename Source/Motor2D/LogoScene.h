@@ -37,11 +37,6 @@ public:
 	void DebugKeys();
 	void AutomaticTransition();
 
-public:
-
-	float	volume;
-	float	max_volume;
-
 private:
 
 	SDL_Rect		logo_rect;

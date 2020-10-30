@@ -37,12 +37,6 @@ bool LogoScene::Start()
 	accumulatedTime = 0.f;
 	duration = 20.0f;
 
-	volume = 0.1f;
-	max_volume = 1.0f;
-
-	App->audio->SetFxVolume(volume);
-	App->audio->SetMusicVolume(volume);
-
 	logo_texture = App->tex->Load("Assets/textures/uwu_logo.png");
 
 	logo_rect.h = 640;
@@ -105,7 +99,7 @@ void LogoScene::DebugKeys()
 	if (App->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN)
 	{
 		App->fade_to_black->FadeToBlackScene("TitleScene");
-	
+
 	}
 	if (App->input->GetKey(SDL_SCANCODE_F4) == KEY_DOWN)
 	{
@@ -115,30 +109,30 @@ void LogoScene::DebugKeys()
 	//Volume
 	if (App->input->GetKey(SDL_SCANCODE_KP_PLUS) == KEY_DOWN)
 	{
-		if (volume < max_volume)
+		if (App->audio->volume < App->audio->max_volume)
 		{
-			volume += 0.1f;
-			App->audio->SetFxVolume(volume);
-			App->audio->SetMusicVolume(volume);
+			App->audio->volume += 0.1f;
+			App->audio->SetFxVolume(App->audio->volume);
+			App->audio->SetMusicVolume(App->audio->volume);
 		}
 
 	}
 	if (App->input->GetKey(SDL_SCANCODE_KP_MINUS) == KEY_DOWN)
 	{
-		if (volume > 0.0f)
+		if (App->audio->volume > 0.0f)
 		{
-			volume -= 0.1f;
-			App->audio->SetFxVolume(volume);
-			App->audio->SetMusicVolume(volume);
+			App->audio->volume -= 0.1f;
+			App->audio->SetFxVolume(App->audio->volume);
+			App->audio->SetMusicVolume(App->audio->volume);
 		}
 	}
-	if (volume > max_volume)
+	if (App->audio->volume > App->audio->max_volume)
 	{
-		volume = max_volume;
+		App->audio->volume = App->audio->max_volume;
 	}
-	if (volume < 0.0f)
+	if (App->audio->volume < 0.0f)
 	{
-		volume = 0.0f;
+		App->audio->volume = 0.0f;
 	}
 }
 

@@ -54,6 +54,16 @@ bool Audio::Awake(pugi::xml_node& config)
 	return ret;
 }
 
+bool Audio::Start()
+{
+	volume = 0.1f;
+	max_volume = 1.0f;
+
+	SetFxVolume(volume);
+	SetMusicVolume(volume);
+	return true;
+}
+
 // Called before quitting
 bool Audio::CleanUp()
 {

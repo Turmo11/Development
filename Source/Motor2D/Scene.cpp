@@ -35,11 +35,6 @@ bool Scene::Awake()
 bool Scene::Start()
 {
 	App->fade_to_black->active_scene = "Scene";
-	volume = 0.1f;
-	max_volume = 1.0f;
-
-	App->audio->SetFxVolume(volume);
-	App->audio->SetMusicVolume(volume);
 
 	background_rect.h = 6816;
 	background_rect.w = 3072;
@@ -76,7 +71,7 @@ bool Scene::Update(float dt)
 		App->render->Blit(background, -800, -5500, &background_rect, false, 0.1f);
 		break;
 	case 2:
-		App->render->Blit(background, -800, -5000, &background_rect, false, 0.1f);
+		App->render->Blit(background, -800, -4700, &background_rect, false, 0.1f);
 		break;
 	}
 	
@@ -173,30 +168,30 @@ void Scene::DebugKeys()
 	//Volume
 	if (App->input->GetKey(SDL_SCANCODE_KP_PLUS) == KEY_DOWN)
 	{
-		if (volume < max_volume)
+		if (App->audio->volume < App->audio->max_volume)
 		{
-			volume += 0.1f;
-			App->audio->SetFxVolume(volume);
-			App->audio->SetMusicVolume(volume);
+			App->audio->volume += 0.1f;
+			App->audio->SetFxVolume(App->audio->volume);
+			App->audio->SetMusicVolume(App->audio->volume);
 		}
 
 	}
 	if (App->input->GetKey(SDL_SCANCODE_KP_MINUS) == KEY_DOWN)
 	{
-		if (volume > 0.0f)
+		if (App->audio->volume > 0.0f)
 		{
-			volume -= 0.1f;
-			App->audio->SetFxVolume(volume);
-			App->audio->SetMusicVolume(volume);
+			App->audio->volume -= 0.1f;
+			App->audio->SetFxVolume(App->audio->volume);
+			App->audio->SetMusicVolume(App->audio->volume);
 		}
 	}
-	if (volume > max_volume)
+	if (App->audio->volume > App->audio->max_volume)
 	{
-		volume = max_volume;
+		App->audio->volume = App->audio->max_volume;
 	}
-	if (volume < 0.0f)
+	if (App->audio->volume < 0.0f)
 	{
-		volume = 0.0f;
+		App->audio->volume = 0.0f;
 	}
 }
 
@@ -251,7 +246,8 @@ void Scene::SetUp(int level)
 		camera_right_limit = -3150;
 		camera_top_limit = 5000;
 		//camera_top_limit = -450;
-		camera_bot_limit = -3800;
+		//camera_bot_limit = -3800;
+		camera_bot_limit = -6300;
 
 		App->audio->PlayMusic("Assets/audio/music/athena.ogg", 0.0f);
 		App->pickups->CreatePickup("psi", { 1583, 2736 });

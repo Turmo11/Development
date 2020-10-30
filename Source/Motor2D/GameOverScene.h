@@ -34,14 +34,8 @@ public:
 
 public:
 
-	void CheckLevelProgress();
-	void SetUp(int level);
 	void DebugKeys();
 
-public:
-
-	float	volume;
-	float	max_volume;
 
 private:
 
