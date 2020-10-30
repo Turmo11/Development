@@ -51,7 +51,7 @@ private:
 public:
 
 	float volume;
-	const float max_volume = 1.0f;
+	float maxVolume = 1.0f;
 };
 
 #endif // __Audio_H__
