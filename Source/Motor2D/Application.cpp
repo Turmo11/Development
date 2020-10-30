@@ -8,16 +8,21 @@
 #include "Render.h"
 #include "Textures.h"
 #include "Audio.h"
+
 #include "Scene.h"
 #include "TitleScene.h"
 #include "GameOverScene.h"
+#include "LogoScene.h"
+
 #include "Map.h"
-#include "Application.h"
 #include "E_PLayer.h"
 #include "Pickups.h"
 #include "Collisions.h"
 #include "WalkingEnemy.h"
 #include "FadeToBlack.h"
+
+#include "Application.h"
+
 
 
 // Constructor
@@ -31,9 +36,12 @@ Application::Application(int argc, char* args[]) : argc(argc), args(args)
 	render			= new Render();
 	tex				= new Textures();
 	audio			= new Audio();
+	
 	scene			= new Scene();
 	title_scene		= new TitleScene();
 	game_over_scene = new GameOverScene();
+	logo_scene		= new LogoScene();
+
 	map				= new Map();
 	player			= new E_Player();
 	pickups			= new Pickups();
@@ -53,6 +61,7 @@ Application::Application(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(scene);
 	AddModule(game_over_scene);
 	AddModule(title_scene);
+	AddModule(logo_scene);
 	AddModule(walking_enemy);
 	AddModule(fade_to_black);
 	AddModule(pickups);
@@ -141,6 +150,7 @@ bool Application::Start()
 		item = item->next;
 	}
 	scene->active = false;
+	title_scene->active = false;
 	game_over_scene->active = false;
 	player->active = false;
 	pickups->active = false;
