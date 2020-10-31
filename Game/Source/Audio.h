@@ -3,7 +3,7 @@
 
 #include "Module.h"
 #include "External/SDL_mixer\include\SDL_mixer.h"
-#include "p2List.h"
+#include "List.h"
 
 #define DEFAULT_MUSIC_FADE_TIME 2.0f
 
@@ -48,7 +48,7 @@ public:
 private:
 
 	_Mix_Music*			music;
-	p2List<Mix_Chunk*>	fx;
+	List<Mix_Chunk*>	fx;
 
 public:
 

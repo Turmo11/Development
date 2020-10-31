@@ -1,5 +1,5 @@
-#include "p2Defs.h"
-#include "p2Log.h"
+#include "Defs.h"
+#include "Log.h"
 #include "Application.h"
 #include "Input.h"
 #include "Textures.h"
@@ -13,7 +13,7 @@
 
 LogoScene::LogoScene() : Module()
 {
-	name.create("LogoScene");
+	name.Create("LogoScene");
 }
 
 // Destructor
@@ -65,9 +65,9 @@ bool LogoScene::Update(float dt)
 	App->render->camera.y = 0;
 
 	SDL_SetTextureAlphaMod(logoTexture, accumulatedTime * 10.0f);
-	App->render->Blit(logoTexture, 275, 50, &logoRect, false);
+	App->render->DrawTexture(logoTexture, 275, 50, &logoRect, false);
 
-	p2SString title("Metamorphosis - Camera:(%d,%d)", App->render->camera.x, App->render->camera.y);
+	SString title("Metamorphosis - Camera:(%d,%d)", App->render->camera.x, App->render->camera.y);
 
 	App->win->SetTitle(title.GetString());
 	return true;

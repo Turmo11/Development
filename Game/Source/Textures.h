@@ -2,7 +2,7 @@
 #define __TEXTURES_H__
 
 #include "Module.h"
-#include "p2List.h"
+#include "List.h"
 
 struct SDL_Texture;
 struct SDL_Surface;
@@ -33,7 +33,7 @@ public:
 
 public:
 
-	p2List<SDL_Texture*>	textures;
+	List<SDL_Texture*>	textures;
 };
 
 

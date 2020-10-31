@@ -1,5 +1,5 @@
-#include "p2Defs.h"
-#include "p2Log.h"
+#include "Defs.h"
+#include "Log.h"
 #include "Application.h"
 #include "Render.h"
 #include "Audio.h"
@@ -19,7 +19,7 @@
 
 EntityPlayer::EntityPlayer() : Module()
 {
-	name.create("player");
+	name.Create("player");
 }
 
 // Destructor

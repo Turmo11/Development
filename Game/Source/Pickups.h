@@ -1,9 +1,9 @@
 #ifndef __PICKUPS_H__
 #define __PICKUPS_H__
 
-#include "p2Point.h"
+#include "Point.h"
 #include "External/PugiXml/src/pugixml.hpp"
-#include "p2List.h"
+#include "List.h"
 #include "Module.h"
 
 struct SDL_Texture;
@@ -12,7 +12,7 @@ struct Collider;
 struct AnimationInfo
 {
 	int			i = 0;
-	p2SString	prevSAnimName = "shine";
+	SString	prevSAnimName = "shine";
 	float		frameCount = 1;
 };
 
@@ -24,7 +24,7 @@ struct Goal
 
 struct Pickup
 {
-	p2SString		name;
+	SString		name;
 
 	iPoint			position;
 	SDL_Rect		pickupHitbox;
@@ -58,7 +58,7 @@ public:
 
 public:
 
-	void CreatePickup(p2SString name, iPoint position);
+	void CreatePickup(SString name, iPoint position);
 	void OnCollision(Collider* A, Collider* B);
 	void DrawAnimations();
 	void GetCollected();
@@ -68,9 +68,9 @@ public:
 
 public:
 
-	p2List<Pickup*>	pickupList;
+	List<Pickup*>	pickupList;
 	
-	p2List<Goal*> goalList;
+	List<Goal*> goalList;
 };
 
 #endif

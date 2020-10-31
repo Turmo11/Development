@@ -1,5 +1,5 @@
-#include "p2Defs.h"
-#include "p2Log.h"
+#include "Defs.h"
+#include "Log.h"
 #include "Application.h"
 #include "Input.h"
 #include "Textures.h"
@@ -13,7 +13,7 @@
 
 TitleScene::TitleScene() : Module()
 {
-	name.create("TitleScene");
+	name.Create("TitleScene");
 }
 
 // Destructor
@@ -62,9 +62,9 @@ bool TitleScene::Update(float dt)
 	App->render->camera.x = 0;
 	App->render->camera.y = 0;
 
-	App->render->Blit(background, 100, 125, &backgroundRect, false);
+	App->render->DrawTexture(background, 100, 125, &backgroundRect, false);
 
-	p2SString title("Metamorphosis - Camera:(%d,%d)", App->render->camera.x, App->render->camera.y);
+	SString title("Metamorphosis - Camera:(%d,%d)", App->render->camera.x, App->render->camera.y);
 
 	App->win->SetTitle(title.GetString());
 	return true;

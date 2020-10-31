@@ -1,18 +1,18 @@
-#include "p2Defs.h"
-#include "p2Log.h"
+#include "Defs.h"
+#include "Log.h"
 #include "Application.h"
 #include "Render.h"
 #include "Map.h"
 #include "Collisions.h"
 #include "Pickups.h"
 #include "Scene.h"
-#include "WalkingEnemy.h"
+//#include "WalkingEnemy.h"
 #include "Audio.h"
 
 
 Pickups::Pickups() : Module()
 {
-	name.create("pickups");
+	name.Create("pickups");
 }
 
 
@@ -46,7 +46,7 @@ bool Pickups::PostUpdate()
 bool Pickups::CleanUp()
 {
 	// Remove pickups
-	p2List_item<Pickup*>* item;
+	List_item<Pickup*>* item;
 	item = pickupList.start;
 
 	while (item != NULL)
@@ -57,7 +57,7 @@ bool Pickups::CleanUp()
 	pickupList.clear();
 
 	// Remove goals
-	p2List_item<Goal*>* item2;
+	List_item<Goal*>* item2;
 	item2 = goalList.start;
 
 	while (item2 != NULL)
@@ -70,7 +70,7 @@ bool Pickups::CleanUp()
 	return true;
 }
 
-void Pickups::CreatePickup(p2SString name, iPoint position)
+void Pickups::CreatePickup(SString name, iPoint position)
 {
 	Pickup* new_pickup = new Pickup;
 
@@ -91,7 +91,7 @@ void Pickups::CreatePickup(p2SString name, iPoint position)
 
 void Pickups::DrawAnimations()
 {
-	p2List_item<Pickup*>* pickupIterator = pickupList.start;
+	List_item<Pickup*>* pickupIterator = pickupList.start;
 
 	while (pickupIterator != NULL)
 	{
@@ -117,7 +117,7 @@ void Pickups::OnCollision(Collider* A, Collider* B)
 
 void Pickups::GetCollected()
 {
-	p2List_item<Pickup*>* pickupIterator = pickupList.start;
+	List_item<Pickup*>* pickupIterator = pickupList.start;
 
 	while (pickupIterator != NULL)
 	{
@@ -132,7 +132,7 @@ void Pickups::GetCollected()
 
 void Pickups::DebugCollectAll()
 {
-	p2List_item<Pickup*>* pickupIterator = pickupList.start;
+	List_item<Pickup*>* pickupIterator = pickupList.start;
 
 	while (pickupIterator != NULL)
 	{
@@ -160,7 +160,7 @@ void Pickups::SetGoal(iPoint position)
 
 void Pickups::UpdateGoal()
 {
-	p2List_item<Goal*>* goal_iterator = goalList.start;
+	List_item<Goal*>* goal_iterator = goalList.start;
 
 	while (goal_iterator != NULL)
 	{

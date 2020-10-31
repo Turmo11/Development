@@ -28,9 +28,6 @@
     <ClCompile Include="Source\Input.cpp">
       <Filter>Modules</Filter>
     </ClCompile>
-    <ClCompile Include="Source\p2Log.cpp">
-      <Filter>Containers</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Main.cpp">
       <Filter>Core</Filter>
     </ClCompile>
@@ -49,9 +46,6 @@
     <ClCompile Include="Source\Window.cpp">
       <Filter>Modules</Filter>
     </ClCompile>
-    <ClCompile Include="Source\WalkingEnemy.cpp">
-      <Filter>Entities\Enemies</Filter>
-    </ClCompile>
     <ClCompile Include="Source\External\PugiXml\src\pugixml.cpp">
       <Filter>External</Filter>
     </ClCompile>
@@ -60,6 +54,9 @@
     </ClCompile>
     <ClCompile Include="Source\EntityPlayer.cpp">
       <Filter>Entities\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Log.cpp">
+      <Filter>Containers</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -93,27 +90,6 @@
     <ClInclude Include="Source\Module.h">
       <Filter>Core</Filter>
     </ClInclude>
-    <ClInclude Include="Source\p2Animation.h">
-      <Filter>Containers</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\p2Defs.h">
-      <Filter>Containers</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\p2DynArray.h">
-      <Filter>Containers</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\p2List.h">
-      <Filter>Containers</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\p2Log.h">
-      <Filter>Containers</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\p2Point.h">
-      <Filter>Containers</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\p2SString.h">
-      <Filter>Containers</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Pickups.h">
       <Filter>Entities\Pickups</Filter>
     </ClInclude>
@@ -129,9 +105,6 @@
     <ClInclude Include="Source\Window.h">
       <Filter>Modules</Filter>
     </ClInclude>
-    <ClInclude Include="Source\WalkingEnemy.h">
-      <Filter>Entities\Enemies</Filter>
-    </ClInclude>
     <ClInclude Include="Source\External\PugiXml\src\pugiconfig.hpp">
       <Filter>External</Filter>
     </ClInclude>
@@ -143,6 +116,27 @@
     </ClInclude>
     <ClInclude Include="Source\EntityPlayer.h">
       <Filter>Entities\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Animation.h">
+      <Filter>Containers</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Defs.h">
+      <Filter>Containers</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\DynArray.h">
+      <Filter>Containers</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\List.h">
+      <Filter>Containers</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Log.h">
+      <Filter>Containers</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Point.h">
+      <Filter>Containers</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\SString.h">
+      <Filter>Containers</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

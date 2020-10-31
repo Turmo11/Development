@@ -2,9 +2,9 @@
 #define __MAP_H__
 
 #include "External/PugiXml/src/pugixml.hpp"
-#include "p2List.h"
-#include "p2Point.h"
-#include "p2SString.h"
+#include "List.h"
+#include "Point.h"
+#include "SString.h"
 #include "Module.h"
 
 struct AnimationInfo;
@@ -19,14 +19,14 @@ struct Properties //Properties
 {
 	struct Property
 	{
-		p2SString	name;
+		SString	name;
 		value		data;
 		
 	};
 
 	Properties::~Properties()															//Deletes every property and frees all allocated memory.
 	{
-		p2List_item<Property*>* item;
+		List_item<Property*>* item;
 		item = propertyList.start;
 		while (item != NULL)
 		{
@@ -38,7 +38,7 @@ struct Properties //Properties
 
 	value Get(const char* name, value* defaultValue = nullptr) const;
 
-	p2List<Property*>	propertyList;
+	List<Property*>	propertyList;
 };
 
 
@@ -58,7 +58,7 @@ enum class ObjectType
 struct Object
 {
 	uint				id;
-	p2SString			name;
+	SString			name;
 	ObjectType			type;
 	SDL_Rect*			collider;
 	SDL_Texture*		texture;
@@ -68,14 +68,14 @@ struct Object
 struct ObjectGroup
 {
 	uint				id;
-	p2SString			name;
+	SString			name;
 	Object*				objects;
 	uint				objectsSize;
 };
 
 struct Animations
 {
-	p2SString			name = "idle";
+	SString			name = "idle";
 	uint				id;				//Tile which is animated
 	uint				nFrames;	//Number of frames of the animation
 	uint*				frames;
@@ -85,7 +85,7 @@ struct Animations
 // ----------------------------------------------------
 struct MapLayer
 {
-	p2SString	name;
+	SString	name;
 	int			width;
 	int			height;
 	uint*		data;
@@ -111,7 +111,7 @@ struct TileSet
 {
 	SDL_Rect GetTileRect(int id) const;
 
-	p2SString			name;
+	SString			name;
 	int					firstgid;
 	int					tileWidth;
 	int					tileHeight;
@@ -124,7 +124,7 @@ struct TileSet
 	int					numTilesHeight;
 	int					offsetX;
 	int					offsetY;
-	p2List<Animations*> animations;
+	List<Animations*> animations;
 
 	SDL_Rect* playerTileRect = new SDL_Rect;
 	SDL_Rect* PlayerTileRect(uint tileId) {
@@ -163,14 +163,14 @@ struct MapData
 	int						tileWidth;
 	int						tileHeight;
 
-	p2SString				name;
-	p2Point<float>			startingPosition;
+	SString				name;
+	Point<float>			startingPosition;
 
 	SDL_Color				backgroundColor;
 	MapTypes				type;
-	p2List<TileSet*>		tilesets;
-	p2List<MapLayer*>		layers;
-	p2List<ObjectGroup*>	objectGroups;
+	List<TileSet*>		tilesets;
+	List<MapLayer*>		layers;
+	List<ObjectGroup*>	objectGroups;
 };
 
 // ----------------------------------------------------
@@ -188,8 +188,8 @@ public:
 
 	// Called each loop iteration
 	void Draw();
-	void DrawAnimation(p2SString name, p2SString tileset, bool flip = false);
-	void DrawStaticAnimation(p2SString name, p2SString tileset, iPoint position, AnimationInfo* animInfo);
+	void DrawAnimation(SString name, SString tileset, bool flip = false);
+	void DrawStaticAnimation(SString name, SString tileset, iPoint position, AnimationInfo* animInfo);
 	// Called before quitting
 	bool CleanUp();
 
@@ -230,13 +230,13 @@ private:
 	int frameCount = 1;
 
 	pugi::xml_document	mapFile;
-	p2SString			folder;
+	SString			folder;
 	bool				mapLoaded;
 
 	float parallax, normalSpeed, secondParallax;
 
-	p2SString prevAnimName = "idle";
-	p2SString prevSAnimName;
+	SString prevAnimName = "idle";
+	SString prevSAnimName;
 };
 
 #endif // __MAP_H__

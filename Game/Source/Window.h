@@ -39,7 +39,7 @@ public:
 	SDL_Surface* screenSurface;
 
 private:
-	p2SString	title;
+	SString	title;
 	uint		width;
 	uint		height;
 	uint		scale;

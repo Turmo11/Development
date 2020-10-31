@@ -1,5 +1,5 @@
-#include "p2Defs.h"
-#include "p2Log.h"
+#include "Defs.h"
+#include "Log.h"
 #include "Application.h"
 #include "Window.h"
 #include "Render.h"
@@ -9,7 +9,7 @@
 
 Render::Render() : Module()
 {
-	name.create("renderer");
+	name.Create("renderer");
 	background.r = 0;
 	background.g = 0;
 	background.b = 0;
@@ -142,7 +142,7 @@ void Render::ResetViewPort()
 
 // Blit to screen
 // Blit to screen
-bool Render::Blit(SDL_Texture* texture, int x, int y, const SDL_Rect* section, bool flip, float speed, double angle, int pivotX, int pivotY) const
+bool Render::DrawTexture(SDL_Texture* texture, int x, int y, const SDL_Rect* section, bool flip, float speed, double angle, int pivotX, int pivotY) const
 {
 	bool ret = true;
 	uint scale = App->win->GetScale();

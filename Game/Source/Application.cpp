@@ -1,7 +1,7 @@
 #include <iostream> 
 
-#include "p2Defs.h"
-#include "p2Log.h"
+#include "Defs.h"
+#include "Log.h"
 
 #include "Window.h"
 #include "Input.h"
@@ -18,7 +18,7 @@
 #include "EntityPlayer.h"
 #include "Pickups.h"
 #include "Collisions.h"
-#include "WalkingEnemy.h"
+//#include "WalkingEnemy.h"
 #include "FadeToBlack.h"
 
 #include "Application.h"
@@ -47,7 +47,7 @@ Application::Application(int argc, char* args[]) : argc(argc), args(args)
 	pickups			= new Pickups();
 	collisions		= new Collisions();
 	fadeToBlack	    = new FadeToBlack();
-	walkingEnemy	= new WalkingEnemy();
+	//walkingEnemy	= new WalkingEnemy();
 	
 	// Ordered for awake / Start / Update
 	// Reverse order of CleanUp
@@ -62,7 +62,7 @@ Application::Application(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(gameOverScene);
 	AddModule(titleScene);
 	AddModule(logo_scene);
-	AddModule(walkingEnemy);
+	//AddModule(walkingEnemy);
 	AddModule(fadeToBlack);
 	AddModule(pickups);
 	AddModule(player);
@@ -81,7 +81,7 @@ Application::Application(int argc, char* args[]) : argc(argc), args(args)
 Application::~Application()
 {
 	// release modules
-	p2List_item<Module*>* item = modules.end;
+	List_item<Module*>* item = modules.end;
 
 	while(item != NULL)
 	{
@@ -114,8 +114,8 @@ bool Application::Awake()
 		// self-config
 		ret = true;
 		app_config = config.child("app");
-		title.create(app_config.child("title").child_value());
-		organization.create(app_config.child("organization").child_value());
+		title.Create(app_config.child("title").child_value());
+		organization.Create(app_config.child("organization").child_value());
 		load_game = config.child("file_system").child("load_file").child_value();
 		save_game = config.child("file_system").child("save_file").child_value();
 
@@ -123,7 +123,7 @@ bool Application::Awake()
 
 	if(ret == true)
 	{
-		p2List_item<Module*>* item;
+		List_item<Module*>* item;
 		item = modules.start;
 
 		while(item != NULL && ret == true)
@@ -141,7 +141,7 @@ bool Application::Start()
 {
 	
 	bool ret = true;
-	p2List_item<Module*>* item;
+	List_item<Module*>* item;
 	item = modules.start;
 
 	while(item != NULL && ret == true)
@@ -214,7 +214,7 @@ void Application::FinishUpdate()
 bool Application::PreUpdate()
 {
 	bool ret = true;
-	p2List_item<Module*>* item;
+	List_item<Module*>* item;
 	item = modules.start;
 	Module* pModule = NULL;
 
@@ -236,7 +236,7 @@ bool Application::PreUpdate()
 bool Application::DoUpdate()
 {
 	bool ret = true;
-	p2List_item<Module*>* item;
+	List_item<Module*>* item;
 	item = modules.start;
 	Module* pModule = NULL;
 
@@ -258,7 +258,7 @@ bool Application::DoUpdate()
 bool Application::PostUpdate()
 {
 	bool ret = true;
-	p2List_item<Module*>* item;
+	List_item<Module*>* item;
 	Module* pModule = NULL;
 
 	for(item = modules.start; item != NULL && ret == true; item = item->next)
@@ -279,7 +279,7 @@ bool Application::PostUpdate()
 bool Application::CleanUp()
 {
 	bool ret = true;
-	p2List_item<Module*>* item;
+	List_item<Module*>* item;
 	item = modules.end;
 
 	while(item != NULL && ret == true)
@@ -336,7 +336,7 @@ void Application::SaveGame() const
 }
 
 // ---------------------------------------
-void Application::GetSaveGames(p2List<p2SString>& list_to_fill) const
+void Application::GetSaveGames(List<SString>& list_to_fill) const
 {
 	// need to add functionality to file_system module for this to work
 }
@@ -356,7 +356,7 @@ bool Application::LoadGameNow()
 
 		root = data.child("game_state");
 
-		p2List_item<Module*>* item = modules.start;
+		List_item<Module*>* item = modules.start;
 		ret = true;
 
 		while(item != NULL && ret == true)
@@ -390,7 +390,7 @@ bool Application::SavegameNow() const
 	
 	root = data.append_child("game_state");
 
-	p2List_item<Module*>* item = modules.start;
+	List_item<Module*>* item = modules.start;
 
 	while(item != NULL && ret == true)
 	{

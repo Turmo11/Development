@@ -6,7 +6,7 @@
 #ifndef __MODULE_H__
 #define __MODULE_H__
 
-#include "p2SString.h"
+#include "SString.h"
 #include "External/PugiXml\src\pugixml.hpp"
 
 class App;
@@ -75,7 +75,7 @@ public:
 
 public:
 
-	p2SString	name;
+	SString	name;
 	bool		active;
 
 };

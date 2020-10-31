@@ -1,18 +1,18 @@
-#ifndef __P2ANIMATION_H__
-#define __P2ANIMATION_H__
+#ifndef __ANIMATION_H__
+#define __ANIMATION_H__
 
 #include "SDL/include/SDL_rect.h"
-#include "p2Point.h"
+#include "Point.h"
 #define MAX_FRAMES 25
 
 #include "Application.h"
 #include "PugiXml\src\pugixml.hpp"
 #include "Map.h"
-#include "p2List.h"
-#include "p2SString.h"
+#include "List.h"
+#include "SString.h"
 #include "Render.h"
 #include "Textures.h"
-#include "p2Log.h"
+#include "Log.h"
 
 class Animation
 {

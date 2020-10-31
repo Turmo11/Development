@@ -1,5 +1,5 @@
-#include "p2Defs.h"
-#include "p2Log.h"
+#include "Defs.h"
+#include "Log.h"
 #include "Application.h"
 #include "Input.h"
 #include "Textures.h"
@@ -10,12 +10,12 @@
 #include "Scene.h"
 #include "EntityPlayer.h"
 #include "Pickups.h"
-#include "WalkingEnemy.h"
+//#include "WalkingEnemy.h"
 #include "FadeToBlack.h"
 
 Scene::Scene() : Module()
 {
-	name.create("scene");
+	name.Create("scene");
 }
 
 // Destructor
@@ -76,16 +76,16 @@ bool Scene::Update(float dt)
 	switch (currentLevel)
 	{
 	case 1:
-		App->render->Blit(background, -800, -5500, &backgroundRect, false, 0.1f);
+		App->render->DrawTexture(background, -800, -5500, &backgroundRect, false, 0.1f);
 		break;
 	case 2:
-		App->render->Blit(background, -800, -4700, &backgroundRect, false, 0.1f);
+		App->render->DrawTexture(background, -800, -4700, &backgroundRect, false, 0.1f);
 		break;
 	}
 	
 	App->map->Draw();
 
-	p2SString title("Map:%dx%d Tiles:%dx%d Tilesets:%d Camera:(%d,%d) Player:(%.2f,%.2f)",
+	SString title("Map:%dx%d Tiles:%dx%d Tilesets:%d Camera:(%d,%d) Player:(%.2f,%.2f)",
 					App->map->data.width, App->map->data.height,
 					App->map->data.tileWidth, App->map->data.tileHeight,
 					App->map->data.tilesets.count(), App->render->camera.x, App->render->camera.y,
@@ -116,7 +116,7 @@ bool Scene::CleanUp()
 
 void Scene::CheckLevelProgress()
 {
-	p2List_item<Pickup*>* pickupIterator = App->pickups->pickupList.start;
+	List_item<Pickup*>* pickupIterator = App->pickups->pickupList.start;
 
 	while (pickupIterator != NULL)
 	{
@@ -202,7 +202,7 @@ void Scene::DebugKeys()
 void Scene::SetUp(int level)
 {
 	App->pickups->CleanUp();
-	App->walkingEnemy->CleanUp();
+	//App->walkingEnemy->CleanUp();
 
 	LOG("SetUp level = %d", level);
 

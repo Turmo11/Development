@@ -3,8 +3,8 @@
 #define __PLAYER_H__
 
 #include "External/PugiXml/src/pugixml.hpp"
-#include "p2List.h"
-#include "p2Point.h"
+#include "List.h"
+#include "Point.h"
 #include "Module.h"
 
 struct Collider;
@@ -26,12 +26,12 @@ struct Player
 {
 	PlayerStates		currentState;
 
-	p2Point<float>		position;
-	p2Point<float>		speed;
-	p2Point<float>		maxSpeed;
-	p2Point<float>		acceleration;
+	Point<float>		position;
+	Point<float>		speed;
+	Point<float>		maxSpeed;
+	Point<float>		acceleration;
 	
-	p2SString			animation;
+	SString			animation;
 
 	float				gravity;
 

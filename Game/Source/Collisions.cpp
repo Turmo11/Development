@@ -3,11 +3,11 @@
 #include "Map.h"
 #include "Render.h"
 #include "Input.h"
-#include "p2Log.h"
+#include "Log.h"
 
 Collisions::Collisions() : Module(), debugColliders(false)
 {
-	name.create("collisions");
+	name.Create("collisions");
 }
 
 bool Collisions::Init()
@@ -31,7 +31,7 @@ bool Collisions::Start()
 bool Collisions::PreUpdate() 
 {
 	//Deletes any collider waiting to be destroyed (toDelete == true)
-	p2List_item<Collider*>* collider_iterator = colliders.start;
+	List_item<Collider*>* collider_iterator = colliders.start;
 	while (collider_iterator != nullptr) 
 	{
 		if (collider_iterator->data->toDelete == true)
@@ -51,7 +51,7 @@ bool Collisions::PreUpdate()
 	{
 		c1 = collider_iterator->data;
 
-		p2List_item<Collider*>* collider_iterator2 = colliders.start;
+		List_item<Collider*>* collider_iterator2 = colliders.start;
 
 		while (collider_iterator2 != nullptr) 
 		{
@@ -103,7 +103,7 @@ void Collisions::DebugDraw()
 		return;
 
 	Uint8 alpha = 80; 	//Alpha value for all debug colliders
-	p2List_item<Collider*>* collider_iterator = colliders.start;
+	List_item<Collider*>* collider_iterator = colliders.start;
 
 	while (collider_iterator != nullptr) 
 	{
@@ -166,7 +166,7 @@ Collider* Collisions::AddCollider(SDL_Rect rect, ObjectType type, Module* callBa
 //Loads colliders from tiled map
 void Collisions::LoadFromMap() 
 {
-	p2List_item<ObjectGroup*>* list_i = App->map->data.objectGroups.start;
+	List_item<ObjectGroup*>* list_i = App->map->data.objectGroups.start;
 	while (list_i != nullptr) {
 		for (int i = 0; i < list_i->data->objectsSize; i++) {
 

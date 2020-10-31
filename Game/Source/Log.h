@@ -1,5 +1,5 @@
-#ifndef __P2_LOG_H__
-#define __P2_LOG_H__
+#ifndef ___LOG_H__
+#define ___LOG_H__
 
 #include <windows.h>
 #include <stdio.h>

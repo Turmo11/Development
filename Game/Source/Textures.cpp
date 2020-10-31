@@ -1,5 +1,5 @@
-#include "p2Defs.h"
-#include "p2Log.h"
+#include "Defs.h"
+#include "Log.h"
 #include "Application.h"
 #include "Render.h"
 #include "Textures.h"
@@ -8,7 +8,7 @@
 
 Textures::Textures() : Module()
 {
-	name.create("textures");
+	name.Create("textures");
 }
 
 // Destructor
@@ -45,7 +45,7 @@ bool Textures::Start()
 bool Textures::CleanUp()
 {
 	LOG("Freeing textures and Image library");
-	p2List_item<SDL_Texture*>* item;
+	List_item<SDL_Texture*>* item;
 
 	for(item = textures.start; item != NULL; item = item->next)
 	{
@@ -79,7 +79,7 @@ SDL_Texture* const Textures::Load(const char* path)
 // Unload texture
 bool Textures::UnLoad(SDL_Texture* texture)
 {
-	p2List_item<SDL_Texture*>* item;
+	List_item<SDL_Texture*>* item;
 
 	for(item = textures.start; item != NULL; item = item->next)
 	{

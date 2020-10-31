@@ -71,7 +71,7 @@ private:
 	
 public:
 
-	p2List<Collider*> colliders;
+	List<Collider*> colliders;
 	bool debugColliders;
 
 private:

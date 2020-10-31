@@ -4,12 +4,12 @@
 #include "Module.h"
 #include "FadeToBlack.h"
 #include "Window.h"
-#include "p2Log.h"
+#include "Log.h"
 #include "Render.h"
 #include "EntityPlayer.h"
 #include "Collisions.h"
 #include "Pickups.h"
-#include "WalkingEnemy.h"
+//#include "WalkingEnemy.h"
 #include "Map.h"
 #include "Scene.h"
 #include "TitleScene.h"
@@ -20,7 +20,7 @@
 
 FadeToBlack::FadeToBlack()
 {
-	name.create("fade");
+	name.Create("fade");
 
 }
 
@@ -157,7 +157,7 @@ bool FadeToBlack::SwitchMap(int level)
 	App->collisions->colliders.clear(); //Clear colliders
 
 	// Remove all tilesets
-	p2List_item<TileSet*>* item;
+	List_item<TileSet*>* item;
 	item = App->map->data.tilesets.start;
 
 	while (item != NULL)
@@ -175,7 +175,7 @@ bool FadeToBlack::SwitchMap(int level)
 	App->map->data.tilesets.clear();
 
 	// Remove all layers
-	p2List_item<MapLayer*>* item2;
+	List_item<MapLayer*>* item2;
 	item2 = App->map->data.layers.start;
 
 	while (item2 != NULL)
@@ -187,7 +187,7 @@ bool FadeToBlack::SwitchMap(int level)
 	App->map->data.layers.clear();
 
 	//Object cleanup
-	p2List_item<ObjectGroup*>* item3;
+	List_item<ObjectGroup*>* item3;
 	item3 = App->map->data.objectGroups.start;
 
 	while (item3 != NULL)
@@ -241,7 +241,7 @@ bool FadeToBlack::SwitchScenes(char* scene)
 
 			App->player->active = false;
 			App->pickups->active = false;
-			App->walkingEnemy->active = false;
+			//App->walkingEnemy->active = false;
 			App->map->active = false;
 		}
 		if (scene == "GameOverScene")
@@ -254,7 +254,7 @@ bool FadeToBlack::SwitchScenes(char* scene)
 
 			App->player->active = false;
 			App->pickups->active = false;
-			App->walkingEnemy->active = false;
+			//App->walkingEnemy->active = false;
 			App->map->active = false;
 		}
 		if (scene == "LogoScene")
@@ -267,7 +267,7 @@ bool FadeToBlack::SwitchScenes(char* scene)
 
 			App->player->active = false;
 			App->pickups->active = false;
-			App->walkingEnemy->active = false;
+			//App->walkingEnemy->active = false;
 			App->map->active = false;
 		}
 		if (scene == "Scene")
@@ -279,7 +279,7 @@ bool FadeToBlack::SwitchScenes(char* scene)
 
 			App->player->active = true;
 			App->pickups->active = true;
-			App->walkingEnemy->active = true;
+			//App->walkingEnemy->active = true;
 			App->map->active = true;
 		}
 

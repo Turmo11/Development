@@ -1,7 +1,7 @@
-#include "p2Defs.h"
-#include "p2Log.h"
+#include "Defs.h"
+#include "Log.h"
 #include "Audio.h"
-#include "p2List.h"
+#include "List.h"
 #include "Input.h"
 
 #include "External/SDL/include/SDL.h"
@@ -10,7 +10,7 @@
 Audio::Audio() : Module()
 {
 	music = NULL;
-	name.create("audio");
+	name.Create("audio");
 }
 
 // Destructor
@@ -96,7 +96,7 @@ bool Audio::CleanUp()
 		Mix_FreeMusic(music);
 	}
 
-	p2List_item<Mix_Chunk*>* item;
+	List_item<Mix_Chunk*>* item;
 	for (item = fx.start; item != NULL; item = item->next)
 		Mix_FreeChunk(item->data);
 

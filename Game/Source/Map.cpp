@@ -1,5 +1,5 @@
-#include "p2Defs.h"
-#include "p2Log.h"
+#include "Defs.h"
+#include "Log.h"
 #include "Application.h"
 #include "Render.h"
 #include "Textures.h"
@@ -10,7 +10,7 @@
 
 Map::Map() : Module(), mapLoaded(false)
 {
-	name.create("map");
+	name.Create("map");
 }
 
 // Destructor
@@ -23,7 +23,7 @@ bool Map::Awake(pugi::xml_node& config)
 	LOG("Loading Map Parser");
 	bool ret = true;
 
-	folder.create(config.child("folder").child_value());
+	folder.Create(config.child("folder").child_value());
 
 	parallax = config.child("parallax").attribute("value").as_float();
 	secondParallax = config.child("secondParallax").attribute("value").as_float();
@@ -56,7 +56,7 @@ void Map::Draw()
 		return;
 
 	// TODO 4: Make sure we draw all the layers and not just the first one
-	p2List_item<MapLayer*>* layer = data.layers.start;
+	List_item<MapLayer*>* layer = data.layers.start;
 	while (layer != nullptr) {
 		for (int y = 0; y < data.height; ++y)
 		{
@@ -79,7 +79,7 @@ void Map::Draw()
 						SDL_Rect r = tileset->GetTileRect(tileId);
 						iPoint pos = MapToWorld(x, y);
 
-						App->render->Blit(tileset->texture, pos.x, pos.y, &r, SDL_FLIP_NONE, parallaxVelocity);
+						App->render->DrawTexture(tileset->texture, pos.x, pos.y, &r, SDL_FLIP_NONE, parallaxVelocity);
 					}
 				}
 			}
@@ -88,12 +88,12 @@ void Map::Draw()
 	}
 }
 
-void Map::DrawAnimation(p2SString name, p2SString tileset, bool flip)
+void Map::DrawAnimation(SString name, SString tileset, bool flip)
 {
 
 	TileSet* animTileset = nullptr;
 
-	p2List_item<TileSet*>* tilesetIterator = data.tilesets.start;
+	List_item<TileSet*>* tilesetIterator = data.tilesets.start;
 
 	while (tilesetIterator != NULL)
 	{
@@ -107,7 +107,7 @@ void Map::DrawAnimation(p2SString name, p2SString tileset, bool flip)
 	// I have the adventurer Tileset inside I have animation
 	Animations* currentAnim = nullptr;
 
-	p2List_item<Animations*>* animIterator;
+	List_item<Animations*>* animIterator;
 	animIterator = animTileset->animations.start;
 
 	while (animIterator)
@@ -127,7 +127,7 @@ void Map::DrawAnimation(p2SString name, p2SString tileset, bool flip)
 
 	prevAnimName = currentAnim->name;
 
-	App->render->Blit(animTileset->texture,									//Texture of the animation(tileset) 
+	App->render->DrawTexture(animTileset->texture,									//Texture of the animation(tileset) 
 	App->player->player.position.x, App->player->player.position.y,			//drawn at player position
 	animTileset->PlayerTileRect(currentAnim->frames[i]), flip);			//draw frames tile id
 
@@ -143,12 +143,12 @@ void Map::DrawAnimation(p2SString name, p2SString tileset, bool flip)
 	frameCount++;
 }
 
-void Map::DrawStaticAnimation(p2SString name, p2SString tileset, iPoint position, AnimationInfo* animInfo)
+void Map::DrawStaticAnimation(SString name, SString tileset, iPoint position, AnimationInfo* animInfo)
 {
 
 	TileSet* sAnimTileset = nullptr;
 
-	p2List_item<TileSet*>* tilesetIterator = data.tilesets.start;
+	List_item<TileSet*>* tilesetIterator = data.tilesets.start;
 
 	while (tilesetIterator != NULL)
 	{
@@ -161,7 +161,7 @@ void Map::DrawStaticAnimation(p2SString name, p2SString tileset, iPoint position
 
 	Animations* currentAnim = nullptr;
 
-	p2List_item<Animations*>* animIterator;
+	List_item<Animations*>* animIterator;
 	animIterator = sAnimTileset->animations.start;
 
 	while (animIterator)
@@ -181,7 +181,7 @@ void Map::DrawStaticAnimation(p2SString name, p2SString tileset, iPoint position
 
 	animInfo->prevSAnimName = currentAnim->name;
 
-	App->render->Blit(sAnimTileset->texture, position.x - 16, position.y - 16, sAnimTileset->PlayerTileRect(currentAnim->frames[animInfo->i]));			
+	App->render->DrawTexture(sAnimTileset->texture, position.x - 16, position.y - 16, sAnimTileset->PlayerTileRect(currentAnim->frames[animInfo->i]));			
 
 	if (animInfo->frameCount > currentAnim->speed / 10)	//counts time for each frame of animation
 	{
@@ -204,7 +204,7 @@ TileSet* Map::GetTilesetFromTileId(int id) const
 	// Tileset based on a tile id //data.tilesets.start->data
 	TileSet* ret = nullptr;
 
-	p2List_item<TileSet*>* i = data.tilesets.start;
+	List_item<TileSet*>* i = data.tilesets.start;
 	while (i->next != nullptr) 
 	{
 
@@ -290,7 +290,7 @@ bool Map::CleanUp()
 	LOG("Unloading map");
 
 	// Remove all tilesets
-	p2List_item<TileSet*>* item;
+	List_item<TileSet*>* item;
 	item = data.tilesets.start;
 
 	while (item != NULL)
@@ -307,7 +307,7 @@ bool Map::CleanUp()
 	data.tilesets.clear();
 
 	// Remove all layers
-	p2List_item<MapLayer*>* item2;
+	List_item<MapLayer*>* item2;
 	item2 = data.layers.start;
 
 	while (item2 != NULL)
@@ -318,7 +318,7 @@ bool Map::CleanUp()
 	data.layers.clear();
 
 	//Object cleanup
-	p2List_item<ObjectGroup*>* item3;
+	List_item<ObjectGroup*>* item3;
 	item3 = App->map->data.objectGroups.start;
 
 	while (item3 != NULL)
@@ -343,9 +343,9 @@ bool Map::CleanUp()
 bool Map::Load(const char* fileCName)
 {
 	bool ret = true;
-	p2SString tmp("%s%s", folder.GetString(), fileCName);
+	SString tmp("%s%s", folder.GetString(), fileCName);
 
-	p2SString* fileName = new p2SString(fileCName);
+	SString* fileName = new SString(fileCName);
 
 	pugi::xml_parse_result result = mapFile.load_file(tmp.GetString());
 
@@ -419,7 +419,7 @@ bool Map::Load(const char* fileCName)
 		LOG("width: %d height: %d", data.width, data.height);
 		LOG("tileWidth: %d tileHeight: %d", data.tileWidth, data.tileHeight);
 
-		p2List_item<TileSet*>* item = data.tilesets.start;
+		List_item<TileSet*>* item = data.tilesets.start;
 		while (item != NULL)
 		{
 			TileSet* s = item->data;
@@ -430,7 +430,7 @@ bool Map::Load(const char* fileCName)
 			item = item->next;
 		}
 
-		p2List_item<MapLayer*>* itemLayer = data.layers.start;
+		List_item<MapLayer*>* itemLayer = data.layers.start;
 		while (itemLayer != NULL)
 		{
 			MapLayer* l = itemLayer->data;
@@ -466,7 +466,7 @@ bool Map::LoadMap()
 		data.height = map.attribute("height").as_int();
 		data.tileWidth = map.attribute("tilewidth").as_int();
 		data.tileHeight = map.attribute("tileheight").as_int();
-		p2SString bgColor(map.attribute("backgroundcolor").as_string());
+		SString bgColor(map.attribute("backgroundcolor").as_string());
 
 		data.backgroundColor.r = 0;
 		data.backgroundColor.g = 0;
@@ -475,7 +475,7 @@ bool Map::LoadMap()
 
 		if (bgColor.Length() > 0)
 		{
-			p2SString red, green, blue;
+			SString red, green, blue;
 			bgColor.SubString(1, 2, red);
 			bgColor.SubString(3, 4, green);
 			bgColor.SubString(5, 6, blue);
@@ -492,7 +492,7 @@ bool Map::LoadMap()
 			if (v >= 0 && v <= 255) data.backgroundColor.b = v;
 		}
 
-		p2SString orientation(map.attribute("orientation").as_string());
+		SString orientation(map.attribute("orientation").as_string());
 
 		if (orientation == "orthogonal")
 		{
@@ -519,7 +519,7 @@ bool Map::LoadMap()
 bool Map::LoadTilesetDetails(pugi::xml_node& tilesetNode, TileSet* set)
 {
 	bool ret = true;
-	set->name.create(tilesetNode.attribute("name").as_string());
+	set->name.Create(tilesetNode.attribute("name").as_string());
 	set->firstgid = tilesetNode.attribute("firstgid").as_int();
 	set->tileWidth = tilesetNode.attribute("tilewidth").as_int();
 	set->tileHeight = tilesetNode.attribute("tileheight").as_int();
@@ -636,7 +636,7 @@ bool Map::LoadObjectLayers(pugi::xml_node& node, ObjectGroup* objectGroup)
 		objectGroup->objects[i].id = iteratorNode.attribute("id").as_uint();
 		objectGroup->objects[i].name = iteratorNode.attribute("name").as_string();
 
-		p2SString type(iteratorNode.attribute("type").as_string());
+		SString type(iteratorNode.attribute("type").as_string());
 
 		if (type == "ground")
 		{
@@ -713,7 +713,7 @@ bool Map::LoadProperties(pugi::xml_node& node, Properties& properties)							//R
 // Returns a property
 value Properties::Get(const char* name, value* defaultValue) const
 {
-	p2List_item<Property*>* item = propertyList.start;
+	List_item<Property*>* item = propertyList.start;
 
 	while (item)
 	{
