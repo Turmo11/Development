@@ -79,7 +79,7 @@ void Map::Draw()
 						SDL_Rect r = tileset->GetTileRect(tileId);
 						iPoint pos = MapToWorld(x, y);
 
-						App->render->DrawTexture(tileset->texture, pos.x, pos.y, &r, SDL_FLIP_NONE, parallaxVelocity);
+						app->render->DrawTexture(tileset->texture, pos.x, pos.y, &r, SDL_FLIP_NONE, parallaxVelocity);
 					}
 				}
 			}
@@ -127,8 +127,8 @@ void Map::DrawAnimation(SString name, SString tileset, bool flip)
 
 	prevAnimName = currentAnim->name;
 
-	App->render->DrawTexture(animTileset->texture,									//Texture of the animation(tileset) 
-	App->player->player.position.x, App->player->player.position.y,			//drawn at player position
+	app->render->DrawTexture(animTileset->texture,									//Texture of the animation(tileset) 
+	app->player->player.position.x, app->player->player.position.y,			//drawn at player position
 	animTileset->PlayerTileRect(currentAnim->frames[i]), flip);			//draw frames tile id
 
 	if (frameCount % (currentAnim->speed / 10) == 0)	//counts frames each loop (60 fps using vsync) Magic Numbers
@@ -181,7 +181,7 @@ void Map::DrawStaticAnimation(SString name, SString tileset, iPoint position, An
 
 	animInfo->prevSAnimName = currentAnim->name;
 
-	App->render->DrawTexture(sAnimTileset->texture, position.x - 16, position.y - 16, sAnimTileset->PlayerTileRect(currentAnim->frames[animInfo->i]));			
+	app->render->DrawTexture(sAnimTileset->texture, position.x - 16, position.y - 16, sAnimTileset->PlayerTileRect(currentAnim->frames[animInfo->i]));			
 
 	if (animInfo->frameCount > currentAnim->speed / 10)	//counts time for each frame of animation
 	{
@@ -319,7 +319,7 @@ bool Map::CleanUp()
 
 	//Object cleanup
 	List_item<ObjectGroup*>* item3;
-	item3 = App->map->data.objectGroups.start;
+	item3 = app->map->data.objectGroups.start;
 
 	while (item3 != NULL)
 	{
@@ -331,7 +331,7 @@ bool Map::CleanUp()
 		item3 = item3->next;
 	}
 
-	App->map->data.objectGroups.clear();
+	app->map->data.objectGroups.clear();
 
 	// Clean up the pugui tree
 	mapFile.reset();
@@ -554,7 +554,7 @@ bool Map::LoadTilesetImage(pugi::xml_node& tilesetNode, TileSet* set)
 	}
 	else
 	{
-		set->texture = App->tex->Load(PATH(folder.GetString(), image.attribute("source").as_string()));
+		set->texture = app->tex->Load(PATH(folder.GetString(), image.attribute("source").as_string()));
 		int w, h;
 		SDL_QueryTexture(set->texture, NULL, NULL, &w, &h);
 		set->texWidth = image.attribute("width").as_int();

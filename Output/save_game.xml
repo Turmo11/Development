@@ -5,21 +5,20 @@
 	<textures />
 	<audio volume="0.100000001" />
 	<map>
-		<map_name filename="athena.tmx" />
+		<map_name filename="tutorial.tmx" />
 	</map>
 	<scene />
 	<GameOverScene />
 	<TitleScene />
 	<LogoScene />
-	<enemy />
 	<fade />
 	<pickups />
 	<player>
-		<position x="1358" y="5985" />
-		<flags jumping="false" able_to_drop="false" grounded="true" flip="true" god_mode="false" />
+		<position x="470" y="3489" />
+		<flags jumping="false" ableToDrop="false" grounded="true" flip="false" godMode="false" />
 	</player>
 	<collisions />
 	<renderer>
-		<camera x="-746" y="-5532" />
+		<camera x="-1" y="-3032" />
 	</renderer>
 </game_state>

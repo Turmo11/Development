@@ -20,8 +20,6 @@ enum class PlayerStates {
 	DEBUG
 };
 
-
-
 struct Player 
 {
 	PlayerStates		currentState;

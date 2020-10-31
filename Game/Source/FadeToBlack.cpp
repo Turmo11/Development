@@ -31,7 +31,7 @@ bool FadeToBlack::Awake(pugi::xml_node& conf) {
 
 
 	uint width, height;
-	App->win->GetWindowSize(width, height);
+	app->win->GetWindowSize(width, height);
 	screen.w = width + 200;
 	screen.h = height;
 	screen.x = screen.y = 0;
@@ -43,7 +43,7 @@ bool FadeToBlack::Awake(pugi::xml_node& conf) {
 bool FadeToBlack::Start()
 {
 	LOG("Preparing Fade Screen");
-	SDL_SetRenderDrawBlendMode(App->render->renderer, SDL_BLENDMODE_BLEND);
+	SDL_SetRenderDrawBlendMode(app->render->renderer, SDL_BLENDMODE_BLEND);
 
 	fadingPlayer = false;
 	sceneSwitch = false;
@@ -74,7 +74,7 @@ bool FadeToBlack::Update(float dt)
 
 				if (fadingPlayer)
 				{
-					App->player->ResetPlayer();
+					app->player->ResetPlayer();
 				}
 				else
 				{
@@ -97,14 +97,14 @@ bool FadeToBlack::Update(float dt)
 
 		if (now >= totalTime)
 			currentStep = FadeStep::NONE;
-		App->player->player.disabled = false;
+		app->player->player.disabled = false;
 		fadingPlayer = false;
 		sceneSwitch = false;
 	} break;
 	}
 
-	SDL_SetRenderDrawColor(App->render->renderer, 0, 0, 0, (Uint8)(normalized * 255.0f));
-	SDL_RenderFillRect(App->render->renderer, &screen);
+	SDL_SetRenderDrawColor(app->render->renderer, 0, 0, 0, (Uint8)(normalized * 255.0f));
+	SDL_RenderFillRect(app->render->renderer, &screen);
 
 	return true;
 }
@@ -123,7 +123,7 @@ bool FadeToBlack::DoFadeToBlack(int level, float time)
 		totalTime = (Uint32)(time * 0.5f * 1000.0f);
 		ret = true;
 
-		App->player->player.disabled = true;
+		app->player->player.disabled = true;
 	}
 
 	return ret;
@@ -143,7 +143,7 @@ bool FadeToBlack::FadeToBlackPlayerOnly(float time)
 		totalTime = (Uint32)(time * 0.5f * 1000.0f);
 		ret = true;
 
-		App->player->player.disabled = true;
+		app->player->player.disabled = true;
 	}
 
 	return ret;
@@ -154,11 +154,11 @@ bool FadeToBlack::SwitchMap(int level)
 	bool ret = true;
 	LOG("Switching Maps...");
 
-	App->collisions->colliders.clear(); //Clear colliders
+	app->collisions->colliders.clear(); //Clear colliders
 
 	// Remove all tilesets
 	List_item<TileSet*>* item;
-	item = App->map->data.tilesets.start;
+	item = app->map->data.tilesets.start;
 
 	while (item != NULL)
 	{
@@ -172,11 +172,11 @@ bool FadeToBlack::SwitchMap(int level)
 		item = item->next;
 	}
 
-	App->map->data.tilesets.clear();
+	app->map->data.tilesets.clear();
 
 	// Remove all layers
 	List_item<MapLayer*>* item2;
-	item2 = App->map->data.layers.start;
+	item2 = app->map->data.layers.start;
 
 	while (item2 != NULL)
 	{
@@ -184,11 +184,11 @@ bool FadeToBlack::SwitchMap(int level)
 		item2 = item2->next;
 	}
 
-	App->map->data.layers.clear();
+	app->map->data.layers.clear();
 
 	//Object cleanup
 	List_item<ObjectGroup*>* item3;
-	item3 = App->map->data.objectGroups.start;
+	item3 = app->map->data.objectGroups.start;
 
 	while (item3 != NULL)
 	{
@@ -200,11 +200,11 @@ bool FadeToBlack::SwitchMap(int level)
 		item3 = item3->next;
 	}
 
-	App->map->data.objectGroups.clear();
+	app->map->data.objectGroups.clear();
 
-	App->scene->SetUp(level);		//Load specified map
-	App->collisions->LoadFromMap();		//Load Collisions
-	App->player->ResetPlayer();	//Reset Player
+	app->scene->SetUp(level);		//Load specified map
+	app->collisions->LoadFromMap();		//Load Collisions
+	app->player->ResetPlayer();	//Reset Player
 
 	return ret;
 }
@@ -233,54 +233,54 @@ bool FadeToBlack::SwitchScenes(char* scene)
 	{
 		if (scene == "TitleScene")
 		{
-			App->scene->CleanUp();
-			App->scene->active = false;
-			App->titleScene->active = true;
-			App->gameOverScene->active = false;
-			App->logo_scene->active = false;
+			app->scene->CleanUp();
+			app->scene->active = false;
+			app->titleScene->active = true;
+			app->gameOverScene->active = false;
+			app->logo_scene->active = false;
 
-			App->player->active = false;
-			App->pickups->active = false;
-			//App->walkingEnemy->active = false;
-			App->map->active = false;
+			app->player->active = false;
+			app->pickups->active = false;
+			//app->walkingEnemy->active = false;
+			app->map->active = false;
 		}
 		if (scene == "GameOverScene")
 		{
-			App->scene->CleanUp();
-			App->scene->active = false;
-			App->titleScene->active = false;
-			App->gameOverScene->active = true;
-			App->logo_scene->active = false;
+			app->scene->CleanUp();
+			app->scene->active = false;
+			app->titleScene->active = false;
+			app->gameOverScene->active = true;
+			app->logo_scene->active = false;
 
-			App->player->active = false;
-			App->pickups->active = false;
-			//App->walkingEnemy->active = false;
-			App->map->active = false;
+			app->player->active = false;
+			app->pickups->active = false;
+			//app->walkingEnemy->active = false;
+			app->map->active = false;
 		}
 		if (scene == "LogoScene")
 		{
-			App->scene->CleanUp();
-			App->scene->active = false;
-			App->titleScene->active = false;
-			App->gameOverScene->active = false;
-			App->logo_scene->active = true;
+			app->scene->CleanUp();
+			app->scene->active = false;
+			app->titleScene->active = false;
+			app->gameOverScene->active = false;
+			app->logo_scene->active = true;
 
-			App->player->active = false;
-			App->pickups->active = false;
-			//App->walkingEnemy->active = false;
-			App->map->active = false;
+			app->player->active = false;
+			app->pickups->active = false;
+			//app->walkingEnemy->active = false;
+			app->map->active = false;
 		}
 		if (scene == "Scene")
 		{
-			App->scene->active = true;
-			App->titleScene->active = false;
-			App->gameOverScene->active = false;
-			App->logo_scene->active = false;
+			app->scene->active = true;
+			app->titleScene->active = false;
+			app->gameOverScene->active = false;
+			app->logo_scene->active = false;
 
-			App->player->active = true;
-			App->pickups->active = true;
-			//App->walkingEnemy->active = true;
-			App->map->active = true;
+			app->player->active = true;
+			app->pickups->active = true;
+			//app->walkingEnemy->active = true;
+			app->map->active = true;
 		}
 
 		activeScene = scene;

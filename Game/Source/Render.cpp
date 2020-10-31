@@ -34,7 +34,7 @@ bool Render::Awake(pugi::xml_node& config)
 		LOG("Using vsync");
 	}
 
-	renderer = SDL_CreateRenderer(App->win->window, -1, flags);
+	renderer = SDL_CreateRenderer(app->win->window, -1, flags);
 
 	if(renderer == NULL)
 	{
@@ -43,8 +43,8 @@ bool Render::Awake(pugi::xml_node& config)
 	}
 	else
 	{
-		camera.w = App->win->screenSurface->w;
-		camera.h = App->win->screenSurface->h;
+		camera.w = app->win->screenSurface->w;
+		camera.h = app->win->screenSurface->h;
 		camera.x = config.child("camera").attribute("x").as_int();
 		camera.y = config.child("camera").attribute("y").as_int();
 		startingCamPos.x = camera.x;
@@ -78,15 +78,15 @@ bool Render::Update(float dt)
 
 bool Render::PostUpdate()
 {
-	if (App->fadeToBlack->activeScene == "Scene")
+	if (app->fadeToBlack->activeScene == "Scene")
 	{
 		SDL_SetRenderDrawColor(renderer, 135, 206, 235, background.a);
 	}
-	else if (App->fadeToBlack->activeScene == "TitleScene")
+	else if (app->fadeToBlack->activeScene == "TitleScene")
 	{
 		SDL_SetRenderDrawColor(renderer, 34, 32, 52, background.a);
 	}
-	else if (App->fadeToBlack->activeScene == "GameOverScene")
+	else if (app->fadeToBlack->activeScene == "GameOverScene")
 	{
 		SDL_SetRenderDrawColor(renderer, 0, 0, 0, background.a);
 	}
@@ -145,7 +145,7 @@ void Render::ResetViewPort()
 bool Render::DrawTexture(SDL_Texture* texture, int x, int y, const SDL_Rect* section, bool flip, float speed, double angle, int pivotX, int pivotY) const
 {
 	bool ret = true;
-	uint scale = App->win->GetScale();
+	uint scale = app->win->GetScale();
 
 	SDL_Rect rect;
 	if (flip)
@@ -203,7 +203,7 @@ bool Render::DrawTexture(SDL_Texture* texture, int x, int y, const SDL_Rect* sec
 bool Render::DrawQuad(const SDL_Rect& rect, Uint8 r, Uint8 g, Uint8 b, Uint8 a, bool filled, bool useCamera) const
 {
 	bool ret = true;
-	uint scale = App->win->GetScale();
+	uint scale = app->win->GetScale();
 
 	SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
 	SDL_SetRenderDrawColor(renderer, r, g, b, a);
@@ -231,7 +231,7 @@ bool Render::DrawQuad(const SDL_Rect& rect, Uint8 r, Uint8 g, Uint8 b, Uint8 a, 
 bool Render::DrawLine(int x1, int y1, int x2, int y2, Uint8 r, Uint8 g, Uint8 b, Uint8 a, bool useCamera) const
 {
 	bool ret = true;
-	uint scale = App->win->GetScale();
+	uint scale = app->win->GetScale();
 
 	SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
 	SDL_SetRenderDrawColor(renderer, r, g, b, a);
@@ -255,7 +255,7 @@ bool Render::DrawLine(int x1, int y1, int x2, int y2, Uint8 r, Uint8 g, Uint8 b,
 bool Render::DrawCircle(int x, int y, int radius, Uint8 r, Uint8 g, Uint8 b, Uint8 a, bool useCamera) const
 {
 	bool ret = true;
-	uint scale = App->win->GetScale();
+	uint scale = app->win->GetScale();
 
 	SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
 	SDL_SetRenderDrawColor(renderer, r, g, b, a);

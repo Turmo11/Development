@@ -226,7 +226,7 @@
  <tileset firstgid="172" name="clouds2" tilewidth="256" tileheight="256" tilecount="9" columns="3">
   <image source="../textures/cloudsx2.png" width="768" height="768"/>
  </tileset>
- <tileset firstgid="181" name="tower" tilewidth="2560" tileheight="2840" tilecount="2" columns="1">
+ <tileset firstgid="181" name="tower" tilewidth="2560" tileheight="2840" tilecount="0" columns="1">
   <image source="../textures/tower2.png" width="2560" height="5680"/>
  </tileset>
  <layer id="27" name="SecondParallax" width="50" height="60">

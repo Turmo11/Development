@@ -36,7 +36,7 @@ public:
 
 	bool DrawAnimation(const char* name)
 	{
-		App->map->data;
+		app->map->data;
 
 
 		return true;

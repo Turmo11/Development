@@ -9,7 +9,7 @@
 #include "SString.h"
 #include "External/PugiXml\src\pugixml.hpp"
 
-class App;
+class Application;
 
 struct Collider;
 

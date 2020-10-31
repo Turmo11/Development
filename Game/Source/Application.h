@@ -117,6 +117,6 @@ private:
 	mutable SString	save_game;
 };
 
-extern Application* App;
+extern Application* app;
 
 #endif

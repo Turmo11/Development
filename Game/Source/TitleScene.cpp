@@ -32,19 +32,19 @@ bool TitleScene::Awake()
 // Called before the first frame
 bool TitleScene::Start()
 {
-	App->fadeToBlack->activeScene = "TitleScene";
+	app->fadeToBlack->activeScene = "TitleScene";
 
-	background = App->tex->Load("Assets/textures/UI/title.png");
+	background = app->tex->Load("Assets/textures/UI/title.png");
 
 	backgroundRect.h = 512;
 	backgroundRect.w = 1024;
 	backgroundRect.x = 0;
 	backgroundRect.y = 0;
 
-	App->audio->StopMusic();
+	app->audio->StopMusic();
 
-	App->render->camera.x = App->render->startingCamPos.x;
-	App->render->camera.y = App->render->startingCamPos.y;
+	app->render->camera.x = app->render->startingCamPos.x;
+	app->render->camera.y = app->render->startingCamPos.y;
 
 	return true;
 }
@@ -59,14 +59,14 @@ bool TitleScene::PreUpdate()
 bool TitleScene::Update(float dt)
 {
 	DebugKeys();
-	App->render->camera.x = 0;
-	App->render->camera.y = 0;
+	app->render->camera.x = 0;
+	app->render->camera.y = 0;
 
-	App->render->DrawTexture(background, 100, 125, &backgroundRect, false);
+	app->render->DrawTexture(background, 100, 125, &backgroundRect, false);
 
-	SString title("Metamorphosis - Camera:(%d,%d)", App->render->camera.x, App->render->camera.y);
+	SString title("Metamorphosis - Camera:(%d,%d)", app->render->camera.x, app->render->camera.y);
 
-	App->win->SetTitle(title.GetString());
+	app->win->SetTitle(title.GetString());
 	return true;
 }
 
@@ -75,7 +75,7 @@ bool TitleScene::PostUpdate()
 {
 	bool ret = true;
 
-	if (App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
+	if (app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
 		ret = false;
 
 	return ret;
@@ -92,51 +92,51 @@ bool TitleScene::CleanUp()
 void TitleScene::DebugKeys()
 {
 	//Debug keys
-	if (App->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN)
+	if (app->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN)
 	{
-		App->fadeToBlack->FadeToBlackScene("Scene");
-		App->audio->ResumeMusic();
+		app->fadeToBlack->FadeToBlackScene("Scene");
+		app->audio->ResumeMusic();
 	}
-	if (App->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN)
+	if (app->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN)
 	{
-		App->fadeToBlack->DoFadeToBlack(1);
+		app->fadeToBlack->DoFadeToBlack(1);
 	}
-	if (App->input->GetKey(SDL_SCANCODE_F2) == KEY_DOWN)
+	if (app->input->GetKey(SDL_SCANCODE_F2) == KEY_DOWN)
 	{
-		App->fadeToBlack->DoFadeToBlack(2);
+		app->fadeToBlack->DoFadeToBlack(2);
 	}
-	if (App->input->GetKey(SDL_SCANCODE_F4) == KEY_DOWN)
+	if (app->input->GetKey(SDL_SCANCODE_F4) == KEY_DOWN)
 	{
-		App->win->ToggleFullscreen();
+		app->win->ToggleFullscreen();
 	}
 
 	//Volume
-	if (App->input->GetKey(SDL_SCANCODE_KP_PLUS) == KEY_DOWN)
+	if (app->input->GetKey(SDL_SCANCODE_KP_PLUS) == KEY_DOWN)
 	{
-		if (App->audio->volume < App->audio->maxVolume)
+		if (app->audio->volume < app->audio->maxVolume)
 		{
-			App->audio->volume += 0.1f;
-			App->audio->SetFxVolume(App->audio->volume);
-			App->audio->SetMusicVolume(App->audio->volume);
+			app->audio->volume += 0.1f;
+			app->audio->SetFxVolume(app->audio->volume);
+			app->audio->SetMusicVolume(app->audio->volume);
 		}
 
 	}
-	if (App->input->GetKey(SDL_SCANCODE_KP_MINUS) == KEY_DOWN)
+	if (app->input->GetKey(SDL_SCANCODE_KP_MINUS) == KEY_DOWN)
 	{
-		if (App->audio->volume > 0.0f)
+		if (app->audio->volume > 0.0f)
 		{
-			App->audio->volume -= 0.1f;
-			App->audio->SetFxVolume(App->audio->volume);
-			App->audio->SetMusicVolume(App->audio->volume);
+			app->audio->volume -= 0.1f;
+			app->audio->SetFxVolume(app->audio->volume);
+			app->audio->SetMusicVolume(app->audio->volume);
 		}
 	}
-	if (App->audio->volume > App->audio->maxVolume)
+	if (app->audio->volume > app->audio->maxVolume)
 	{
-		App->audio->volume = App->audio->maxVolume;
+		app->audio->volume = app->audio->maxVolume;
 	}
-	if (App->audio->volume < 0.0f)
+	if (app->audio->volume < 0.0f)
 	{
-		App->audio->volume = 0.0f;
+		app->audio->volume = 0.0f;
 	}
 }
 

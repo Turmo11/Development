@@ -39,14 +39,14 @@ bool LogoScene::Awake(pugi::xml_node& config)
 // Called before the first frame
 bool LogoScene::Start()
 {
-	App->fadeToBlack->activeScene = "LogoScene";
+	app->fadeToBlack->activeScene = "LogoScene";
 
 	accumulatedTime = 0.0f;
 
-	logoTexture = App->tex->Load("Assets/textures/UI/uwu_logo.png");
+	logoTexture = app->tex->Load("Assets/textures/UI/uwu_logo.png");
 
-	App->render->camera.x = 0;
-	App->render->camera.y = 0;
+	app->render->camera.x = 0;
+	app->render->camera.y = 0;
 
 	return true;
 }
@@ -61,15 +61,15 @@ bool LogoScene::PreUpdate()
 bool LogoScene::Update(float dt)
 {
 	DebugKeys();
-	App->render->camera.x = 0;
-	App->render->camera.y = 0;
+	app->render->camera.x = 0;
+	app->render->camera.y = 0;
 
 	SDL_SetTextureAlphaMod(logoTexture, accumulatedTime * 10.0f);
-	App->render->DrawTexture(logoTexture, 275, 50, &logoRect, false);
+	app->render->DrawTexture(logoTexture, 275, 50, &logoRect, false);
 
-	SString title("Metamorphosis - Camera:(%d,%d)", App->render->camera.x, App->render->camera.y);
+	SString title("Metamorphosis - Camera:(%d,%d)", app->render->camera.x, app->render->camera.y);
 
-	App->win->SetTitle(title.GetString());
+	app->win->SetTitle(title.GetString());
 	return true;
 }
 
@@ -78,7 +78,7 @@ bool LogoScene::PostUpdate()
 {
 	bool ret = true;
 
-	if (App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
+	if (app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
 		ret = false;
 
 	AutomaticTransition();
@@ -97,43 +97,43 @@ bool LogoScene::CleanUp()
 void LogoScene::DebugKeys()
 {
 	//Debug keys
-	if (App->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN)
+	if (app->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN)
 	{
-		App->fadeToBlack->FadeToBlackScene("TitleScene");
+		app->fadeToBlack->FadeToBlackScene("TitleScene");
 
 	}
-	if (App->input->GetKey(SDL_SCANCODE_F4) == KEY_DOWN)
+	if (app->input->GetKey(SDL_SCANCODE_F4) == KEY_DOWN)
 	{
-		App->win->ToggleFullscreen();
+		app->win->ToggleFullscreen();
 	}
 
 	//Volume
-	if (App->input->GetKey(SDL_SCANCODE_KP_PLUS) == KEY_DOWN)
+	if (app->input->GetKey(SDL_SCANCODE_KP_PLUS) == KEY_DOWN)
 	{
-		if (App->audio->volume < App->audio->maxVolume)
+		if (app->audio->volume < app->audio->maxVolume)
 		{
-			App->audio->volume += 0.1f;
-			App->audio->SetFxVolume(App->audio->volume);
-			App->audio->SetMusicVolume(App->audio->volume);
+			app->audio->volume += 0.1f;
+			app->audio->SetFxVolume(app->audio->volume);
+			app->audio->SetMusicVolume(app->audio->volume);
 		}
 
 	}
-	if (App->input->GetKey(SDL_SCANCODE_KP_MINUS) == KEY_DOWN)
+	if (app->input->GetKey(SDL_SCANCODE_KP_MINUS) == KEY_DOWN)
 	{
-		if (App->audio->volume > 0.0f)
+		if (app->audio->volume > 0.0f)
 		{
-			App->audio->volume -= 0.1f;
-			App->audio->SetFxVolume(App->audio->volume);
-			App->audio->SetMusicVolume(App->audio->volume);
+			app->audio->volume -= 0.1f;
+			app->audio->SetFxVolume(app->audio->volume);
+			app->audio->SetMusicVolume(app->audio->volume);
 		}
 	}
-	if (App->audio->volume > App->audio->maxVolume)
+	if (app->audio->volume > app->audio->maxVolume)
 	{
-		App->audio->volume = App->audio->maxVolume;
+		app->audio->volume = app->audio->maxVolume;
 	}
-	if (App->audio->volume < 0.0f)
+	if (app->audio->volume < 0.0f)
 	{
-		App->audio->volume = 0.0f;
+		app->audio->volume = 0.0f;
 	}
 }
 
@@ -143,7 +143,7 @@ void LogoScene::AutomaticTransition()
 
 	if (accumulatedTime >= duration)
 	{
-		App->fadeToBlack->FadeToBlackScene("TitleScene");
+		app->fadeToBlack->FadeToBlackScene("TitleScene");
 	}
 }
 

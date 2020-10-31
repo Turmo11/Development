@@ -87,7 +87,7 @@ bool Collisions::Update(float dt)
 
 void Collisions::DebugDraw() 
 {
-	if (App->input->GetKey(SDL_SCANCODE_F9) == KEY_DOWN)
+	if (app->input->GetKey(SDL_SCANCODE_F9) == KEY_DOWN)
 	{
 		if (debugColliders)
 		{
@@ -111,25 +111,25 @@ void Collisions::DebugDraw()
 		switch (collider_iterator->data->type)
 		{
 		case ObjectType::PLAYER: // yellow
-			App->render->DrawQuad(collider_iterator->data->rect, 255, 255, 0, alpha);
+			app->render->DrawQuad(collider_iterator->data->rect, 255, 255, 0, alpha);
 			break;
 		case ObjectType::GROUND: // light green
-			App->render->DrawQuad(collider_iterator->data->rect, 194, 255, 198, alpha);
+			app->render->DrawQuad(collider_iterator->data->rect, 194, 255, 198, alpha);
 			break;
 		case ObjectType::PLATFORM: // light blue
-			App->render->DrawQuad(collider_iterator->data->rect, 85, 170, 255, alpha);
+			app->render->DrawQuad(collider_iterator->data->rect, 85, 170, 255, alpha);
 			break;
 		case ObjectType::LETTER: // pink
-			App->render->DrawQuad(collider_iterator->data->rect, 255, 0, 255, alpha);
+			app->render->DrawQuad(collider_iterator->data->rect, 255, 0, 255, alpha);
 			break;
 		case ObjectType::ENEMY: // purple
-			App->render->DrawQuad(collider_iterator->data->rect, 85, 0, 255, alpha);
+			app->render->DrawQuad(collider_iterator->data->rect, 85, 0, 255, alpha);
 			break;
 		case ObjectType::GOAL: // red
-			App->render->DrawQuad(collider_iterator->data->rect, 255, 0, 0, alpha);
+			app->render->DrawQuad(collider_iterator->data->rect, 255, 0, 0, alpha);
 			break;
 		case ObjectType::DEATH: // black
-			App->render->DrawQuad(collider_iterator->data->rect, 0, 0, 0, alpha);
+			app->render->DrawQuad(collider_iterator->data->rect, 0, 0, 0, alpha);
 			break;
 
 		}
@@ -166,7 +166,7 @@ Collider* Collisions::AddCollider(SDL_Rect rect, ObjectType type, Module* callBa
 //Loads colliders from tiled map
 void Collisions::LoadFromMap() 
 {
-	List_item<ObjectGroup*>* list_i = App->map->data.objectGroups.start;
+	List_item<ObjectGroup*>* list_i = app->map->data.objectGroups.start;
 	while (list_i != nullptr) {
 		for (int i = 0; i < list_i->data->objectsSize; i++) {
 

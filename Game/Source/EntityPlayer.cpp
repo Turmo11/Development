@@ -104,28 +104,25 @@ bool EntityPlayer::PreUpdate()
 	{
 		player.currentState = PlayerStates::IDLE;
 
-		if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT || App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT)
+		if (app->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT || app->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT)
 		{
 			player.currentState = PlayerStates::CROUCH;
 			player.ableToDrop = true;
 		}
 
-		if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT
-			|| App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT
-			|| App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT
-			|| App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
+		if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT || app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
 		{
 			player.currentState = PlayerStates::RUNNING;
 		}
 
-		if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN) //Jump if not on godmode
+		if (app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN) //Jump if not on godmode
 		{
 			player.currentState = PlayerStates::JUMP;
 			player.speed.y = 0;
 		}
 	}
 
-	if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT) //If player has to drop from platform
+	if (app->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT) //If player has to drop from platform
 	{
 		player.ableToDrop = true;
 	}
@@ -134,7 +131,7 @@ bool EntityPlayer::PreUpdate()
 		player.ableToDrop = false;
 	}
 
-	if (App->input->GetKey(SDL_SCANCODE_F10) == KEY_DOWN) // Able/Disable GodMode
+	if (app->input->GetKey(SDL_SCANCODE_F10) == KEY_DOWN) // Able/Disable GodMode
 	{
 		player.speed.x = 0;
 		player.speed.y = 0;
@@ -242,11 +239,11 @@ bool EntityPlayer::Update(float dt)
 		{
 			player.animation = "god";
 
-			if (App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT)
+			if (app->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT)
 			{
 				MoveUp();
 			}
-			else if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT)
+			else if (app->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT)
 			{
 				MoveDown();
 			}
@@ -259,7 +256,7 @@ bool EntityPlayer::Update(float dt)
 	player.position.x += player.speed.x;
 
 	//Draw player
-	App->map->DrawAnimation(player.animation, "playerx96", player.flip);
+	app->map->DrawAnimation(player.animation, "playerx96", player.flip);
 
 	//Update player collider and position
 	player.playerCollider->SetPos(player.position.x + 30, player.position.y);
@@ -293,11 +290,11 @@ bool EntityPlayer::CleanUp()
 //Setting up the player on start
 bool EntityPlayer::SummonPlayer()
 {
-	player.position = App->map->data.startingPosition;
+	player.position = app->map->data.startingPosition;
 
 	player.playerHitbox = { (int)player.position.x, (int)player.position.y, player.hitboxWidth, player.hitboxHeight };
 
-	player.playerCollider = App->collisions->AddCollider(player.playerHitbox, ObjectType::PLAYER, this);
+	player.playerCollider = app->collisions->AddCollider(player.playerHitbox, ObjectType::PLAYER, this);
 
 	//booleans
 	player.movingRight = false;
@@ -417,12 +414,12 @@ void EntityPlayer::OnCollision(Collider* A, Collider* B)
 					player.speed.y = 0;
 				}
 				ResetPlayer();
-				App->fadeToBlack->FadeToBlackScene("GameOverScene");
+				app->fadeToBlack->FadeToBlackScene("GameOverScene");
 			}
 		}
 	}
 
-	if (App->scene->levelCompleted)
+	if (app->scene->levelCompleted)
 	{
 		// ------------ Player Colliding with the goal ------------------
 		if (A->type == ObjectType::PLAYER && B->type == ObjectType::GOAL) {
@@ -447,13 +444,13 @@ void EntityPlayer::OnCollision(Collider* A, Collider* B)
 //Handles movement on the x-axis and sets the proper flip
 void EntityPlayer::HorizontalMovement()
 {
-	if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT /*|| App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT*/)
+	if (app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT /*|| app->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT*/)
 	{
 		player.movingRight = true;
 		MoveRight();
 		player.flip = false;
 	}
-	else if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT /*|| App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT*/)
+	else if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT /*|| app->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT*/)
 	{
 		player.movingLeft = true;
 		MoveLeft();
@@ -526,46 +523,46 @@ bool EntityPlayer::CheckAirborne()
 //Centering camera on the player
 void EntityPlayer::SetCamera()
 {
-	if (App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT ||
-		App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT ||
-		App->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT ||
-		App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT)
+	if (app->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT ||
+		app->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT ||
+		app->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT ||
+		app->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT)
 	{
 		return;
 	}
 	else
 	{
-		xAxis = (-player.position.x) + (App->win->screenSurface->w / 2);
-		yAxis = (-player.position.y) + (App->win->screenSurface->h * .5);
+		xAxis = (-player.position.x) + (app->win->screenSurface->w / 2);
+		yAxis = (-player.position.y) + (app->win->screenSurface->h * .5);
 
 		//Checks camera x limits
-		if (App->render->camera.x <= App->scene->cameraRect.x && App->render->camera.x >= (App->scene->cameraRect.w + App->win->screenSurface->w))
+		if (app->render->camera.x <= app->scene->cameraRect.x && app->render->camera.x >= (app->scene->cameraRect.w + app->win->screenSurface->w))
 		{
-			App->render->camera.x = (int)xAxis;
+			app->render->camera.x = (int)xAxis;
 		}
 
-		if (App->render->camera.x >= App->scene->cameraRect.x && player.position.x < (App->win->screenSurface->w / 2) + 1)
+		if (app->render->camera.x >= app->scene->cameraRect.x && player.position.x < (app->win->screenSurface->w / 2) + 1)
 		{
-			App->render->camera.x = App->scene->cameraRect.x - 1;
+			app->render->camera.x = app->scene->cameraRect.x - 1;
 		}
-		else if (player.position.x > (-(App->scene->cameraRect.w) - (App->win->screenSurface->w / 2)))
+		else if (player.position.x > (-(app->scene->cameraRect.w) - (app->win->screenSurface->w / 2)))
 		{
-			App->render->camera.x = App->scene->cameraRect.w + App->win->screenSurface->w + 2;
+			app->render->camera.x = app->scene->cameraRect.w + app->win->screenSurface->w + 2;
 		}
 
 		//Checks camera y limits
-		if (App->render->camera.y <= App->scene->cameraRect.y && App->render->camera.y >= (App->scene->cameraRect.h + App->win->screenSurface->h))
+		if (app->render->camera.y <= app->scene->cameraRect.y && app->render->camera.y >= (app->scene->cameraRect.h + app->win->screenSurface->h))
 		{
-			App->render->camera.y = (int)yAxis;
+			app->render->camera.y = (int)yAxis;
 		}
 
-		if (App->render->camera.y >= App->scene->cameraRect.y)
+		if (app->render->camera.y >= app->scene->cameraRect.y)
 		{
-			App->render->camera.y = App->scene->cameraRect.y;
+			app->render->camera.y = app->scene->cameraRect.y;
 		}
-		else if (App->render->camera.y < (App->scene->cameraRect.h + App->win->screenSurface->h))
+		else if (app->render->camera.y < (app->scene->cameraRect.h + app->win->screenSurface->h))
 		{
-			App->render->camera.y = App->scene->cameraRect.h + App->win->screenSurface->h;;
+			app->render->camera.y = app->scene->cameraRect.h + app->win->screenSurface->h;;
 		}
 	}
 }
@@ -604,7 +601,7 @@ void EntityPlayer::Ascend(float time)
 	case Ascending::ASCENDED:
 	{
 		player.ascending = false;
-		App->fadeToBlack->DoFadeToBlack(App->scene->currentLevel + 1);
+		app->fadeToBlack->DoFadeToBlack(app->scene->currentLevel + 1);
 		currentStep = Ascending::NONE;
 	}
 	}

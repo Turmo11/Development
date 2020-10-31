@@ -82,7 +82,7 @@ void Pickups::CreatePickup(SString name, iPoint position)
 	new_pickup->pickupHitbox.w = 32;
 	new_pickup->pickupHitbox.h = 32;
 
-	new_pickup->pickupCollider = App->collisions->AddCollider(new_pickup->pickupHitbox, ObjectType::LETTER, this);
+	new_pickup->pickupCollider = app->collisions->AddCollider(new_pickup->pickupHitbox, ObjectType::LETTER, this);
 
 	new_pickup->collected = false;
 
@@ -97,7 +97,7 @@ void Pickups::DrawAnimations()
 	{
 		if (!pickupIterator->data->collected)
 		{
-			App->map->DrawStaticAnimation(pickupIterator->data->name.GetString(), "letter_tileset", pickupIterator->data->position, &pickupIterator->data->animInfo);
+			app->map->DrawStaticAnimation(pickupIterator->data->name.GetString(), "letter_tileset", pickupIterator->data->position, &pickupIterator->data->animInfo);
 
 		}
 		pickupIterator = pickupIterator->next;
@@ -110,7 +110,7 @@ void Pickups::OnCollision(Collider* A, Collider* B)
 	{
 		A->toDelete = true;
 		GetCollected();
-		App->scene->CheckLevelProgress();
+		app->scene->CheckLevelProgress();
 
 	}
 }
@@ -140,7 +140,7 @@ void Pickups::DebugCollectAll()
 		pickupIterator = pickupIterator->next;
 	}
 
-	App->scene->CheckLevelProgress();
+	app->scene->CheckLevelProgress();
 }
 
 
@@ -164,9 +164,9 @@ void Pickups::UpdateGoal()
 
 	while (goal_iterator != NULL)
 	{
-		if (App->scene->levelCompleted)
+		if (app->scene->levelCompleted)
 		{
-			App->map->DrawStaticAnimation("goal", "goal", goal_iterator->data->position, &goal_iterator->data->animInfo);
+			app->map->DrawStaticAnimation("goal", "goal", goal_iterator->data->position, &goal_iterator->data->animInfo);
 
 		}
 		goal_iterator = goal_iterator->next;

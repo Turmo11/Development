@@ -48,14 +48,14 @@ bool Scene::Awake(pugi::xml_node& config)
 // Called before the first frame
 bool Scene::Start()
 {
-	App->fadeToBlack->activeScene = "Scene";
+	app->fadeToBlack->activeScene = "Scene";
 
-	background = App->tex->Load("Assets/textures/tower.png");
+	background = app->tex->Load("Assets/textures/tower.png");
 
 	SetUp(currentLevel);
 	
-	App->render->camera.x = App->render->startingCamPos.x;
-	App->render->camera.y = App->render->startingCamPos.y;
+	app->render->camera.x = app->render->startingCamPos.x;
+	app->render->camera.y = app->render->startingCamPos.y;
 
 	levelCompleted = false;
 	
@@ -76,22 +76,22 @@ bool Scene::Update(float dt)
 	switch (currentLevel)
 	{
 	case 1:
-		App->render->DrawTexture(background, -800, -5500, &backgroundRect, false, 0.1f);
+		app->render->DrawTexture(background, -800, -5500, &backgroundRect, false, 0.1f);
 		break;
 	case 2:
-		App->render->DrawTexture(background, -800, -4700, &backgroundRect, false, 0.1f);
+		app->render->DrawTexture(background, -800, -4700, &backgroundRect, false, 0.1f);
 		break;
 	}
 	
-	App->map->Draw();
+	app->map->Draw();
 
 	SString title("Map:%dx%d Tiles:%dx%d Tilesets:%d Camera:(%d,%d) Player:(%.2f,%.2f)",
-					App->map->data.width, App->map->data.height,
-					App->map->data.tileWidth, App->map->data.tileHeight,
-					App->map->data.tilesets.count(), App->render->camera.x, App->render->camera.y,
-					App->player->player.position.x, App->player->player.position.y);
+					app->map->data.width, app->map->data.height,
+					app->map->data.tileWidth, app->map->data.tileHeight,
+					app->map->data.tilesets.count(), app->render->camera.x, app->render->camera.y,
+					app->player->player.position.x, app->player->player.position.y);
 
-	App->win->SetTitle(title.GetString());
+	app->win->SetTitle(title.GetString());
 	return true;
 }
 
@@ -100,7 +100,7 @@ bool Scene::PostUpdate()
 {
 	bool ret = true;
 
-	if(App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
+	if(app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
 		ret = false;
 
 	return ret;
@@ -116,7 +116,7 @@ bool Scene::CleanUp()
 
 void Scene::CheckLevelProgress()
 {
-	List_item<Pickup*>* pickupIterator = App->pickups->pickupList.start;
+	List_item<Pickup*>* pickupIterator = app->pickups->pickupList.start;
 
 	while (pickupIterator != NULL)
 	{
@@ -132,77 +132,77 @@ void Scene::CheckLevelProgress()
 void Scene::DebugKeys()
 {
 	//Debug keys
-	if (App->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN)
+	if (app->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN)
 	{
-		App->fadeToBlack->DoFadeToBlack(1);
+		app->fadeToBlack->DoFadeToBlack(1);
 	}
-	if (App->input->GetKey(SDL_SCANCODE_F2) == KEY_DOWN)
+	if (app->input->GetKey(SDL_SCANCODE_F2) == KEY_DOWN)
 	{
-		App->fadeToBlack->DoFadeToBlack(2);
+		app->fadeToBlack->DoFadeToBlack(2);
 	}
-	if (App->input->GetKey(SDL_SCANCODE_F3) == KEY_DOWN)
+	if (app->input->GetKey(SDL_SCANCODE_F3) == KEY_DOWN)
 	{
-		App->fadeToBlack->DoFadeToBlack(currentLevel);
+		app->fadeToBlack->DoFadeToBlack(currentLevel);
 	}
-	if (App->input->GetKey(SDL_SCANCODE_F4) == KEY_DOWN)
+	if (app->input->GetKey(SDL_SCANCODE_F4) == KEY_DOWN)
 	{
-		App->win->ToggleFullscreen();
+		app->win->ToggleFullscreen();
 	}
-	if (App->input->GetKey(SDL_SCANCODE_F5) == KEY_DOWN)
+	if (app->input->GetKey(SDL_SCANCODE_F5) == KEY_DOWN)
 	{
-		App->SaveGame();
+		app->SaveGame();
 	}
-	if (App->input->GetKey(SDL_SCANCODE_F6) == KEY_DOWN)
+	if (app->input->GetKey(SDL_SCANCODE_F6) == KEY_DOWN)
 	{
-		App->LoadGame();
+		app->LoadGame();
 	}
-	if (App->input->GetKey(SDL_SCANCODE_F7) == KEY_DOWN)
+	if (app->input->GetKey(SDL_SCANCODE_F7) == KEY_DOWN)
 	{
-		App->fadeToBlack->FadeToBlackScene("TitleScene");
+		app->fadeToBlack->FadeToBlackScene("TitleScene");
 	}
-	if (App->input->GetKey(SDL_SCANCODE_F8) == KEY_DOWN)
+	if (app->input->GetKey(SDL_SCANCODE_F8) == KEY_DOWN)
 	{
-		App->fadeToBlack->FadeToBlackScene("GameOverScene");
+		app->fadeToBlack->FadeToBlackScene("GameOverScene");
 	}
-	if (App->input->GetKey(SDL_SCANCODE_KP_MULTIPLY) == KEY_DOWN)
+	if (app->input->GetKey(SDL_SCANCODE_KP_MULTIPLY) == KEY_DOWN)
 	{
-		App->pickups->DebugCollectAll();
+		app->pickups->DebugCollectAll();
 	}
 
 	//Volume
-	if (App->input->GetKey(SDL_SCANCODE_KP_PLUS) == KEY_DOWN)
+	if (app->input->GetKey(SDL_SCANCODE_KP_PLUS) == KEY_DOWN)
 	{
-		if (App->audio->volume < App->audio->maxVolume)
+		if (app->audio->volume < app->audio->maxVolume)
 		{
-			App->audio->volume += 0.1f;
-			App->audio->SetFxVolume(App->audio->volume);
-			App->audio->SetMusicVolume(App->audio->volume);
+			app->audio->volume += 0.1f;
+			app->audio->SetFxVolume(app->audio->volume);
+			app->audio->SetMusicVolume(app->audio->volume);
 		}
 
 	}
-	if (App->input->GetKey(SDL_SCANCODE_KP_MINUS) == KEY_DOWN)
+	if (app->input->GetKey(SDL_SCANCODE_KP_MINUS) == KEY_DOWN)
 	{
-		if (App->audio->volume > 0.0f)
+		if (app->audio->volume > 0.0f)
 		{
-			App->audio->volume -= 0.1f;
-			App->audio->SetFxVolume(App->audio->volume);
-			App->audio->SetMusicVolume(App->audio->volume);
+			app->audio->volume -= 0.1f;
+			app->audio->SetFxVolume(app->audio->volume);
+			app->audio->SetMusicVolume(app->audio->volume);
 		}
 	}
-	if (App->audio->volume > App->audio->maxVolume)
+	if (app->audio->volume > app->audio->maxVolume)
 	{
-		App->audio->volume = App->audio->maxVolume;
+		app->audio->volume = app->audio->maxVolume;
 	}
-	if (App->audio->volume < 0.0f)
+	if (app->audio->volume < 0.0f)
 	{
-		App->audio->volume = 0.0f;
+		app->audio->volume = 0.0f;
 	}
 }
 
 void Scene::SetUp(int level)
 {
-	App->pickups->CleanUp();
-	//App->walkingEnemy->CleanUp();
+	app->pickups->CleanUp();
+	//app->walkingEnemy->CleanUp();
 
 	LOG("SetUp level = %d", level);
 
@@ -211,16 +211,16 @@ void Scene::SetUp(int level)
 	case 0:
 
 		currentLevel = 0;
-		App->audio->PlayMusic("Assets/audio/music/tutorial.ogg", 0.0f);
-		App->pickups->CreatePickup("alpha", { 1152, 704 });
-		App->pickups->CreatePickup("chi", { 1792, 576 });
-		App->pickups->CreatePickup("rho", { 1408, 512 });
-		App->pickups->CreatePickup("eta", { 1792, 384 });
+		app->audio->PlayMusic("Assets/audio/music/tutorial.ogg", 0.0f);
+		app->pickups->CreatePickup("alpha", { 1152, 704 });
+		app->pickups->CreatePickup("chi", { 1792, 576 });
+		app->pickups->CreatePickup("rho", { 1408, 512 });
+		app->pickups->CreatePickup("eta", { 1792, 384 });
 		break;
 
 	case 1:
 
-		App->map->Load("tutorial.tmx");
+		app->map->Load("tutorial.tmx");
 
 		currentLevel = 1;
 
@@ -228,19 +228,19 @@ void Scene::SetUp(int level)
 		//cameraRect.y = 5000;
 		cameraRect.h = -3800;
 
-		App->audio->PlayMusic("Assets/audio/music/tutorial.ogg", 0.0f);
-		App->pickups->CreatePickup("alpha", { 2128, 2448 });
-		App->pickups->CreatePickup("chi", { 528, 3024 });
-		App->pickups->CreatePickup("rho", { 2960, 784 });
-		App->pickups->CreatePickup("eta", { 656, 1936 });
-		App->pickups->SetGoal({ 1552, 656 });
-		//App->walkingEnemy->CreateEnemy(EnemyType::SOUL, { 925, 3475 });
-		//App->walkingEnemy->CreateEnemy(EnemyType::SOUL, { 976, 3536 });
+		app->audio->PlayMusic("Assets/audio/music/tutorial.ogg", 0.0f);
+		app->pickups->CreatePickup("alpha", { 2128, 2448 });
+		app->pickups->CreatePickup("chi", { 528, 3024 });
+		app->pickups->CreatePickup("rho", { 2960, 784 });
+		app->pickups->CreatePickup("eta", { 656, 1936 });
+		app->pickups->SetGoal({ 1552, 656 });
+		//app->walkingEnemy->CreateEnemy(EnemyType::SOUL, { 925, 3475 });
+		//app->walkingEnemy->CreateEnemy(EnemyType::SOUL, { 976, 3536 });
 		break;
 
 	case 2:
 
-		App->map->Load("athena.tmx");
+		app->map->Load("athena.tmx");
 
 		currentLevel = 2;
 
@@ -250,14 +250,14 @@ void Scene::SetUp(int level)
 		//cameraRect.h = -3800;
 		cameraRect.h = -6300;
 
-		App->audio->PlayMusic("Assets/audio/music/athena.ogg", 0.0f);
-		App->pickups->CreatePickup("psi", { 1583, 2736 });
-		//App->pickups->CreatePickup("chi", { 528, 3024 });
-		//App->pickups->CreatePickup("rho", { 2960, 784 });
-		//App->pickups->CreatePickup("eta", { 656, 1936 });
-		//App->pickups->SetGoal({ 1552, 656 });
-		////App->walkingEnemy->CreateEnemy(EnemyType::SOUL, { 925, 3475 });
-		//App->walkingEnemy->CreateEnemy(EnemyType::SOUL, { 976, 3536 });
+		app->audio->PlayMusic("Assets/audio/music/athena.ogg", 0.0f);
+		app->pickups->CreatePickup("psi", { 1583, 2736 });
+		//app->pickups->CreatePickup("chi", { 528, 3024 });
+		//app->pickups->CreatePickup("rho", { 2960, 784 });
+		//app->pickups->CreatePickup("eta", { 656, 1936 });
+		//app->pickups->SetGoal({ 1552, 656 });
+		////app->walkingEnemy->CreateEnemy(EnemyType::SOUL, { 925, 3475 });
+		//app->walkingEnemy->CreateEnemy(EnemyType::SOUL, { 976, 3536 });
 		break;
 
 	default:
