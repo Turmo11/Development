@@ -85,13 +85,13 @@ bool Scene::Update(float dt)
 	
 	app->map->Draw();
 
-	SString title("Map:%dx%d Tiles:%dx%d Tilesets:%d Camera:(%d,%d) Player:(%.2f,%.2f)",
+	/*SString title("Map:%dx%d Tiles:%dx%d Tilesets:%d Camera:(%d,%d) Player:(%.2f,%.2f)",
 					app->map->data.width, app->map->data.height,
 					app->map->data.tileWidth, app->map->data.tileHeight,
 					app->map->data.tilesets.count(), app->render->camera.x, app->render->camera.y,
 					app->player->player.position.x, app->player->player.position.y);
 
-	app->win->SetTitle(title.GetString());
+	app->win->SetTitle(title.GetString());*/
 	return true;
 }
 

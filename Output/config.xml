@@ -1,7 +1,7 @@
 <!-- Config file for the game -->
 
 <config>
-  <app>
+  <app framerate_cap="30" frame_cap_on="1">
     <title>Metamorphosis</title>
     <organization>UPC</organization>
   </app>

@@ -46,9 +46,6 @@
     <ClCompile Include="Source\Window.cpp">
       <Filter>Modules</Filter>
     </ClCompile>
-    <ClCompile Include="Source\External\PugiXml\src\pugixml.cpp">
-      <Filter>External</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Timer.cpp">
       <Filter>Tools</Filter>
     </ClCompile>
@@ -57,6 +54,12 @@
     </ClCompile>
     <ClCompile Include="Source\Log.cpp">
       <Filter>Containers</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\PerfTimer.cpp">
+      <Filter>Tools</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\External\PugiXml\src\pugixml.cpp">
+      <Filter>External\PugiXml</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -105,12 +108,6 @@
     <ClInclude Include="Source\Window.h">
       <Filter>Modules</Filter>
     </ClInclude>
-    <ClInclude Include="Source\External\PugiXml\src\pugiconfig.hpp">
-      <Filter>External</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\External\PugiXml\src\pugixml.hpp">
-      <Filter>External</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Timer.h">
       <Filter>Tools</Filter>
     </ClInclude>
@@ -118,9 +115,6 @@
       <Filter>Entities\Player</Filter>
     </ClInclude>
     <ClInclude Include="Source\Animation.h">
-      <Filter>Containers</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Defs.h">
       <Filter>Containers</Filter>
     </ClInclude>
     <ClInclude Include="Source\DynArray.h">
@@ -137,6 +131,18 @@
     </ClInclude>
     <ClInclude Include="Source\SString.h">
       <Filter>Containers</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\PerfTimer.h">
+      <Filter>Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\External\PugiXml\src\pugiconfig.hpp">
+      <Filter>External\PugiXml</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\External\PugiXml\src\pugixml.hpp">
+      <Filter>External\PugiXml</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Defs.h">
+      <Filter>Core</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -169,6 +175,9 @@
     </Filter>
     <Filter Include="External">
       <UniqueIdentifier>{59f27fad-1703-4155-a4d4-eecced008b24}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="External\PugiXml">
+      <UniqueIdentifier>{a2546d06-df3d-4279-a437-ef77ed0e51e8}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

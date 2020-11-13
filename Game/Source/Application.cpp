@@ -28,27 +28,29 @@
 // Constructor
 Application::Application(int argc, char* args[]) : argc(argc), args(args)
 {
-	frames = 0;
-	want_to_save = want_to_load = false;
+	PERF_START(perfTimer);
+	wantToSave = wantToLoad = false;
 
-	input			= new Input();
-	win				= new Window();
-	render			= new Render();
-	tex				= new Textures();
-	audio			= new Audio();
-	
-	scene			= new Scene();
-	titleScene		= new TitleScene();
-	gameOverScene   = new GameOverScene();
-	logo_scene		= new LogoScene();
+	frameCount = 0;
 
-	map				= new Map();
-	player			= new EntityPlayer();
-	pickups			= new Pickups();
-	collisions		= new Collisions();
-	fadeToBlack	    = new FadeToBlack();
+	input = new Input();
+	win = new Window();
+	render = new Render();
+	tex = new Textures();
+	audio = new Audio();
+
+	scene = new Scene();
+	titleScene = new TitleScene();
+	gameOverScene = new GameOverScene();
+	logo_scene = new LogoScene();
+
+	map = new Map();
+	player = new EntityPlayer();
+	pickups = new Pickups();
+	collisions = new Collisions();
+	fadeToBlack = new FadeToBlack();
 	//walkingEnemy	= new WalkingEnemy();
-	
+
 	// Ordered for awake / Start / Update
 	// Reverse order of CleanUp
 	AddModule(input);
@@ -68,13 +70,14 @@ Application::Application(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(player);
 
 	AddModule(collisions);
-	
+
 
 	// render last to swap buffer
 	AddModule(render);
 
+	pause = false;
 
-
+	PERF_PEEK(perfTimer);
 }
 
 // Destructor
@@ -83,7 +86,7 @@ Application::~Application()
 	// release modules
 	List_item<Module*>* item = modules.end;
 
-	while(item != NULL)
+	while (item != NULL)
 	{
 		RELEASE(item->data);
 		item = item->prev;
@@ -101,37 +104,47 @@ void Application::AddModule(Module* module)
 // Called before render is available
 bool Application::Awake()
 {
+	PERF_START(perfTimer);
+
 	pugi::xml_document	config_file;
 	pugi::xml_node		config;
 	pugi::xml_node		app_config;
 
 	bool ret = false;
-		
+
 	config = LoadConfig(config_file);
 
-	if(config.empty() == false)
+	frameCap = CAP_AT_30;
+
+	if (config.empty() == false)
 	{
 		// self-config
 		ret = true;
 		app_config = config.child("app");
 		title.Create(app_config.child("title").child_value());
 		organization.Create(app_config.child("organization").child_value());
-		load_game = config.child("file_system").child("load_file").child_value();
-		save_game = config.child("file_system").child("save_file").child_value();
+		frameCap = config.child("app").attribute("framerate_cap").as_uint();
+		frameCapOn = config.child("app").attribute("frame_cap_on").as_bool();
+		initFrameCap = frameCap;
+
+		loadGame = config.child("file_system").child("load_file").child_value();
+		saveGame = config.child("file_system").child("save_file").child_value();
 
 	}
 
-	if(ret == true)
+	if (ret == true)
 	{
 		List_item<Module*>* item;
 		item = modules.start;
 
-		while(item != NULL && ret == true)
+		while (item != NULL && ret == true)
 		{
 			ret = item->data->Awake(config.child(item->data->name.GetString()));
 			item = item->next;
 		}
 	}
+
+	PERF_PEEK(perfTimer);
 
 	return ret;
 }
@@ -139,12 +152,13 @@ bool Application::Awake()
 // Called before the first frame
 bool Application::Start()
 {
-	
+	PERF_START(perfTimer);
+
 	bool ret = true;
 	List_item<Module*>* item;
 	item = modules.start;
 
-	while(item != NULL && ret == true)
+	while (item != NULL && ret == true)
 	{
 		ret = item->data->Start();
 		item = item->next;
@@ -155,6 +169,10 @@ bool Application::Start()
 	player->active = false;
 	pickups->active = false;
 	map->active = false;
+
+	startupTimer.Start();
+	PERF_PEEK(perfTimer);
+
 	return ret;
 }
 
@@ -164,16 +182,16 @@ bool Application::Update()
 	bool ret = true;
 	PrepareUpdate();
 
-	if(input->GetWindowEvent(WE_QUIT) == true)
+	if (input->GetWindowEvent(WE_QUIT) == true)
 		ret = false;
 
-	if(ret == true)
+	if (ret == true)
 		ret = PreUpdate();
 
-	if(ret == true)
+	if (ret == true)
 		ret = DoUpdate();
 
-	if(ret == true)
+	if (ret == true)
 		ret = PostUpdate();
 
 	FinishUpdate();
@@ -187,7 +205,7 @@ pugi::xml_node Application::LoadConfig(pugi::xml_document& config_file) const
 
 	pugi::xml_parse_result result = config_file.load_file("config.xml");
 
-	if(result == NULL)
+	if (result == NULL)
 		LOG("Could not load map xml file config.xml. pugi error: %s", result.description());
 	else
 		ret = config_file.child("config");
@@ -198,16 +216,77 @@ pugi::xml_node Application::LoadConfig(pugi::xml_document& config_file) const
 // ---------------------------------------------
 void Application::PrepareUpdate()
 {
+	frameCount++;
+	frameslastSecond++;
+
+	dt = frameTimer.ReadSec();						//Keeps track of the amount of time that has passed since last frame in seconds (processing time of a frame: Frame 1: 0.033secs, ...).
+	frameTimer.Start();
+
 }
 
 // ---------------------------------------------
 void Application::FinishUpdate()
 {
-	if(want_to_save == true)
+	if (wantToSave == true)
 		SavegameNow();
 
-	if(want_to_load == true)
+	if (wantToLoad == true)
 		LoadGameNow();
+
+	//------------ Framerate Calculations ------------
+	if (lastSecondTimer.ReadMs() > 1000)
+	{
+		lastSecondTimer.Start();
+		prevSecFrames = frameslastSecond;
+		frameslastSecond = 0;
+	}
+
+	uint frameCapMs = 1000 / frameCap;
+	uint currentFrameMs = frameTimer.Read();
+
+	if (frameCapOn)
+	{
+		if (currentFrameMs < frameCapMs)						//If the current frame processing time is lower than the specified frame_cap. Timer instead of PerfTimer was used because SDL_Delay is inaccurate.
+		{
+			trueDelayTimer.Start();
+
+			SDL_Delay(frameCapMs - currentFrameMs);				//SDL_Delay delays processing for a specified time. In this case, it delays for the difference in ms between the frame cap (30fps so 33,3ms per frame) and the current frame.
+
+			uint intended_delay = frameCapMs - currentFrameMs;
+
+			//LOG("We waited for %d milliseconds and got back in %f", intended_delay, true_delay_timer.ReadMs());
+		}
+	}
+
+	float avg_fps = frameCount / startupTimer.ReadSec();
+	secondsSinceStartup = startupTimer.ReadSec();
+	uint32 lastFrameMs = frameTimer.Read();
+	uint32 framesOnLastUpdate = prevSecFrames;					//Keeps track of how many frames were processed the last second.
+
+	if (frameCapOn)
+	{
+		frameCapActive = "On";
+	}
+	else
+	{
+		frameCapActive = "Off";
+	}
+
+	if (vsyncOn)
+	{
+		vsyncActive = "On";
+	}
+	else
+	{
+		vsyncActive = "Off";
+	}
+
+	static char title[256];
+
+	sprintf_s(title, 256, "Av.FPS: %.2f / Last Frame Ms: %02u / Last sec frames: %i / Last dt: %.3f / Time since startup: %.3f / Frame Count: %llu / Vsync: %s / Frame cap: %s",
+		avg_fps, lastFrameMs, framesOnLastUpdate, dt, secondsSinceStartup, frameCount, vsyncActive, frameCapActive);
+
+	app->win->SetTitle(title);
 }
 
 // Call modules before each loop iteration
@@ -218,11 +297,11 @@ bool Application::PreUpdate()
 	item = modules.start;
 	Module* pModule = NULL;
 
-	for(item = modules.start; item != NULL && ret == true; item = item->next)
+	for (item = modules.start; item != NULL && ret == true; item = item->next)
 	{
 		pModule = item->data;
 
-		if(pModule->active == false) {
+		if (pModule->active == false) {
 			continue;
 		}
 
@@ -240,11 +319,11 @@ bool Application::DoUpdate()
 	item = modules.start;
 	Module* pModule = NULL;
 
-	for(item = modules.start; item != NULL && ret == true; item = item->next)
+	for (item = modules.start; item != NULL && ret == true; item = item->next)
 	{
 		pModule = item->data;
 
-		if(pModule->active == false) {
+		if (pModule->active == false) {
 			continue;
 		}
 
@@ -261,11 +340,11 @@ bool Application::PostUpdate()
 	List_item<Module*>* item;
 	Module* pModule = NULL;
 
-	for(item = modules.start; item != NULL && ret == true; item = item->next)
+	for (item = modules.start; item != NULL && ret == true; item = item->next)
 	{
 		pModule = item->data;
 
-		if(pModule->active == false) {
+		if (pModule->active == false) {
 			continue;
 		}
 
@@ -282,7 +361,7 @@ bool Application::CleanUp()
 	List_item<Module*>* item;
 	item = modules.end;
 
-	while(item != NULL && ret == true)
+	while (item != NULL && ret == true)
 	{
 		ret = item->data->CleanUp();
 		item = item->prev;
@@ -300,7 +379,7 @@ int Application::GetArgc() const
 // ---------------------------------------
 const char* Application::GetArgv(int index) const
 {
-	if(index < argc)
+	if (index < argc)
 		return args[index];
 	else
 		return NULL;
@@ -323,7 +402,7 @@ void Application::LoadGame()
 {
 	// we should be checking if that file actually exist
 	// from the "GetSaveGames" list
-	want_to_load = true;
+	wantToLoad = true;
 }
 
 // ---------------------------------------
@@ -332,7 +411,7 @@ void Application::SaveGame() const
 	// we should be checking if that file actually exist
 	// from the "GetSaveGames" list ... should we overwrite ?
 
-	want_to_save = true;
+	wantToSave = true;
 }
 
 // ---------------------------------------
@@ -348,33 +427,33 @@ bool Application::LoadGameNow()
 	pugi::xml_document data;
 	pugi::xml_node root;
 
-	pugi::xml_parse_result result = data.load_file(load_game.GetString());
+	pugi::xml_parse_result result = data.load_file(loadGame.GetString());
 
-	if(result != NULL)
+	if (result != NULL)
 	{
-		LOG("Loading new Game State from %s...", load_game.GetString());
+		LOG("Loading new Game State from %s...", loadGame.GetString());
 
 		root = data.child("game_state");
 
 		List_item<Module*>* item = modules.start;
 		ret = true;
 
-		while(item != NULL && ret == true)
+		while (item != NULL && ret == true)
 		{
 			ret = item->data->Load(root.child(item->data->name.GetString()));
 			item = item->next;
 		}
 
 		data.reset();
-		if(ret == true)
+		if (ret == true)
 			LOG("...finished loading");
 		else
 			LOG("...loading process interrupted with error on module %s", (item != NULL) ? item->data->name.GetString() : "unknown");
 	}
 	else
-		LOG("Could not parse game state xml file %s. pugi error: %s", load_game.GetString(), result.description());
+		LOG("Could not parse game state xml file %s. pugi error: %s", loadGame.GetString(), result.description());
 
-	want_to_load = false;
+	wantToLoad = false;
 	return ret;
 }
 
@@ -382,31 +461,31 @@ bool Application::SavegameNow() const
 {
 	bool ret = true;
 
-	LOG("Saving Game State to %s...", save_game.GetString());
+	LOG("Saving Game State to %s...", saveGame.GetString());
 
 	// xml object were we will store all data
 	pugi::xml_document data;
 	pugi::xml_node root;
-	
+
 	root = data.append_child("game_state");
 
 	List_item<Module*>* item = modules.start;
 
-	while(item != NULL && ret == true)
+	while (item != NULL && ret == true)
 	{
 		ret = item->data->Save(root.append_child(item->data->name.GetString()));
 		item = item->next;
 	}
 
-	if(ret == true)
+	if (ret == true)
 	{
-		data.save_file(save_game.GetString());
+		data.save_file(saveGame.GetString());
 		LOG("... finished saving", );
 	}
 	else
 		LOG("Save process halted from an error in module %s", (item != NULL) ? item->data->name.GetString() : "unknown");
 
 	data.reset();
-	want_to_save = false;
+	wantToSave = false;
 	return ret;
 }

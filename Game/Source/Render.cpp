@@ -5,7 +5,7 @@
 #include "Render.h"
 #include "FadeToBlack.h"
 
-#define VSYNC true
+#define VSYNC false
 
 Render::Render() : Module()
 {
