@@ -59,25 +59,25 @@ bool WalkingEnemy::CleanUp()
 
 void WalkingEnemy::CreateEnemy(EnemyType type, iPoint position)
 {
-	Enemy* new_enemy = new Enemy;
+	Enemy* newEnemy = new Enemy;
 
-	new_enemy->type = type;
-	new_enemy->position = position;
+	newEnemy->type = type;
+	newEnemy->position = position;
 
 /*	new_enemy->hitbox.x = position.x + 16;
 	new_enemy->hitbox.y = position.y + 32;
 	new_enemy->hitbox.w = 64;
 	new_enemy->hitbox.h = 75;*/ 
-	new_enemy->hitbox.x = position.x - 4;
-	new_enemy->hitbox.y = position.y + 10;
-	new_enemy->hitbox.w = 38;
-	new_enemy->hitbox.h = 38;
+	newEnemy->hitbox.x = position.x - 4;
+	newEnemy->hitbox.y = position.y + 10;
+	newEnemy->hitbox.w = 38;
+	newEnemy->hitbox.h = 38;
 
-	new_enemy->collider = app->collisions->AddCollider(new_enemy->hitbox, ObjectType::ENEMY, this);
+	newEnemy->collider = app->collisions->AddCollider(newEnemy->hitbox, ObjectType::ENEMY, this);
 
-	new_enemy->dead = false;
+	newEnemy->dead = false;
 
-	enemyList.add(new_enemy);
+	enemyList.add(newEnemy);
 
 }
 

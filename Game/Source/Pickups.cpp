@@ -72,21 +72,21 @@ bool Pickups::CleanUp()
 
 void Pickups::CreatePickup(SString name, iPoint position)
 {
-	Pickup* new_pickup = new Pickup;
+	Pickup* newPickup = new Pickup;
 
-	new_pickup->name = name;
-	new_pickup->position = position;
+	newPickup->name = name;
+	newPickup->position = position;
 
-	new_pickup->pickupHitbox.x = position.x;
-	new_pickup->pickupHitbox.y = position.y;
-	new_pickup->pickupHitbox.w = 32;
-	new_pickup->pickupHitbox.h = 32;
+	newPickup->pickupHitbox.x = position.x;
+	newPickup->pickupHitbox.y = position.y;
+	newPickup->pickupHitbox.w = 32;
+	newPickup->pickupHitbox.h = 32;
 
-	new_pickup->pickupCollider = app->collisions->AddCollider(new_pickup->pickupHitbox, ObjectType::LETTER, this);
+	newPickup->pickupCollider = app->collisions->AddCollider(newPickup->pickupHitbox, ObjectType::LETTER, this);
 
-	new_pickup->collected = false;
+	newPickup->collected = false;
 
-	pickupList.add(new_pickup);
+	pickupList.add(newPickup);
 }
 
 void Pickups::DrawAnimations()
@@ -146,30 +146,30 @@ void Pickups::DebugCollectAll()
 
 void Pickups::SetGoal(iPoint position)
 {
-	Goal* left_goal = new Goal;
-	Goal* right_goal = new Goal;
+	Goal* leftGoal = new Goal;
+	Goal* rightGoal = new Goal;
 
-	left_goal->position = position;
+	leftGoal->position = position;
 
-	right_goal->position.x = position.x + 192;
-	right_goal->position.y = position.y;
+	rightGoal->position.x = position.x + 192;
+	rightGoal->position.y = position.y;
 
-	goalList.add(left_goal);
-	goalList.add(right_goal);
+	goalList.add(leftGoal);
+	goalList.add(rightGoal);
 }
 
 void Pickups::UpdateGoal()
 {
-	ListItem<Goal*>* goal_iterator = goalList.start;
+	ListItem<Goal*>* goalIterator = goalList.start;
 
-	while (goal_iterator != NULL)
+	while (goalIterator != NULL)
 	{
 		if (app->scene->levelCompleted)
 		{
-			app->map->DrawStaticAnimation("goal", "goal", goal_iterator->data->position, &goal_iterator->data->animInfo);
+			app->map->DrawStaticAnimation("goal", "goal", goalIterator->data->position, &goalIterator->data->animInfo);
 
 		}
-		goal_iterator = goal_iterator->next;
+		goalIterator = goalIterator->next;
 	}
 }
 

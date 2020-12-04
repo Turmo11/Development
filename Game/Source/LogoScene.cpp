@@ -43,7 +43,7 @@ bool LogoScene::Start()
 
 	accumulatedTime = 0.0f;
 
-	logoTexture = app->tex->Load("Assets/textures/UI/uwu_logo.png");
+	logoTexture = app->tex->Load("Assets/Textures/UI/uwu_logo.png");
 
 	app->render->camera.x = 0;
 	app->render->camera.y = 0;

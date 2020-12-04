@@ -31,32 +31,32 @@ bool Collisions::Start()
 bool Collisions::PreUpdate() 
 {
 	//Deletes any collider waiting to be destroyed (toDelete == true)
-	ListItem<Collider*>* collider_iterator = colliders.start;
-	while (collider_iterator != nullptr) 
+	ListItem<Collider*>* colliderIterator = colliders.start;
+	while (colliderIterator != nullptr) 
 	{
-		if (collider_iterator->data->toDelete == true)
+		if (colliderIterator->data->toDelete == true)
 		{
-			colliders.del(collider_iterator);
+			colliders.del(colliderIterator);
 		}
 
-		collider_iterator = collider_iterator->next;
+		colliderIterator = colliderIterator->next;
 	}
 
 	// Calculates collisions
 	Collider* c1;
 	Collider* c2;
 
-	collider_iterator = colliders.start;
-	while (collider_iterator != nullptr) 
+	colliderIterator = colliders.start;
+	while (colliderIterator != nullptr) 
 	{
-		c1 = collider_iterator->data;
+		c1 = colliderIterator->data;
 
-		ListItem<Collider*>* collider_iterator2 = colliders.start;
+		ListItem<Collider*>* colliderIterator2 = colliders.start;
 
-		while (collider_iterator2 != nullptr) 
+		while (colliderIterator2 != nullptr) 
 		{
 
-			c2 = collider_iterator2->data;
+			c2 = colliderIterator2->data;
 
 			if (c1 != c2) 
 			{
@@ -69,9 +69,9 @@ bool Collisions::PreUpdate()
 						c2->callBack->OnCollision(c2, c1);
 				}
 			}
-			collider_iterator2 = collider_iterator2->next;
+			colliderIterator2 = colliderIterator2->next;
 		}
-		collider_iterator = collider_iterator->next;
+		colliderIterator = colliderIterator->next;
 	}
 
 	return true;
@@ -103,37 +103,37 @@ void Collisions::DebugDraw()
 		return;
 
 	Uint8 alpha = 80; 	//Alpha value for all debug colliders
-	ListItem<Collider*>* collider_iterator = colliders.start;
+	ListItem<Collider*>* colliderIterator = colliders.start;
 
-	while (collider_iterator != nullptr) 
+	while (colliderIterator != nullptr) 
 	{
 
-		switch (collider_iterator->data->type)
+		switch (colliderIterator->data->type)
 		{
 		case ObjectType::PLAYER: // yellow
-			app->render->DrawQuad(collider_iterator->data->rect, 255, 255, 0, alpha);
+			app->render->DrawQuad(colliderIterator->data->rect, 255, 255, 0, alpha);
 			break;
 		case ObjectType::GROUND: // light green
-			app->render->DrawQuad(collider_iterator->data->rect, 194, 255, 198, alpha);
+			app->render->DrawQuad(colliderIterator->data->rect, 194, 255, 198, alpha);
 			break;
 		case ObjectType::PLATFORM: // light blue
-			app->render->DrawQuad(collider_iterator->data->rect, 85, 170, 255, alpha);
+			app->render->DrawQuad(colliderIterator->data->rect, 85, 170, 255, alpha);
 			break;
 		case ObjectType::LETTER: // pink
-			app->render->DrawQuad(collider_iterator->data->rect, 255, 0, 255, alpha);
+			app->render->DrawQuad(colliderIterator->data->rect, 255, 0, 255, alpha);
 			break;
 		case ObjectType::ENEMY: // purple
-			app->render->DrawQuad(collider_iterator->data->rect, 85, 0, 255, alpha);
+			app->render->DrawQuad(colliderIterator->data->rect, 85, 0, 255, alpha);
 			break;
 		case ObjectType::GOAL: // red
-			app->render->DrawQuad(collider_iterator->data->rect, 255, 0, 0, alpha);
+			app->render->DrawQuad(colliderIterator->data->rect, 255, 0, 0, alpha);
 			break;
 		case ObjectType::DEATH: // black
-			app->render->DrawQuad(collider_iterator->data->rect, 0, 0, 0, alpha);
+			app->render->DrawQuad(colliderIterator->data->rect, 0, 0, 0, alpha);
 			break;
 
 		}
-		collider_iterator = collider_iterator->next;
+		colliderIterator = colliderIterator->next;
 	}
 }
 
@@ -166,13 +166,13 @@ Collider* Collisions::AddCollider(SDL_Rect rect, ObjectType type, Module* callBa
 //Loads colliders from tiled map
 void Collisions::LoadFromMap() 
 {
-	ListItem<ObjectGroup*>* list_i = app->map->data.objectGroups.start;
-	while (list_i != nullptr) {
-		for (int i = 0; i < list_i->data->objectsSize; i++) {
+	ListItem<ObjectGroup*>* listIt = app->map->data.objectGroups.start;
+	while (listIt != nullptr) {
+		for (int i = 0; i < listIt->data->objectsSize; i++) {
 
-			AddCollider(*list_i->data->objects[i].collider, list_i->data->objects[i].type, nullptr, &list_i->data->objects[i].properties);
+			AddCollider(*listIt->data->objects[i].collider, listIt->data->objects[i].type, nullptr, &listIt->data->objects[i].properties);
 		}
-		list_i = list_i->next;
+		listIt = listIt->next;
 	}
 }
 

@@ -42,7 +42,7 @@ Application::Application(int argc, char* args[]) : argc(argc), args(args)
 	scene = new Scene();
 	titleScene = new TitleScene();
 	gameOverScene = new GameOverScene();
-	logo_scene = new LogoScene();
+	logoScene = new LogoScene();
 
 	map = new Map();
 	player = new EntityPlayer();
@@ -63,7 +63,7 @@ Application::Application(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(scene);
 	AddModule(gameOverScene);
 	AddModule(titleScene);
-	AddModule(logo_scene);
+	AddModule(logoScene);
 	//AddModule(walkingEnemy);
 	AddModule(fadeToBlack);
 	AddModule(pickups);
@@ -106,13 +106,13 @@ bool Application::Awake()
 {
 	PERF_START(perfTimer);
 
-	pugi::xml_document	config_file;
+	pugi::xml_document	configFile;
 	pugi::xml_node		config;
-	pugi::xml_node		app_config;
+	pugi::xml_node		appConfig;
 
 	bool ret = false;
 
-	config = LoadConfig(config_file);
+	config = LoadConfig(configFile);
 
 	frameCap = CAP_AT_30;
 
@@ -120,9 +120,9 @@ bool Application::Awake()
 	{
 		// self-config
 		ret = true;
-		app_config = config.child("app");
-		title.Create(app_config.child("title").child_value());
-		organization.Create(app_config.child("organization").child_value());
+		appConfig = config.child("app");
+		title.Create(appConfig.child("title").child_value());
+		organization.Create(appConfig.child("organization").child_value());
 		frameCap = config.child("app").attribute("framerate_cap").as_uint();
 		frameCapOn = config.child("app").attribute("frame_cap_on").as_bool();
 		initFrameCap = frameCap;
@@ -199,16 +199,16 @@ bool Application::Update()
 }
 
 // ---------------------------------------------
-pugi::xml_node Application::LoadConfig(pugi::xml_document& config_file) const
+pugi::xml_node Application::LoadConfig(pugi::xml_document& configFile) const
 {
 	pugi::xml_node ret;
 
-	pugi::xml_parse_result result = config_file.load_file("config.xml");
+	pugi::xml_parse_result result = configFile.load_file("config.xml");
 
 	if (result == NULL)
 		LOG("Could not load map xml file config.xml. pugi error: %s", result.description());
 	else
-		ret = config_file.child("config");
+		ret = configFile.child("config");
 
 	return ret;
 }
@@ -252,13 +252,13 @@ void Application::FinishUpdate()
 
 			SDL_Delay(frameCapMs - currentFrameMs);				//SDL_Delay delays processing for a specified time. In this case, it delays for the difference in ms between the frame cap (30fps so 33,3ms per frame) and the current frame.
 
-			uint intended_delay = frameCapMs - currentFrameMs;
+			uint intendedDelay = frameCapMs - currentFrameMs;
 
 			//LOG("We waited for %d milliseconds and got back in %f", intended_delay, true_delay_timer.ReadMs());
 		}
 	}
 
-	float avg_fps = frameCount / startupTimer.ReadSec();
+	float avgFps = frameCount / startupTimer.ReadSec();
 	secondsSinceStartup = startupTimer.ReadSec();
 	uint32 lastFrameMs = frameTimer.Read();
 	uint32 framesOnLastUpdate = prevSecFrames;					//Keeps track of how many frames were processed the last second.
@@ -284,7 +284,7 @@ void Application::FinishUpdate()
 	static char title[256];
 
 	sprintf_s(title, 256, "Av.FPS: %.2f / Last Frame Ms: %02u / Last sec frames: %i / Last dt: %.3f / Time since startup: %.3f / Frame Count: %llu / Vsync: %s / Frame cap: %s",
-		avg_fps, lastFrameMs, framesOnLastUpdate, dt, secondsSinceStartup, frameCount, vsyncActive, frameCapActive);
+		avgFps, lastFrameMs, framesOnLastUpdate, dt, secondsSinceStartup, frameCount, vsyncActive, frameCapActive);
 
 	app->win->SetTitle(title);
 }
@@ -415,7 +415,7 @@ void Application::SaveGame() const
 }
 
 // ---------------------------------------
-void Application::GetSaveGames(List<SString>& list_to_fill) const
+void Application::GetSaveGames(List<SString>& listToFill) const
 {
 	// need to add functionality to file_system module for this to work
 }

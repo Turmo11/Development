@@ -34,7 +34,7 @@ bool TitleScene::Start()
 {
 	app->fadeToBlack->activeScene = "TitleScene";
 
-	background = app->tex->Load("Assets/textures/UI/title.png");
+	background = app->tex->Load("Assets/Textures/UI/title.png");
 
 	backgroundRect.h = 512;
 	backgroundRect.w = 1024;

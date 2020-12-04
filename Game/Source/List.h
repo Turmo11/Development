@@ -71,22 +71,22 @@ public:
 	*/
 	ListItem<tdata>* add(const tdata& item)
 	{
-		ListItem<tdata>*   p_data_item;
-		p_data_item = new ListItem < tdata >(item);
+		ListItem<tdata>*   pDataItem;
+		pDataItem = new ListItem < tdata >(item);
 
 		if(start == NULL)
 		{
-			start = end = p_data_item;
+			start = end = pDataItem;
 		}
 		else
 		{
-			p_data_item->prev = end;
-			end->next = p_data_item;
-			end = p_data_item;
+			pDataItem->prev = end;
+			end->next = pDataItem;
+			end = pDataItem;
 		}
 
 		++size;
-		return(p_data_item);
+		return(pDataItem);
 	}
 
 	/**
@@ -136,15 +136,15 @@ public:
 	*/
 	void clear()
 	{
-		ListItem<tdata>*   p_data;
-		ListItem<tdata>*   p_next;
-		p_data = start;
+		ListItem<tdata>*   pData;
+		ListItem<tdata>*   pNext;
+		pData = start;
 
-		while(p_data != NULL)
+		while(pData != NULL)
 		{
-			p_next = p_data->next;
-			RELEASE(p_data);
-			p_data = p_next;
+			pNext = pData->next;
+			RELEASE(pData);
+			pData = pNext;
 		}
 
 		start = end = NULL;
@@ -157,11 +157,11 @@ public:
 	tdata& operator  [](const unsigned int index)
 	{
 		long                  pos;
-		ListItem<tdata>*   p_item;
+		ListItem<tdata>*   pItem;
 		pos = 0;
-		p_item = start;
+		pItem = start;
 
-		while(p_item != NULL)
+		while(pItem != NULL)
 		{
 			if(pos == index)
 			{
@@ -169,10 +169,10 @@ public:
 			}
 
 			++pos;
-			p_item = p_item->next;
+			pItem = pItem->next;
 		}
 
-		return(p_item->data);
+		return(pItem->data);
 	}
 
 	/**
@@ -181,11 +181,11 @@ public:
 	const tdata& operator  [](const unsigned int index) const
 	{
 		long                  pos;
-		ListItem<tdata>*   p_item;
+		ListItem<tdata>*   pItem;
 		pos = 0;
-		p_item = start;
+		pItem = start;
 
-		while(p_item != NULL)
+		while(pItem != NULL)
 		{
 			if(pos == index)
 			{
@@ -193,25 +193,25 @@ public:
 			}
 
 			++pos;
-			p_item = p_item->next;
+			pItem = pItem->next;
 		}
 
-		ASSERT(p_item);
+		ASSERT(pItem);
 
-		return(p_item->data);
+		return(pItem->data);
 	}
 
 	/**
 	* const read operator access directly to a position in the list
 	*/
-	const List<tdata>& operator +=(const List<tdata>& other_list)
+	const List<tdata>& operator +=(const List<tdata>& otherList)
 	{
-		ListItem<tdata>*   p_item = other_list.start;
+		ListItem<tdata>*   pItem = otherList.start;
 
-		while(p_item != NULL)
+		while(pItem != NULL)
 		{
-			add(p_item->data);
-			p_item = p_item->next;
+			add(pItem->data);
+			pItem = pItem->next;
 		}
 
 		return(*this);
@@ -223,17 +223,17 @@ public:
 	const ListItem<tdata>* At(unsigned int index) const
 	{
 		long                  pos = 0;
-		ListItem<tdata>*   p_item = start;
+		ListItem<tdata>*   pItem = start;
 
-		while(p_item != NULL)
+		while(pItem != NULL)
 		{
 			if(pos++ == index)
 				break;
 
-			p_item = p_item->next;
+			pItem = pItem->next;
 		}
 
-		return p_item;
+		return pItem;
 	}
 
 	/**
@@ -242,17 +242,17 @@ public:
 	ListItem<tdata>* At(unsigned int index)
 	{
 		long                  pos = 0;
-		ListItem<tdata>*   p_item = start;
+		ListItem<tdata>*   pItem = start;
 
-		while(p_item != NULL)
+		while(pItem != NULL)
 		{
 			if(pos++ == index)
 				break;
 
-			p_item = p_item->next;
+			pItem = pItem->next;
 		}
 
-		return p_item;
+		return pItem;
 	}
 
 	// Sort
@@ -303,29 +303,29 @@ public:
 
 	void InsertAfter(uint position, const List<tdata>& list)
 	{
-		ListItem<tdata>* p_my_list = At(position);
-		ListItem<tdata>* p_other_list = list.start;
+		ListItem<tdata>* pMyList = At(position);
+		ListItem<tdata>* pOtherList = list.start;
 
-		while(p_other_list != NULL)
+		while(pOtherList != NULL)
 		{
-			ListItem<tdata>* p_new_item = new ListItem<tdata>(p_other_list->data);
+			ListItem<tdata>* pNewItem = new ListItem<tdata>(pOtherList->data);
 
-			p_new_item->next = (p_my_list) ? p_my_list->next : NULL;
+			pNewItem->next = (pMyList) ? pMyList->next : NULL;
 
-			if(p_new_item->next != NULL)
-				p_new_item->next->prev = p_new_item;
+			if(pNewItem->next != NULL)
+				pNewItem->next->prev = pNewItem;
 			else
-				end = p_new_item;
+				end = pNewItem;
 
-			p_new_item->prev = p_my_list;
+			pNewItem->prev = pMyList;
 				
-			if(p_new_item->prev != NULL)
-				p_new_item->prev->next = p_new_item;
+			if(pNewItem->prev != NULL)
+				pNewItem->prev->next = pNewItem;
 			else
-				start = p_new_item;
+				start = pNewItem;
 
-			p_my_list = p_new_item;
-			p_other_list = p_other_list->next;
+			pMyList = pNewItem;
+			pOtherList = pOtherList->next;
 		}
 	}
 };

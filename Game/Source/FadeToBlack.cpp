@@ -237,7 +237,7 @@ bool FadeToBlack::SwitchScenes(char* scene)
 			app->scene->active = false;
 			app->titleScene->active = true;
 			app->gameOverScene->active = false;
-			app->logo_scene->active = false;
+			app->logoScene->active = false;
 
 			app->player->active = false;
 			app->pickups->active = false;
@@ -250,7 +250,7 @@ bool FadeToBlack::SwitchScenes(char* scene)
 			app->scene->active = false;
 			app->titleScene->active = false;
 			app->gameOverScene->active = true;
-			app->logo_scene->active = false;
+			app->logoScene->active = false;
 
 			app->player->active = false;
 			app->pickups->active = false;
@@ -263,7 +263,7 @@ bool FadeToBlack::SwitchScenes(char* scene)
 			app->scene->active = false;
 			app->titleScene->active = false;
 			app->gameOverScene->active = false;
-			app->logo_scene->active = true;
+			app->logoScene->active = true;
 
 			app->player->active = false;
 			app->pickups->active = false;
@@ -275,7 +275,7 @@ bool FadeToBlack::SwitchScenes(char* scene)
 			app->scene->active = true;
 			app->titleScene->active = false;
 			app->gameOverScene->active = false;
-			app->logo_scene->active = false;
+			app->logoScene->active = false;
 
 			app->player->active = true;
 			app->pickups->active = true;
