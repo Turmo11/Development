@@ -31,7 +31,7 @@ bool Collisions::Start()
 bool Collisions::PreUpdate() 
 {
 	//Deletes any collider waiting to be destroyed (toDelete == true)
-	List_item<Collider*>* collider_iterator = colliders.start;
+	ListItem<Collider*>* collider_iterator = colliders.start;
 	while (collider_iterator != nullptr) 
 	{
 		if (collider_iterator->data->toDelete == true)
@@ -51,7 +51,7 @@ bool Collisions::PreUpdate()
 	{
 		c1 = collider_iterator->data;
 
-		List_item<Collider*>* collider_iterator2 = colliders.start;
+		ListItem<Collider*>* collider_iterator2 = colliders.start;
 
 		while (collider_iterator2 != nullptr) 
 		{
@@ -103,7 +103,7 @@ void Collisions::DebugDraw()
 		return;
 
 	Uint8 alpha = 80; 	//Alpha value for all debug colliders
-	List_item<Collider*>* collider_iterator = colliders.start;
+	ListItem<Collider*>* collider_iterator = colliders.start;
 
 	while (collider_iterator != nullptr) 
 	{
@@ -166,7 +166,7 @@ Collider* Collisions::AddCollider(SDL_Rect rect, ObjectType type, Module* callBa
 //Loads colliders from tiled map
 void Collisions::LoadFromMap() 
 {
-	List_item<ObjectGroup*>* list_i = app->map->data.objectGroups.start;
+	ListItem<ObjectGroup*>* list_i = app->map->data.objectGroups.start;
 	while (list_i != nullptr) {
 		for (int i = 0; i < list_i->data->objectsSize; i++) {
 

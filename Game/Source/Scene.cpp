@@ -116,7 +116,7 @@ bool Scene::CleanUp()
 
 void Scene::CheckLevelProgress()
 {
-	List_item<Pickup*>* pickupIterator = app->pickups->pickupList.start;
+	ListItem<Pickup*>* pickupIterator = app->pickups->pickupList.start;
 
 	while (pickupIterator != NULL)
 	{

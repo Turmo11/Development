@@ -56,7 +56,7 @@ void Map::Draw()
 		return;
 
 	// TODO 4: Make sure we draw all the layers and not just the first one
-	List_item<MapLayer*>* layer = data.layers.start;
+	ListItem<MapLayer*>* layer = data.layers.start;
 	while (layer != nullptr) {
 		for (int y = 0; y < data.height; ++y)
 		{
@@ -93,7 +93,7 @@ void Map::DrawAnimation(SString name, SString tileset, bool flip)
 
 	TileSet* animTileset = nullptr;
 
-	List_item<TileSet*>* tilesetIterator = data.tilesets.start;
+	ListItem<TileSet*>* tilesetIterator = data.tilesets.start;
 
 	while (tilesetIterator != NULL)
 	{
@@ -107,7 +107,7 @@ void Map::DrawAnimation(SString name, SString tileset, bool flip)
 	// I have the adventurer Tileset inside I have animation
 	Animations* currentAnim = nullptr;
 
-	List_item<Animations*>* animIterator;
+	ListItem<Animations*>* animIterator;
 	animIterator = animTileset->animations.start;
 
 	while (animIterator)
@@ -148,7 +148,7 @@ void Map::DrawStaticAnimation(SString name, SString tileset, iPoint position, An
 
 	TileSet* sAnimTileset = nullptr;
 
-	List_item<TileSet*>* tilesetIterator = data.tilesets.start;
+	ListItem<TileSet*>* tilesetIterator = data.tilesets.start;
 
 	while (tilesetIterator != NULL)
 	{
@@ -161,7 +161,7 @@ void Map::DrawStaticAnimation(SString name, SString tileset, iPoint position, An
 
 	Animations* currentAnim = nullptr;
 
-	List_item<Animations*>* animIterator;
+	ListItem<Animations*>* animIterator;
 	animIterator = sAnimTileset->animations.start;
 
 	while (animIterator)
@@ -204,7 +204,7 @@ TileSet* Map::GetTilesetFromTileId(int id) const
 	// Tileset based on a tile id //data.tilesets.start->data
 	TileSet* ret = nullptr;
 
-	List_item<TileSet*>* i = data.tilesets.start;
+	ListItem<TileSet*>* i = data.tilesets.start;
 	while (i->next != nullptr) 
 	{
 
@@ -290,7 +290,7 @@ bool Map::CleanUp()
 	LOG("Unloading map");
 
 	// Remove all tilesets
-	List_item<TileSet*>* item;
+	ListItem<TileSet*>* item;
 	item = data.tilesets.start;
 
 	while (item != NULL)
@@ -307,7 +307,7 @@ bool Map::CleanUp()
 	data.tilesets.clear();
 
 	// Remove all layers
-	List_item<MapLayer*>* item2;
+	ListItem<MapLayer*>* item2;
 	item2 = data.layers.start;
 
 	while (item2 != NULL)
@@ -318,7 +318,7 @@ bool Map::CleanUp()
 	data.layers.clear();
 
 	//Object cleanup
-	List_item<ObjectGroup*>* item3;
+	ListItem<ObjectGroup*>* item3;
 	item3 = app->map->data.objectGroups.start;
 
 	while (item3 != NULL)
@@ -419,7 +419,7 @@ bool Map::Load(const char* fileCName)
 		LOG("width: %d height: %d", data.width, data.height);
 		LOG("tileWidth: %d tileHeight: %d", data.tileWidth, data.tileHeight);
 
-		List_item<TileSet*>* item = data.tilesets.start;
+		ListItem<TileSet*>* item = data.tilesets.start;
 		while (item != NULL)
 		{
 			TileSet* s = item->data;
@@ -430,7 +430,7 @@ bool Map::Load(const char* fileCName)
 			item = item->next;
 		}
 
-		List_item<MapLayer*>* itemLayer = data.layers.start;
+		ListItem<MapLayer*>* itemLayer = data.layers.start;
 		while (itemLayer != NULL)
 		{
 			MapLayer* l = itemLayer->data;
@@ -713,7 +713,7 @@ bool Map::LoadProperties(pugi::xml_node& node, Properties& properties)							//R
 // Returns a property
 value Properties::Get(const char* name, value* defaultValue) const
 {
-	List_item<Property*>* item = propertyList.start;
+	ListItem<Property*>* item = propertyList.start;
 
 	while (item)
 	{

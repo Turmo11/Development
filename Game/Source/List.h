@@ -7,19 +7,19 @@
 * Contains items from double linked list
 */
 template<class tdata>
-struct List_item
+struct ListItem
 {
-	tdata                 data;
-	List_item<tdata>*   next;
-	List_item<tdata>*   prev;
+	tdata	data;
+	ListItem<tdata>*   next;
+	ListItem<tdata>*   prev;
 
-	inline List_item(const tdata& _data)
+	inline ListItem(const tdata& _data)
 	{
 		data = _data;
 		next = prev = NULL;
 	}
 
-	~List_item()
+	~ListItem()
 	{}
 };
 
@@ -32,8 +32,8 @@ class List
 
 public:
 
-	List_item<tdata>*   start;
-	List_item<tdata>*   end;
+	ListItem<tdata>*   start;
+	ListItem<tdata>*   end;
 
 private:
 
@@ -69,10 +69,10 @@ public:
 	/**
 	* Add new item
 	*/
-	List_item<tdata>* add(const tdata& item)
+	ListItem<tdata>* add(const tdata& item)
 	{
-		List_item<tdata>*   p_data_item;
-		p_data_item = new List_item < tdata >(item);
+		ListItem<tdata>*   p_data_item;
+		p_data_item = new ListItem < tdata >(item);
 
 		if(start == NULL)
 		{
@@ -92,7 +92,7 @@ public:
 	/**
 	* Deletes an item from the list
 	*/
-	bool del(List_item<tdata>* item)
+	bool del(ListItem<tdata>* item)
 	{
 		if(item == NULL)
 		{
@@ -136,8 +136,8 @@ public:
 	*/
 	void clear()
 	{
-		List_item<tdata>*   p_data;
-		List_item<tdata>*   p_next;
+		ListItem<tdata>*   p_data;
+		ListItem<tdata>*   p_next;
 		p_data = start;
 
 		while(p_data != NULL)
@@ -157,7 +157,7 @@ public:
 	tdata& operator  [](const unsigned int index)
 	{
 		long                  pos;
-		List_item<tdata>*   p_item;
+		ListItem<tdata>*   p_item;
 		pos = 0;
 		p_item = start;
 
@@ -181,7 +181,7 @@ public:
 	const tdata& operator  [](const unsigned int index) const
 	{
 		long                  pos;
-		List_item<tdata>*   p_item;
+		ListItem<tdata>*   p_item;
 		pos = 0;
 		p_item = start;
 
@@ -206,7 +206,7 @@ public:
 	*/
 	const List<tdata>& operator +=(const List<tdata>& other_list)
 	{
-		List_item<tdata>*   p_item = other_list.start;
+		ListItem<tdata>*   p_item = other_list.start;
 
 		while(p_item != NULL)
 		{
@@ -220,10 +220,10 @@ public:
 	/**
 	* const access to a node in a position in the list
 	*/
-	const List_item<tdata>* At(unsigned int index) const
+	const ListItem<tdata>* At(unsigned int index) const
 	{
 		long                  pos = 0;
-		List_item<tdata>*   p_item = start;
+		ListItem<tdata>*   p_item = start;
 
 		while(p_item != NULL)
 		{
@@ -239,10 +239,10 @@ public:
 	/**
 	* access to a node in a position in the list
 	*/
-	List_item<tdata>* At(unsigned int index)
+	ListItem<tdata>* At(unsigned int index)
 	{
 		long                  pos = 0;
-		List_item<tdata>*   p_item = start;
+		ListItem<tdata>*   p_item = start;
 
 		while(p_item != NULL)
 		{
@@ -264,7 +264,7 @@ public:
 		while(swapped)
 		{
 			swapped = false;
-			List_item<tdata>* tmp = start;
+			ListItem<tdata>* tmp = start;
 
 			while(tmp != NULL && tmp->next != NULL)
 			{
@@ -287,7 +287,7 @@ public:
 	*/
 	int find(const tdata& data)
 	{
-		List_item<tdata>* tmp = start;
+		ListItem<tdata>* tmp = start;
 		int index = 0;
 
 		while(tmp != NULL)
@@ -303,12 +303,12 @@ public:
 
 	void InsertAfter(uint position, const List<tdata>& list)
 	{
-		List_item<tdata>* p_my_list = At(position);
-		List_item<tdata>* p_other_list = list.start;
+		ListItem<tdata>* p_my_list = At(position);
+		ListItem<tdata>* p_other_list = list.start;
 
 		while(p_other_list != NULL)
 		{
-			List_item<tdata>* p_new_item = new List_item<tdata>(p_other_list->data);
+			ListItem<tdata>* p_new_item = new ListItem<tdata>(p_other_list->data);
 
 			p_new_item->next = (p_my_list) ? p_my_list->next : NULL;
 

@@ -62,11 +62,11 @@ bool TitleScene::Update(float dt)
 	app->render->camera.x = 0;
 	app->render->camera.y = 0;
 
-	app->render->DrawTexture(background, 100, 125, &backgroundRect, false);
+	app->render->DrawTexture(background, 120, 100, &backgroundRect, false);
 
-	SString title("Metamorphosis - Camera:(%d,%d)", app->render->camera.x, app->render->camera.y);
+	/*SString title("Metamorphosis - Camera:(%d,%d)", app->render->camera.x, app->render->camera.y);
 
-	app->win->SetTitle(title.GetString());
+	app->win->SetTitle(title.GetString());*/
 	return true;
 }
 

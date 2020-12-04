@@ -157,7 +157,7 @@ bool FadeToBlack::SwitchMap(int level)
 	app->collisions->colliders.clear(); //Clear colliders
 
 	// Remove all tilesets
-	List_item<TileSet*>* item;
+	ListItem<TileSet*>* item;
 	item = app->map->data.tilesets.start;
 
 	while (item != NULL)
@@ -175,7 +175,7 @@ bool FadeToBlack::SwitchMap(int level)
 	app->map->data.tilesets.clear();
 
 	// Remove all layers
-	List_item<MapLayer*>* item2;
+	ListItem<MapLayer*>* item2;
 	item2 = app->map->data.layers.start;
 
 	while (item2 != NULL)
@@ -187,7 +187,7 @@ bool FadeToBlack::SwitchMap(int level)
 	app->map->data.layers.clear();
 
 	//Object cleanup
-	List_item<ObjectGroup*>* item3;
+	ListItem<ObjectGroup*>* item3;
 	item3 = app->map->data.objectGroups.start;
 
 	while (item3 != NULL)

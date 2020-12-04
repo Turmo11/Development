@@ -84,7 +84,7 @@ Application::Application(int argc, char* args[]) : argc(argc), args(args)
 Application::~Application()
 {
 	// release modules
-	List_item<Module*>* item = modules.end;
+	ListItem<Module*>* item = modules.end;
 
 	while (item != NULL)
 	{
@@ -134,7 +134,7 @@ bool Application::Awake()
 
 	if (ret == true)
 	{
-		List_item<Module*>* item;
+		ListItem<Module*>* item;
 		item = modules.start;
 
 		while (item != NULL && ret == true)
@@ -155,7 +155,7 @@ bool Application::Start()
 	PERF_START(perfTimer);
 
 	bool ret = true;
-	List_item<Module*>* item;
+	ListItem<Module*>* item;
 	item = modules.start;
 
 	while (item != NULL && ret == true)
@@ -293,7 +293,7 @@ void Application::FinishUpdate()
 bool Application::PreUpdate()
 {
 	bool ret = true;
-	List_item<Module*>* item;
+	ListItem<Module*>* item;
 	item = modules.start;
 	Module* pModule = NULL;
 
@@ -315,7 +315,7 @@ bool Application::PreUpdate()
 bool Application::DoUpdate()
 {
 	bool ret = true;
-	List_item<Module*>* item;
+	ListItem<Module*>* item;
 	item = modules.start;
 	Module* pModule = NULL;
 
@@ -337,7 +337,7 @@ bool Application::DoUpdate()
 bool Application::PostUpdate()
 {
 	bool ret = true;
-	List_item<Module*>* item;
+	ListItem<Module*>* item;
 	Module* pModule = NULL;
 
 	for (item = modules.start; item != NULL && ret == true; item = item->next)
@@ -358,7 +358,7 @@ bool Application::PostUpdate()
 bool Application::CleanUp()
 {
 	bool ret = true;
-	List_item<Module*>* item;
+	ListItem<Module*>* item;
 	item = modules.end;
 
 	while (item != NULL && ret == true)
@@ -435,7 +435,7 @@ bool Application::LoadGameNow()
 
 		root = data.child("game_state");
 
-		List_item<Module*>* item = modules.start;
+		ListItem<Module*>* item = modules.start;
 		ret = true;
 
 		while (item != NULL && ret == true)
@@ -469,7 +469,7 @@ bool Application::SavegameNow() const
 
 	root = data.append_child("game_state");
 
-	List_item<Module*>* item = modules.start;
+	ListItem<Module*>* item = modules.start;
 
 	while (item != NULL && ret == true)
 	{

@@ -46,7 +46,7 @@ bool Pickups::PostUpdate()
 bool Pickups::CleanUp()
 {
 	// Remove pickups
-	List_item<Pickup*>* item;
+	ListItem<Pickup*>* item;
 	item = pickupList.start;
 
 	while (item != NULL)
@@ -57,7 +57,7 @@ bool Pickups::CleanUp()
 	pickupList.clear();
 
 	// Remove goals
-	List_item<Goal*>* item2;
+	ListItem<Goal*>* item2;
 	item2 = goalList.start;
 
 	while (item2 != NULL)
@@ -91,7 +91,7 @@ void Pickups::CreatePickup(SString name, iPoint position)
 
 void Pickups::DrawAnimations()
 {
-	List_item<Pickup*>* pickupIterator = pickupList.start;
+	ListItem<Pickup*>* pickupIterator = pickupList.start;
 
 	while (pickupIterator != NULL)
 	{
@@ -117,7 +117,7 @@ void Pickups::OnCollision(Collider* A, Collider* B)
 
 void Pickups::GetCollected()
 {
-	List_item<Pickup*>* pickupIterator = pickupList.start;
+	ListItem<Pickup*>* pickupIterator = pickupList.start;
 
 	while (pickupIterator != NULL)
 	{
@@ -132,7 +132,7 @@ void Pickups::GetCollected()
 
 void Pickups::DebugCollectAll()
 {
-	List_item<Pickup*>* pickupIterator = pickupList.start;
+	ListItem<Pickup*>* pickupIterator = pickupList.start;
 
 	while (pickupIterator != NULL)
 	{
@@ -160,7 +160,7 @@ void Pickups::SetGoal(iPoint position)
 
 void Pickups::UpdateGoal()
 {
-	List_item<Goal*>* goal_iterator = goalList.start;
+	ListItem<Goal*>* goal_iterator = goalList.start;
 
 	while (goal_iterator != NULL)
 	{
