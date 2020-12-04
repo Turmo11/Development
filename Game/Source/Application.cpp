@@ -15,10 +15,11 @@
 #include "LogoScene.h"
 
 #include "Map.h"
+#include "Pathfinding.h"
 #include "EntityPlayer.h"
 #include "Pickups.h"
 #include "Collisions.h"
-//#include "WalkingEnemy.h"
+#include "WalkingEnemy.h"
 #include "FadeToBlack.h"
 
 #include "Application.h"
@@ -45,11 +46,12 @@ Application::Application(int argc, char* args[]) : argc(argc), args(args)
 	logoScene = new LogoScene();
 
 	map = new Map();
+	pathfinding = new Pathfinding();
 	player = new EntityPlayer();
 	pickups = new Pickups();
 	collisions = new Collisions();
 	fadeToBlack = new FadeToBlack();
-	//walkingEnemy	= new WalkingEnemy();
+	walkingEnemy	= new WalkingEnemy();
 
 	// Ordered for awake / Start / Update
 	// Reverse order of CleanUp
@@ -58,13 +60,14 @@ Application::Application(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(tex);
 	AddModule(audio);
 	AddModule(map);
+	AddModule(pathfinding);
 
 	//player and scenes
 	AddModule(scene);
 	AddModule(gameOverScene);
 	AddModule(titleScene);
 	AddModule(logoScene);
-	//AddModule(walkingEnemy);
+	AddModule(walkingEnemy);
 	AddModule(fadeToBlack);
 	AddModule(pickups);
 	AddModule(player);

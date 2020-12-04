@@ -22,6 +22,7 @@ class TitleScene;
 class GameOverScene;
 class LogoScene;
 class Map;
+class Pathfinding;
 class EntityPlayer;
 class Pickups;
 class Collisions;
@@ -102,6 +103,7 @@ public:
 	GameOverScene*  gameOverScene;
 	LogoScene*		logoScene;
 	Map*			map;
+	Pathfinding*	pathfinding;
 	EntityPlayer*	player;
 	Pickups*		pickups;
 	Collisions*		collisions;
@@ -135,7 +137,7 @@ private:
 	uint64					frameCount;
 	Timer					startupTimer;							// Used to keep track of time since app start.
 	Timer					frameTimer;								// Keeps track of everything time related in the span of a frame.
-	PerfTimer				perfTimer;								// Creates a pointer to PerfTimer tool. Gives access to j1PerfTimer's elements. Used to keep track of time since app start.
+	PerfTimer				perfTimer;								// Creates a pointer to PerfTimer tool. Gives access to PerfTimer's elements. Used to keep track of time since app start.
 	PerfTimer				lastSecondTimer;						// Creates a pointer to PerfTimer tool. Used to calculate variables in spans of one second.
 	uint32					lastUpdateMs;							// Calculates the amount of milliseconds that the last update spent running.
 	uint32					frameslastSecond;						// Calculates the amount of frames that where processed the last second.

@@ -10,7 +10,7 @@
 #include "Scene.h"
 #include "EntityPlayer.h"
 #include "Pickups.h"
-//#include "WalkingEnemy.h"
+#include "WalkingEnemy.h"
 #include "FadeToBlack.h"
 
 Scene::Scene() : Module()
@@ -235,7 +235,7 @@ void Scene::SetUp(int level)
 		app->pickups->CreatePickup("eta", { 656, 1936 });
 		app->pickups->SetGoal({ 1552, 656 });
 		//app->walkingEnemy->CreateEnemy(EnemyType::SOUL, { 925, 3475 });
-		//app->walkingEnemy->CreateEnemy(EnemyType::SOUL, { 976, 3536 });
+		app->walkingEnemy->CreateEnemy(EnemyType::SOUL, { 976, 3536 });
 		break;
 
 	case 2:

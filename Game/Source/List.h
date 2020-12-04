@@ -72,7 +72,7 @@ public:
 	ListItem<tdata>* add(const tdata& item)
 	{
 		ListItem<tdata>*   pDataItem;
-		pDataItem = new ListItem < tdata >(item);
+		pDataItem = new ListItem<tdata>(item);
 
 		if(start == NULL)
 		{
