@@ -61,9 +61,6 @@
     <ClCompile Include="Source\External\PugiXml\src\pugixml.cpp">
       <Filter>External\PugiXml</Filter>
     </ClCompile>
-    <ClCompile Include="Source\WalkingEnemy.cpp">
-      <Filter>Entities\Enemies</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Application.h">
@@ -146,9 +143,6 @@
     </ClInclude>
     <ClInclude Include="Source\Defs.h">
       <Filter>Core</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\WalkingEnemy.h">
-      <Filter>Entities\Enemies</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
