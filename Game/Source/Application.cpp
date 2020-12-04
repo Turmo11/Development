@@ -18,7 +18,7 @@
 #include "EntityPlayer.h"
 #include "Pickups.h"
 #include "Collisions.h"
-//#include "WalkingEnemy.h"
+#include "WalkingEnemy.h"
 #include "FadeToBlack.h"
 
 #include "Application.h"
@@ -49,7 +49,7 @@ Application::Application(int argc, char* args[]) : argc(argc), args(args)
 	pickups = new Pickups();
 	collisions = new Collisions();
 	fadeToBlack = new FadeToBlack();
-	//walkingEnemy	= new WalkingEnemy();
+	walkingEnemy = new WalkingEnemy();
 
 	// Ordered for awake / Start / Update
 	// Reverse order of CleanUp
@@ -64,7 +64,7 @@ Application::Application(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(gameOverScene);
 	AddModule(titleScene);
 	AddModule(logo_scene);
-	//AddModule(walkingEnemy);
+	AddModule(walkingEnemy);
 	AddModule(fadeToBlack);
 	AddModule(pickups);
 	AddModule(player);
