@@ -50,7 +50,7 @@ bool Scene::Start()
 {
 	app->fadeToBlack->activeScene = "Scene";
 
-	background = app->tex->Load("Assets/textures/tower.png");
+	background = app->tex->Load("Assets/Textures/tower.png");
 
 	SetUp(currentLevel);
 	
@@ -116,7 +116,7 @@ bool Scene::CleanUp()
 
 void Scene::CheckLevelProgress()
 {
-	List_item<Pickup*>* pickupIterator = app->pickups->pickupList.start;
+	ListItem<Pickup*>* pickupIterator = app->pickups->pickupList.start;
 
 	while (pickupIterator != NULL)
 	{
@@ -211,7 +211,7 @@ void Scene::SetUp(int level)
 	case 0:
 
 		currentLevel = 0;
-		app->audio->PlayMusic("Assets/audio/music/tutorial.ogg", 0.0f);
+		app->audio->PlayMusic("Assets/Audio/Music/tutorial.ogg", 0.0f);
 		app->pickups->CreatePickup("alpha", { 1152, 704 });
 		app->pickups->CreatePickup("chi", { 1792, 576 });
 		app->pickups->CreatePickup("rho", { 1408, 512 });
@@ -228,7 +228,7 @@ void Scene::SetUp(int level)
 		//cameraRect.y = 5000;
 		cameraRect.h = -3800;
 
-		app->audio->PlayMusic("Assets/audio/music/tutorial.ogg", 0.0f);
+		app->audio->PlayMusic("Assets/Audio/Music/tutorial.ogg", 0.0f);
 		app->pickups->CreatePickup("alpha", { 2128, 2448 });
 		app->pickups->CreatePickup("chi", { 528, 3024 });
 		app->pickups->CreatePickup("rho", { 2960, 784 });
@@ -250,7 +250,7 @@ void Scene::SetUp(int level)
 		//cameraRect.h = -3800;
 		cameraRect.h = -6300;
 
-		app->audio->PlayMusic("Assets/audio/music/athena.ogg", 0.0f);
+		app->audio->PlayMusic("Assets/Audio/Music/athena.ogg", 0.0f);
 		app->pickups->CreatePickup("psi", { 1583, 2736 });
 		//app->pickups->CreatePickup("chi", { 528, 3024 });
 		//app->pickups->CreatePickup("rho", { 2960, 784 });

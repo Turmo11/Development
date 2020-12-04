@@ -63,7 +63,7 @@ public:
 
 	void LoadGame();
 	void SaveGame() const;
-	void GetSaveGames(List<SString>& list_to_fill) const;
+	void GetSaveGames(List<SString>& listToFill) const;
 
 private:
 
@@ -100,7 +100,7 @@ public:
 	Scene*			scene;
 	TitleScene*		titleScene;
 	GameOverScene*  gameOverScene;
-	LogoScene*		logo_scene;
+	LogoScene*		logoScene;
 	Map*			map;
 	EntityPlayer*	player;
 	Pickups*		pickups;

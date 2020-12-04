@@ -105,6 +105,7 @@
     <ClCompile Include="Source\Log.cpp" />
     <ClCompile Include="Source\Render.cpp" />
     <ClCompile Include="Source\Textures.cpp" />
+    <ClCompile Include="Source\WalkingEnemy.cpp" />
     <ClCompile Include="Source\Window.cpp" />
     <ClCompile Include="Source\External\PugiXml\src\pugixml.cpp" />
   </ItemGroup>
@@ -132,6 +133,7 @@
     <ClInclude Include="Source\Point.h" />
     <ClInclude Include="Source\Render.h" />
     <ClInclude Include="Source\Textures.h" />
+    <ClInclude Include="Source\WalkingEnemy.h" />
     <ClInclude Include="Source\Window.h" />
     <ClInclude Include="Source\SString.h" />
     <ClInclude Include="Source\External\PugiXml\src\pugiconfig.hpp" />

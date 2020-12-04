@@ -45,7 +45,7 @@ bool Textures::Start()
 bool Textures::CleanUp()
 {
 	LOG("Freeing textures and Image library");
-	List_item<SDL_Texture*>* item;
+	ListItem<SDL_Texture*>* item;
 
 	for(item = textures.start; item != NULL; item = item->next)
 	{
@@ -79,7 +79,7 @@ SDL_Texture* const Textures::Load(const char* path)
 // Unload texture
 bool Textures::UnLoad(SDL_Texture* texture)
 {
-	List_item<SDL_Texture*>* item;
+	ListItem<SDL_Texture*>* item;
 
 	for(item = textures.start; item != NULL; item = item->next)
 	{

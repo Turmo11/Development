@@ -22,37 +22,37 @@ enum class PlayerStates {
 
 struct Player 
 {
-	PlayerStates		currentState;
+	PlayerStates currentState;
 
-	Point<float>		position;
-	Point<float>		speed;
-	Point<float>		maxSpeed;
-	Point<float>		acceleration;
+	Point<float> position;
+	Point<float> speed;
+	Point<float> maxSpeed;
+	Point<float> acceleration;
 	
-	SString			animation;
+	SString animation;
 
-	float				gravity;
+	float gravity;
 
 	//Booleans
-	bool				movingRight;
-	bool				movingLeft;
-	bool				jumping;
-	bool				grounded;
-	bool				collidingWall;
-	bool				ableToDrop;
+	bool movingRight;
+	bool movingLeft;
+	bool jumping;
+	bool grounded;
+	bool collidingWall;
+	bool ableToDrop;
 
-	bool				disabled;		//used during screen transitions or deaths when we want to take away the control from the player
-	bool				locked;			//used during cutscenes when we want to take away the control from the player
-	bool				godMode;
-	bool				ascending;
+	bool disabled;		//used during screen transitions or deaths when we want to take away the control from the player
+	bool locked;			//used during cutscenes when we want to take away the control from the player
+	bool godMode;
+	bool ascending;
 
-	bool				flip;			 //used to handle texture flips
+	bool flip;			 //used to handle texture flips
 
 	//Collider
-	int					hitboxWidth;
-	int					hitboxHeight;
-	SDL_Rect			playerHitbox;
-	Collider*			playerCollider;
+	int hitboxWidth;
+	int hitboxHeight;
+	SDL_Rect playerHitbox;
+	Collider* playerCollider;
 };
 
 // ----------------------------------------------------

@@ -10,9 +10,9 @@
 struct AnimationInfo;
 // ----------------------------------------------------
 union value {
-	const char*		vString;
-	int				vInt;
-	float			vFloat;
+	const char* vString;
+	int vInt;
+	float vFloat;
 };
 
 struct Properties //Properties
@@ -20,13 +20,13 @@ struct Properties //Properties
 	struct Property
 	{
 		SString	name;
-		value		data;
+		value data;
 		
 	};
 
 	Properties::~Properties()															//Deletes every property and frees all allocated memory.
 	{
-		List_item<Property*>* item;
+		ListItem<Property*>* item;
 		item = propertyList.start;
 		while (item != NULL)
 		{
@@ -57,39 +57,42 @@ enum class ObjectType
 
 struct Object
 {
-	uint				id;
-	SString			name;
-	ObjectType			type;
-	SDL_Rect*			collider;
-	SDL_Texture*		texture;
-	Properties			properties;
+	uint id;
+	SString name;
+	ObjectType type;
+	SDL_Rect* collider;
+	SDL_Texture* texture;
+	Properties properties;
 };
 
 struct ObjectGroup
 {
-	uint				id;
-	SString			name;
-	Object*				objects;
-	uint				objectsSize;
+	uint id;
+	SString	name;
+	Object*	objects;
+	uint objectsSize;
 };
 
 struct Animations
 {
-	SString			name = "idle";
-	uint				id;				//Tile which is animated
-	uint				nFrames;	//Number of frames of the animation
-	uint*				frames;
-	uint				speed;
+	SString name = "idle";
+	uint id;				//Tile which is animated
+	uint nFrames;	//Number of frames of the animation
+	uint* frames;
+	uint speed;
 };
 
 // ----------------------------------------------------
 struct MapLayer
 {
 	SString	name;
-	int			width;
-	int			height;
-	uint*		data;
-	Properties	properties;
+	int width;
+	int height;
+	uint* data;
+	Properties properties;
+	bool wantToDraw;
+
+
 
 	MapLayer() : data(NULL)
 	{}
@@ -111,19 +114,19 @@ struct TileSet
 {
 	SDL_Rect GetTileRect(int id) const;
 
-	SString			name;
-	int					firstgid;
-	int					tileWidth;
-	int					tileHeight;
-	int					margin;
-	int					spacing;
-	SDL_Texture*		texture;
-	int					texWidth;
-	int					texHeight;
-	int					numTilesWidth;
-	int					numTilesHeight;
-	int					offsetX;
-	int					offsetY;
+	SString	name;
+	int	firstgid;
+	int	tileWidth;
+	int	tileHeight;
+	int	margin;
+	int	spacing;
+	SDL_Texture* texture;
+	int	texWidth;
+	int	texHeight;
+	int	numTilesWidth;
+	int	numTilesHeight;
+	int	offsetX;
+	int	offsetY;
 	List<Animations*> animations;
 
 	SDL_Rect* playerTileRect = new SDL_Rect;
@@ -158,19 +161,19 @@ enum class MapTypes
 // ----------------------------------------------------
 struct MapData
 {
-	int						width;
-	int						height;
-	int						tileWidth;
-	int						tileHeight;
+	int	width;
+	int	height;
+	int	tileWidth;
+	int	tileHeight;
 
-	SString				name;
-	Point<float>			startingPosition;
+	SString	name;
+	Point<float> startingPosition;
 
-	SDL_Color				backgroundColor;
-	MapTypes				type;
-	List<TileSet*>		tilesets;
-	List<MapLayer*>		layers;
-	List<ObjectGroup*>	objectGroups;
+	SDL_Color backgroundColor;
+	MapTypes type;
+	List<TileSet*> tilesets;
+	List<MapLayer*> layers;
+	List<ObjectGroup*> objectGroups;
 };
 
 // ----------------------------------------------------

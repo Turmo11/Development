@@ -157,7 +157,7 @@ bool FadeToBlack::SwitchMap(int level)
 	app->collisions->colliders.clear(); //Clear colliders
 
 	// Remove all tilesets
-	List_item<TileSet*>* item;
+	ListItem<TileSet*>* item;
 	item = app->map->data.tilesets.start;
 
 	while (item != NULL)
@@ -175,7 +175,7 @@ bool FadeToBlack::SwitchMap(int level)
 	app->map->data.tilesets.clear();
 
 	// Remove all layers
-	List_item<MapLayer*>* item2;
+	ListItem<MapLayer*>* item2;
 	item2 = app->map->data.layers.start;
 
 	while (item2 != NULL)
@@ -187,7 +187,7 @@ bool FadeToBlack::SwitchMap(int level)
 	app->map->data.layers.clear();
 
 	//Object cleanup
-	List_item<ObjectGroup*>* item3;
+	ListItem<ObjectGroup*>* item3;
 	item3 = app->map->data.objectGroups.start;
 
 	while (item3 != NULL)
@@ -237,7 +237,7 @@ bool FadeToBlack::SwitchScenes(char* scene)
 			app->scene->active = false;
 			app->titleScene->active = true;
 			app->gameOverScene->active = false;
-			app->logo_scene->active = false;
+			app->logoScene->active = false;
 
 			app->player->active = false;
 			app->pickups->active = false;
@@ -250,7 +250,7 @@ bool FadeToBlack::SwitchScenes(char* scene)
 			app->scene->active = false;
 			app->titleScene->active = false;
 			app->gameOverScene->active = true;
-			app->logo_scene->active = false;
+			app->logoScene->active = false;
 
 			app->player->active = false;
 			app->pickups->active = false;
@@ -263,7 +263,7 @@ bool FadeToBlack::SwitchScenes(char* scene)
 			app->scene->active = false;
 			app->titleScene->active = false;
 			app->gameOverScene->active = false;
-			app->logo_scene->active = true;
+			app->logoScene->active = true;
 
 			app->player->active = false;
 			app->pickups->active = false;
@@ -275,7 +275,7 @@ bool FadeToBlack::SwitchScenes(char* scene)
 			app->scene->active = true;
 			app->titleScene->active = false;
 			app->gameOverScene->active = false;
-			app->logo_scene->active = false;
+			app->logoScene->active = false;
 
 			app->player->active = true;
 			app->pickups->active = true;

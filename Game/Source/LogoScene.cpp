@@ -43,7 +43,7 @@ bool LogoScene::Start()
 
 	accumulatedTime = 0.0f;
 
-	logoTexture = app->tex->Load("Assets/textures/UI/uwu_logo.png");
+	logoTexture = app->tex->Load("Assets/Textures/UI/uwu_logo.png");
 
 	app->render->camera.x = 0;
 	app->render->camera.y = 0;
@@ -65,11 +65,11 @@ bool LogoScene::Update(float dt)
 	app->render->camera.y = 0;
 
 	SDL_SetTextureAlphaMod(logoTexture, accumulatedTime * 10.0f);
-	app->render->DrawTexture(logoTexture, 275, 50, &logoRect, false);
+	app->render->DrawTexture(logoTexture, 300, -10, &logoRect, false);
 
-	SString title("Metamorphosis - Camera:(%d,%d)", app->render->camera.x, app->render->camera.y);
+	//SString title("Metamorphosis");
 
-	app->win->SetTitle(title.GetString());
+	//app->win->SetTitle(title.GetString());
 	return true;
 }
 
