@@ -6,6 +6,7 @@
 #include "Textures.h"
 #include "EntityPlayer.h"
 #include "WalkingEnemy.h"
+#include "Projectile.h"
 #include "Window.h"
 #include "Map.h"
 #include "Input.h"
@@ -83,6 +84,8 @@ bool EntityPlayer::Awake(pugi::xml_node& config)
 	player.hitboxWidth = config.child("hitbox").attribute("w").as_int();
 	player.hitboxHeight = config.child("hitbox").attribute("h").as_int();
 
+	projectileCooldown = config.child("projectile").attribute("cd").as_float();
+
 	return true;
 }
 
@@ -155,6 +158,22 @@ bool EntityPlayer::Update(float dt)
 		if (!CheckAirborne() && player.grounded)
 		{
 			player.speed.y = 0;
+		}
+		if (projectileTimer != 0.0f)
+		{
+			projectileTimer += dt;
+			if (projectileTimer >= projectileCooldown)
+			{
+				projectileTimer = 0.0f;
+				app->projectile->showCd = false;
+			}
+		}
+
+		if (projectileTimer == 0.0f && app->input->GetKey(SDL_SCANCODE_Q) == KEY_DOWN)
+		{
+			app->projectile->SpawnBeam(player.flip);
+			projectileTimer += dt;
+			app->projectile->showCd = true;
 		}
 
 		HorizontalMovement(dt);
@@ -419,39 +438,17 @@ void EntityPlayer::OnCollision(Collider* A, Collider* B)
 				{
 					player.speed.y = 0;
 				}
-				
+
 				TakeLife();
 				return;
 			}
 		}
 
 		// ------------ Player Colliding with enemy ------------------
-		if (A->type == ObjectType::PLAYER && B->type == ObjectType::ENEMY) {
-
-			//Colliding from top
-			if (A->rect.y + A->rect.h - player.maxSpeed.y - 2 < B->rect.y
-				&& A->rect.x < B->rect.x + B->rect.w
-				&& A->rect.x + A->rect.w > B->rect.x)
-			{
-				B->toDelete = true;
-				app->walkingEnemy->GetKilled();
-
-			}
-			//Colliding from the sides
-			else if (A->rect.y + (A->rect.h * 1.0f / 4.0f) < B->rect.y + B->rect.h
-				&& A->rect.y + (A->rect.h * 3.0f / 4.0f) > B->rect.y)
-			{
-				ResetPlayer();
-				app->fadeToBlack->FadeToBlackScene("GameOverScene");
-			}
-			//from below
-			else if (A->rect.y < (B->rect.y + B->rect.h))
-			{
-				ResetPlayer();
-				app->fadeToBlack->FadeToBlackScene("GameOverScene");
-			}
+		if (A->type == ObjectType::PLAYER && B->type == ObjectType::ENEMY)
+		{
+			TakeLife();
 		}
-
 	}
 
 	if (app->scene->levelCompleted)
@@ -616,7 +613,7 @@ void EntityPlayer::TakeLife()
 		ResetPlayer();
 		app->fadeToBlack->FadeToBlackScene("GameOverScene");
 	}
-	
+
 }
 
 void EntityPlayer::AddLife()

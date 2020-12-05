@@ -67,9 +67,15 @@ bool LogoScene::Update(float dt)
 	SDL_SetTextureAlphaMod(logoTexture, accumulatedTime * 10.0f);
 	app->render->DrawTexture(logoTexture, 300, -10, &logoRect, false);
 
-	//SString title("Metamorphosis");
-
-	//app->win->SetTitle(title.GetString());
+	//Debug keys
+	if (app->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN)
+	{
+		app->fadeToBlack->DoFadeToBlack(1);
+	}
+	if (app->input->GetKey(SDL_SCANCODE_F2) == KEY_DOWN)
+	{
+		app->fadeToBlack->DoFadeToBlack(2);
+	}
 	return true;
 }
 

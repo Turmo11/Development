@@ -142,7 +142,7 @@ void Render::ResetViewPort()
 
 // Blit to screen
 // Blit to screen
-bool Render::DrawTexture(SDL_Texture* texture, int x, int y, const SDL_Rect* section, bool flip, float speed, bool half, float newScale, double angle, int pivotX, int pivotY) const
+bool Render::DrawTexture(SDL_Texture* texture, int x, int y, const SDL_Rect* section, bool flip, float speed, bool half, bool doubleScale, float newScale, double angle, int pivotX, int pivotY) const
 {
 	bool ret = true;
 	float scale = app->win->GetScale() * newScale;
@@ -162,7 +162,7 @@ bool Render::DrawTexture(SDL_Texture* texture, int x, int y, const SDL_Rect* sec
 
 	if (section != NULL)
 	{
-		if (!half)
+		if (!half && !doubleScale)
 		{
 			if (flip)
 			{
@@ -175,7 +175,7 @@ bool Render::DrawTexture(SDL_Texture* texture, int x, int y, const SDL_Rect* sec
 				rect.h = section->h;
 			}
 		}
-		else
+		else if (half)
 		{
 			if (flip)
 			{
@@ -186,6 +186,19 @@ bool Render::DrawTexture(SDL_Texture* texture, int x, int y, const SDL_Rect* sec
 			{
 				rect.w = section->w / 2;
 				rect.h = section->h / 2;
+			}
+		}
+		else
+		{
+			if (flip)
+			{
+				rect.w = -section->w * 2;
+				rect.h = section->h * 2;
+			}
+			else
+			{
+				rect.w = section->w * 2;
+				rect.h = section->h * 2;
 			}
 		}
 

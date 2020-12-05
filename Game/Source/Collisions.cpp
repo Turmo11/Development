@@ -60,7 +60,7 @@ bool Collisions::PreUpdate()
 
 			if (c1 != c2) 
 			{
-				if (c1->CheckCollision(c2->rect) == true && (c1->type == ObjectType::PLAYER || c2->type == ObjectType::PLAYER))
+				if (c1->CheckCollision(c2->rect) == true)
 				{
 					if (c1->callBack)
 						c1->callBack->OnCollision(c1, c2);
@@ -112,6 +112,9 @@ void Collisions::DebugDraw()
 		{
 		case ObjectType::PLAYER: // yellow
 			app->render->DrawQuad(colliderIterator->data->rect, 255, 255, 0, alpha);
+			break;
+		case ObjectType::PROJECTILE: // orange
+			app->render->DrawQuad(colliderIterator->data->rect, 255, 205, 0, alpha);
 			break;
 		case ObjectType::GROUND: // light green
 			app->render->DrawQuad(colliderIterator->data->rect, 194, 255, 198, alpha);

@@ -101,10 +101,12 @@ void TitleScene::DebugKeys()
 	if (app->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN)
 	{
 		app->fadeToBlack->DoFadeToBlack(1);
+		app->fadeToBlack->FadeToBlackScene("Scene");
 	}
 	if (app->input->GetKey(SDL_SCANCODE_F2) == KEY_DOWN)
 	{
 		app->fadeToBlack->DoFadeToBlack(2);
+		app->fadeToBlack->FadeToBlackScene("Scene");
 	}
 	if (app->input->GetKey(SDL_SCANCODE_F4) == KEY_DOWN)
 	{

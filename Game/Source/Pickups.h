@@ -18,8 +18,9 @@ enum class PickupType
 struct AnimationInfo
 {
 	int			i = 0;
-	SString	prevSAnimName = "shine";
+	SString	prevSAnimName;
 	float		frameCount = 1;
+	bool flip = false;
 };
 
 struct Goal
@@ -75,7 +76,7 @@ public:
 
 public:
 
-	List<Pickup*>	pickupList;
+	List<Pickup*> pickupList;
 	
 	List<Goal*> goalList;
 };

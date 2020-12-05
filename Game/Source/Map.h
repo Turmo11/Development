@@ -47,6 +47,7 @@ enum class ObjectType
 {
 	UNKNOWN = 0,
 	PLAYER,
+	PROJECTILE,
 	GROUND,
 	PLATFORM,
 	LETTER,

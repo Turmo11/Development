@@ -67,6 +67,9 @@
     <ClCompile Include="Source\Pathfinding.cpp">
       <Filter>Modules</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Projectile.cpp">
+      <Filter>Entities\Player</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Application.h">
@@ -155,6 +158,9 @@
     </ClInclude>
     <ClInclude Include="Source\Pathfinding.h">
       <Filter>Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Projectile.h">
+      <Filter>Entities\Player</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -9,9 +9,10 @@
 #include "Map.h"
 #include "Scene.h"
 #include "EntityPlayer.h"
-#include "Pickups.h"
+//#include "Pickups.h"
 #include "WalkingEnemy.h"
 #include "FadeToBlack.h"
+#include "Projectile.h" //includes Pickups.h
 
 Scene::Scene() : Module()
 {
@@ -58,6 +59,12 @@ bool Scene::Awake(pugi::xml_node& config)
 	maxLives = lives.child("maxLives").attribute("value").as_int();
 	playerLives = maxLives;
 
+	cdRect.x = config.child("cdRect").attribute("x").as_int();
+	cdRect.y = config.child("cdRect").attribute("y").as_int();
+	cdRect.h = config.child("cdRect").attribute("h").as_int();
+	cdRect.w = config.child("cdRect").attribute("w").as_int();
+
+
 	levelCompleted = config.child("levelCompleted").attribute("value").as_bool();
 
 	LOG("Loading Scene");
@@ -73,13 +80,14 @@ bool Scene::Start()
 
 	background = app->tex->Load("Assets/Textures/tower.png");
 	livesTex = app->tex->Load("Assets/Textures/UI/lives.png");
+	cdTex = app->tex->Load("Assets/Textures/UI/cooldown.png");
 	SetUp(currentLevel);
-	
+
 	app->render->camera.x = app->render->startingCamPos.x;
 	app->render->camera.y = app->render->startingCamPos.y;
 
 	levelCompleted = false;
-	
+
 	showUI = true;
 	return true;
 }
@@ -93,8 +101,8 @@ bool Scene::PreUpdate()
 // Called each loop iteration
 bool Scene::Update(float dt)
 {
-	DebugKeys();	
-	
+	DebugKeys();
+
 	switch (currentLevel)
 	{
 	case 1:
@@ -104,14 +112,15 @@ bool Scene::Update(float dt)
 		app->render->DrawTexture(background, -800, -4700, &backgroundRect, false, 0.1f);
 		break;
 	}
-	
+
 	app->map->Draw();
 
 	if (showUI)
 	{
 		ShowLives();
+		
 	}
-	
+
 	return true;
 }
 
@@ -120,7 +129,7 @@ bool Scene::PostUpdate()
 {
 	bool ret = true;
 
-	if(app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
+	if (app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
 		ret = false;
 
 	return ret;
@@ -163,8 +172,10 @@ void Scene::ShowLives()
 		app->render->DrawTexture(livesTex, -app->render->camera.x + 20, -app->render->camera.y + app->render->camera.h - 75, &livesRect, false, 1.0f, true);
 		break;
 	}
-	
+
 }
+
+
 void Scene::RestartScene()
 {
 	playerLives = app->scene->maxLives;
@@ -214,15 +225,42 @@ void Scene::DebugKeys()
 		{
 			app->frameCap = CAP_AT_30;
 		}
-		else if(app->frameCap == CAP_AT_30)
+		else if (app->frameCap == CAP_AT_30)
 		{
 			app->frameCap = CAP_AT_60;
 		}
 	}
+
+	//Gather all letters
 	if (app->input->GetKey(SDL_SCANCODE_KP_MULTIPLY) == KEY_DOWN)
 	{
 		app->pickups->DebugCollectAll();
 	}
+
+	if (app->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN)
+	{
+		app->projectile->SpawnBeam(app->player->player.flip);
+	}
+
+	//Lives
+
+	//+1
+	if (app->input->GetKey(SDL_SCANCODE_UP) == KEY_DOWN)
+	{
+		if (playerLives < maxLives)
+		{
+			playerLives++;
+		}
+	}
+	//-1
+	if (app->input->GetKey(SDL_SCANCODE_DOWN) == KEY_DOWN)
+	{
+		if (playerLives > 0)
+		{
+			playerLives--;
+		}
+	}
+
 
 	//Volume
 	if (app->input->GetKey(SDL_SCANCODE_KP_PLUS) == KEY_DOWN)
@@ -290,7 +328,7 @@ void Scene::SetUp(int level)
 		app->pickups->CreatePickup(PickupType::LETTER, "eta", { 656, 1936 });
 		app->pickups->SetGoal({ 1552, 656 });
 		//app->walkingEnemy->CreateEnemy(EnemyType::SOUL, { 925, 3475 });
-		app->pickups->CreatePickup(PickupType::HEALTH, "heart_jump", { 925, 3536 });
+		app->pickups->CreatePickup(PickupType::HEALTH, "heart", { 925, 3536 });
 		app->walkingEnemy->CreateEnemy(EnemyType::SOUL, { 900, 3536 });
 		break;
 
@@ -300,7 +338,7 @@ void Scene::SetUp(int level)
 
 		currentLevel = 2;
 
-	
+
 		cameraRect.y = 5000;
 		//cameraRect.y = -450;
 		//cameraRect.h = -3800;

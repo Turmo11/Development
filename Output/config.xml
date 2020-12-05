@@ -39,6 +39,7 @@
         <livesRect2 x="0" y="0" h="92" w="184"/>
         <livesRect3 x="0" y="0" h="92" w="276"/>
     </lives>
+    <cdRect x="0" y="0" h="64" w="128"/>
     <levelCompleted value="false"/>
   </scene>
 
@@ -48,6 +49,7 @@
     <speed x="0" y="0" />
     <maxSpeed x="10" y="50"/>
     <hitbox w="30" h="96"/>
+    <projectile cd="0.9"/>
   </player>
 
   <file_system>

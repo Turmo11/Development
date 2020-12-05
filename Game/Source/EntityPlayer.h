@@ -6,6 +6,7 @@
 #include "List.h"
 #include "Point.h"
 #include "Module.h"
+#include "External\SDL\include\SDL_rect.h"
 
 struct Collider;
 
@@ -105,6 +106,7 @@ public:
 	void EntityPlayer::OnCollision(Collider* A, Collider* B);
 
 	void SetCamera();
+	
 
 public:
 
@@ -124,6 +126,9 @@ private:
 	float xAxis, yAxis;
 	Uint32		startTime = 0;
 	Uint32		totalTime = 0;
+
+	float projectileCooldown;
+	float projectileTimer = 0.0f;
 
 };
 

@@ -27,6 +27,7 @@ class EntityPlayer;
 class Pickups;
 class Collisions;
 class WalkingEnemy;
+class Projectile;
 class FadeToBlack;
 class Application
 {
@@ -93,22 +94,23 @@ private:
 public:
 
 	// Modules
-	Window*			win;
-	Input*			input;
-	Render*			render;
-	Textures*		tex;
-	Audio*			audio;
-	Scene*			scene;
-	TitleScene*		titleScene;
-	GameOverScene*  gameOverScene;
-	LogoScene*		logoScene;
-	Map*			map;
-	Pathfinding*	pathfinding;
-	EntityPlayer*	player;
-	Pickups*		pickups;
-	Collisions*		collisions;
-	WalkingEnemy*	walkingEnemy;
-	FadeToBlack*	fadeToBlack;
+	Window*	win;
+	Input* input;
+	Render* render;
+	Textures* tex;
+	Audio* audio;
+	Scene* scene;
+	TitleScene*	titleScene;
+	GameOverScene* gameOverScene;
+	LogoScene* logoScene;
+	Map* map;
+	Pathfinding* pathfinding;
+	EntityPlayer* player;
+	Pickups* pickups;
+	Collisions* collisions;
+	WalkingEnemy* walkingEnemy;
+	Projectile* projectile;
+	FadeToBlack* fadeToBlack;
 
 	uint				frameCap;								// Stores the frames per second cap to be applied.
 	uint				initFrameCap;						// Stores the original frame cap at application start.

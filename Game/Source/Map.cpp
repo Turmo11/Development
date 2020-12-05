@@ -181,7 +181,7 @@ void Map::DrawStaticAnimation(SString name, SString tileset, iPoint position, An
 
 	animInfo->prevSAnimName = currentAnim->name;
 
-	app->render->DrawTexture(sAnimTileset->texture, position.x - 16, position.y - 16, sAnimTileset->PlayerTileRect(currentAnim->frames[animInfo->i]));			
+	app->render->DrawTexture(sAnimTileset->texture, position.x - 16, position.y - 16, sAnimTileset->PlayerTileRect(currentAnim->frames[animInfo->i]), animInfo->flip);			
 
 	if (animInfo->frameCount > currentAnim->speed / 10)	//counts time for each frame of animation
 	{

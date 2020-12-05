@@ -20,6 +20,8 @@
 #include "Pickups.h"
 #include "Collisions.h"
 #include "WalkingEnemy.h"
+#include "Projectile.h"
+
 #include "FadeToBlack.h"
 
 #include "Application.h"
@@ -51,7 +53,8 @@ Application::Application(int argc, char* args[]) : argc(argc), args(args)
 	pickups = new Pickups();
 	collisions = new Collisions();
 	fadeToBlack = new FadeToBlack();
-	walkingEnemy	= new WalkingEnemy();
+	walkingEnemy = new WalkingEnemy();
+	projectile = new Projectile();
 
 	// Ordered for awake / Start / Update
 	// Reverse order of CleanUp
@@ -68,10 +71,10 @@ Application::Application(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(titleScene);
 	AddModule(logoScene);
 	AddModule(walkingEnemy);
-	AddModule(fadeToBlack);
 	AddModule(pickups);
 	AddModule(player);
-
+	AddModule(projectile);
+	AddModule(fadeToBlack);
 	AddModule(collisions);
 
 

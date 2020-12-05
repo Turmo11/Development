@@ -37,7 +37,10 @@ public:
 	void CheckLevelProgress();
 	void SetUp(int level);
 	void DebugKeys();
+
+	//UI
 	void ShowLives();
+	void ShowCd();
 	void RestartScene();
 
 public:
@@ -58,10 +61,14 @@ private:
 	SDL_Rect		backgroundRect;
 	SDL_Texture*	background;
 
+	//UI
 	SDL_Rect livesRect;
 	SDL_Rect livesRect2;
 	SDL_Rect livesRect3;
 	SDL_Texture* livesTex;
+
+	SDL_Rect cdRect;
+	SDL_Texture* cdTex;
 
 };
 

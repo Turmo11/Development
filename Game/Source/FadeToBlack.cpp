@@ -9,7 +9,7 @@
 #include "EntityPlayer.h"
 #include "Collisions.h"
 #include "Pickups.h"
-//#include "WalkingEnemy.h"
+#include "WalkingEnemy.h"
 #include "Map.h"
 #include "Scene.h"
 #include "TitleScene.h"
@@ -201,6 +201,7 @@ bool FadeToBlack::SwitchMap(int level)
 	}
 
 	app->map->data.objectGroups.clear();
+	app->walkingEnemy->CleanUp();
 
 	app->scene->SetUp(level);		//Load specified map
 	app->collisions->LoadFromMap();		//Load Collisions
