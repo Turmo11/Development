@@ -12,7 +12,7 @@
   </renderer>
 
   <audio>
-    <volume value ="0.1f"/>
+    <volume m="0.1f" fx="0.5"/>
     <maxVolume value ="1.0f"/>
   </audio>
 

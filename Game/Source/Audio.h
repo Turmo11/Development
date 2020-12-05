@@ -52,7 +52,8 @@ private:
 
 public:
 
-	float volume;
+	float mVolume;
+	float fxVolume;
 	float maxVolume = 1.0f;
 };
 

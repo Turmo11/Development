@@ -116,30 +116,32 @@ void TitleScene::DebugKeys()
 	//Volume
 	if (app->input->GetKey(SDL_SCANCODE_KP_PLUS) == KEY_DOWN)
 	{
-		if (app->audio->volume < app->audio->maxVolume)
+		if (app->audio->mVolume < app->audio->maxVolume)
 		{
-			app->audio->volume += 0.1f;
-			app->audio->SetFxVolume(app->audio->volume);
-			app->audio->SetMusicVolume(app->audio->volume);
+			app->audio->mVolume += 0.1f;
+			app->audio->fxVolume += 0.1f;
+			app->audio->SetFxVolume(app->audio->fxVolume);
+			app->audio->SetMusicVolume(app->audio->mVolume);
 		}
 
 	}
 	if (app->input->GetKey(SDL_SCANCODE_KP_MINUS) == KEY_DOWN)
 	{
-		if (app->audio->volume > 0.0f)
+		if (app->audio->mVolume > 0.0f)
 		{
-			app->audio->volume -= 0.1f;
-			app->audio->SetFxVolume(app->audio->volume);
-			app->audio->SetMusicVolume(app->audio->volume);
+			app->audio->mVolume -= 0.1f;
+			app->audio->fxVolume -= 0.1f;
+			app->audio->SetFxVolume(app->audio->fxVolume);
+			app->audio->SetMusicVolume(app->audio->mVolume);
 		}
 	}
-	if (app->audio->volume > app->audio->maxVolume)
+	if (app->audio->mVolume > app->audio->maxVolume)
 	{
-		app->audio->volume = app->audio->maxVolume;
+		app->audio->mVolume = app->audio->maxVolume;
 	}
-	if (app->audio->volume < 0.0f)
+	if (app->audio->mVolume < 0.0f)
 	{
-		app->audio->volume = 0.0f;
+		app->audio->mVolume = 0.0f;
 	}
 }
 

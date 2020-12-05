@@ -92,8 +92,17 @@ bool EntityPlayer::Awake(pugi::xml_node& config)
 bool EntityPlayer::Start()
 {
 	SummonPlayer();
+	LoadSoundFx();
+	
 	return true;
 }
+
+void EntityPlayer::LoadSoundFx()
+{
+	jumpSound = app->audio->LoadFx("Assets/Audio/Fx/jump.wav");
+	beamSound = app->audio->LoadFx("Assets/Audio/Fx/beam.wav");
+}
+
 
 bool EntityPlayer::PreUpdate()
 {
@@ -123,6 +132,7 @@ bool EntityPlayer::PreUpdate()
 		{
 			player.currentState = PlayerStates::JUMP;
 			player.speed.y = 0;
+			app->audio->PlayFx(jumpSound);
 		}
 	}
 
@@ -174,6 +184,7 @@ bool EntityPlayer::Update(float dt)
 			app->projectile->SpawnBeam(player.flip);
 			projectileTimer += dt;
 			app->projectile->showCd = true;
+			app->audio->PlayFx(beamSound);
 		}
 
 		HorizontalMovement(dt);

@@ -94,6 +94,8 @@ public:
 	void MoveUp(float dt);
 	void MoveDown(float dt);
 
+	void LoadSoundFx();
+
 	void GodMode();
 	bool SummonPlayer();
 	void ResetPlayer();
@@ -112,6 +114,10 @@ public:
 
 	Player player;
 	bool addLife;
+
+	//Sound
+	uint jumpSound;
+	uint beamSound;
 
 private:
 

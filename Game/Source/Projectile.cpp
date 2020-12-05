@@ -44,7 +44,6 @@ bool Projectile::Update(float dt)
 	}
 	else
 	{
-		LOG("Hide cd");
 		testBeam->animInfo.i = 0;
 		testBeam->animInfo.frameCount = 0.0f;
 	}

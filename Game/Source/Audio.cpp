@@ -20,7 +20,8 @@ Audio::~Audio()
 // Called before render is available
 bool Audio::Awake(pugi::xml_node& config)
 {
-	volume = config.child("volume").attribute("value").as_float();
+	mVolume = config.child("volume").attribute("m").as_float();
+	fxVolume = config.child("volume").attribute("fx").as_float();
 	maxVolume = config.child("maxVolume").attribute("value").as_float();
 	
 	LOG("Loading Audio Mixer");
@@ -59,17 +60,18 @@ bool Audio::Awake(pugi::xml_node& config)
 
 bool Audio::Start()
 {
-	SetFxVolume(volume);
-	SetMusicVolume(volume);
+	SetFxVolume(fxVolume);
+	SetMusicVolume(mVolume);
 	return true;
 }
 
 // Load Game State
 bool Audio::Load(pugi::xml_node& data)
 {
-	volume = data.attribute("volume").as_float();
-	SetFxVolume(volume);
-	SetMusicVolume(volume);
+	mVolume = data.attribute("mVolume").as_float();
+	fxVolume = data.attribute("fxVolume").as_float();
+	SetFxVolume(fxVolume);
+	SetMusicVolume(mVolume);
 	LOG("Loading Volume");
 	return true;
 }
@@ -77,8 +79,8 @@ bool Audio::Load(pugi::xml_node& data)
 // Save Game State
 bool Audio::Save(pugi::xml_node& data) const
 {
-	data.append_attribute("volume") = volume;
-
+	data.append_attribute("mVolume") = mVolume;
+	data.append_attribute("fxVolume") = fxVolume;
 	return true;
 }
 
