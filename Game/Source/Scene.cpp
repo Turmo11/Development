@@ -37,6 +37,27 @@ bool Scene::Awake(pugi::xml_node& config)
 	cameraRect.h = config.child("cameraRect").attribute("h").as_int();
 	cameraRect.w = config.child("cameraRect").attribute("w").as_int();
 
+	//Lives
+	pugi::xml_node lives = config.child("lives");
+
+	livesRect.x = lives.child("livesRect").attribute("x").as_int();
+	livesRect.y = lives.child("livesRect").attribute("y").as_int();
+	livesRect.h = lives.child("livesRect").attribute("h").as_int();
+	livesRect.w = lives.child("livesRect").attribute("w").as_int();
+
+	livesRect2.x = lives.child("livesRect2").attribute("x").as_int();
+	livesRect2.y = lives.child("livesRect2").attribute("y").as_int();
+	livesRect2.h = lives.child("livesRect2").attribute("h").as_int();
+	livesRect2.w = lives.child("livesRect2").attribute("w").as_int();
+
+	livesRect3.x = lives.child("livesRect3").attribute("x").as_int();
+	livesRect3.y = lives.child("livesRect3").attribute("y").as_int();
+	livesRect3.h = lives.child("livesRect3").attribute("h").as_int();
+	livesRect3.w = lives.child("livesRect3").attribute("w").as_int();
+
+	maxLives = lives.child("maxLives").attribute("value").as_int();
+	playerLives = maxLives;
+
 	levelCompleted = config.child("levelCompleted").attribute("value").as_bool();
 
 	LOG("Loading Scene");
@@ -51,7 +72,7 @@ bool Scene::Start()
 	app->fadeToBlack->activeScene = "Scene";
 
 	background = app->tex->Load("Assets/Textures/tower.png");
-
+	livesTex = app->tex->Load("Assets/Textures/UI/lives.png");
 	SetUp(currentLevel);
 	
 	app->render->camera.x = app->render->startingCamPos.x;
@@ -59,6 +80,7 @@ bool Scene::Start()
 
 	levelCompleted = false;
 	
+	showUI = true;
 	return true;
 }
 
@@ -85,13 +107,11 @@ bool Scene::Update(float dt)
 	
 	app->map->Draw();
 
-	/*SString title("Map:%dx%d Tiles:%dx%d Tilesets:%d Camera:(%d,%d) Player:(%.2f,%.2f)",
-					app->map->data.width, app->map->data.height,
-					app->map->data.tileWidth, app->map->data.tileHeight,
-					app->map->data.tilesets.count(), app->render->camera.x, app->render->camera.y,
-					app->player->player.position.x, app->player->player.position.y);
-
-	app->win->SetTitle(title.GetString());*/
+	if (showUI)
+	{
+		ShowLives();
+	}
+	
 	return true;
 }
 
@@ -129,6 +149,30 @@ void Scene::CheckLevelProgress()
 	levelCompleted = true;
 }
 
+void Scene::ShowLives()
+{
+	switch (playerLives)
+	{
+	case 3:
+		app->render->DrawTexture(livesTex, -app->render->camera.x + 20, -app->render->camera.y + app->render->camera.h - 75, &livesRect3, false, 1.0f, true);
+		break;
+	case 2:
+		app->render->DrawTexture(livesTex, -app->render->camera.x + 20, -app->render->camera.y + app->render->camera.h - 75, &livesRect2, false, 1.0f, true);
+		break;
+	case 1:
+		app->render->DrawTexture(livesTex, -app->render->camera.x + 20, -app->render->camera.y + app->render->camera.h - 75, &livesRect, false, 1.0f, true);
+		break;
+	}
+	
+}
+void Scene::RestartScene()
+{
+	playerLives = app->scene->maxLives;
+	showUI = true;
+
+	SetUp(currentLevel);
+}
+
 void Scene::DebugKeys()
 {
 	//Debug keys
@@ -163,6 +207,17 @@ void Scene::DebugKeys()
 	if (app->input->GetKey(SDL_SCANCODE_F8) == KEY_DOWN)
 	{
 		app->fadeToBlack->FadeToBlackScene("GameOverScene");
+	}
+	if (app->input->GetKey(SDL_SCANCODE_F11) == KEY_DOWN)
+	{
+		if (app->frameCap == CAP_AT_60)
+		{
+			app->frameCap = CAP_AT_30;
+		}
+		else if(app->frameCap == CAP_AT_30)
+		{
+			app->frameCap = CAP_AT_60;
+		}
 	}
 	if (app->input->GetKey(SDL_SCANCODE_KP_MULTIPLY) == KEY_DOWN)
 	{
@@ -212,10 +267,10 @@ void Scene::SetUp(int level)
 
 		currentLevel = 0;
 		app->audio->PlayMusic("Assets/Audio/Music/tutorial.ogg", 0.0f);
-		app->pickups->CreatePickup("alpha", { 1152, 704 });
-		app->pickups->CreatePickup("chi", { 1792, 576 });
-		app->pickups->CreatePickup("rho", { 1408, 512 });
-		app->pickups->CreatePickup("eta", { 1792, 384 });
+		app->pickups->CreatePickup(PickupType::LETTER, "alpha", { 1152, 704 });
+		app->pickups->CreatePickup(PickupType::LETTER, "chi", { 1792, 576 });
+		app->pickups->CreatePickup(PickupType::LETTER, "rho", { 1408, 512 });
+		app->pickups->CreatePickup(PickupType::LETTER, "eta", { 1792, 384 });
 		break;
 
 	case 1:
@@ -229,13 +284,14 @@ void Scene::SetUp(int level)
 		cameraRect.h = -3800;
 
 		app->audio->PlayMusic("Assets/Audio/Music/tutorial.ogg", 0.0f);
-		app->pickups->CreatePickup("alpha", { 2128, 2448 });
-		app->pickups->CreatePickup("chi", { 528, 3024 });
-		app->pickups->CreatePickup("rho", { 2960, 784 });
-		app->pickups->CreatePickup("eta", { 656, 1936 });
+		app->pickups->CreatePickup(PickupType::LETTER, "alpha", { 2128, 2448 });
+		app->pickups->CreatePickup(PickupType::LETTER, "chi", { 528, 3024 });
+		app->pickups->CreatePickup(PickupType::LETTER, "rho", { 2960, 784 });
+		app->pickups->CreatePickup(PickupType::LETTER, "eta", { 656, 1936 });
 		app->pickups->SetGoal({ 1552, 656 });
 		//app->walkingEnemy->CreateEnemy(EnemyType::SOUL, { 925, 3475 });
-		app->walkingEnemy->CreateEnemy(EnemyType::SOUL, { 976, 3536 });
+		app->pickups->CreatePickup(PickupType::HEALTH, "heart_jump", { 925, 3536 });
+		app->walkingEnemy->CreateEnemy(EnemyType::SOUL, { 900, 3536 });
 		break;
 
 	case 2:
@@ -251,7 +307,7 @@ void Scene::SetUp(int level)
 		cameraRect.h = -6300;
 
 		app->audio->PlayMusic("Assets/Audio/Music/athena.ogg", 0.0f);
-		app->pickups->CreatePickup("psi", { 1583, 2736 });
+		app->pickups->CreatePickup(PickupType::LETTER, "psi", { 1583, 2736 });
 		//app->pickups->CreatePickup("chi", { 528, 3024 });
 		//app->pickups->CreatePickup("rho", { 2960, 784 });
 		//app->pickups->CreatePickup("eta", { 656, 1936 });

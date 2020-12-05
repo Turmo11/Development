@@ -6,7 +6,8 @@
 #include "Collisions.h"
 #include "Pickups.h"
 #include "Scene.h"
-//#include "WalkingEnemy.h"
+#include "EntityPlayer.h"
+#include "WalkingEnemy.h"
 #include "Audio.h"
 
 
@@ -70,7 +71,7 @@ bool Pickups::CleanUp()
 	return true;
 }
 
-void Pickups::CreatePickup(SString name, iPoint position)
+void Pickups::CreatePickup(PickupType type, SString name, iPoint position)
 {
 	Pickup* newPickup = new Pickup;
 
@@ -82,9 +83,19 @@ void Pickups::CreatePickup(SString name, iPoint position)
 	newPickup->pickupHitbox.w = 32;
 	newPickup->pickupHitbox.h = 32;
 
-	newPickup->pickupCollider = app->collisions->AddCollider(newPickup->pickupHitbox, ObjectType::LETTER, this);
-
 	newPickup->collected = false;
+
+	if (type == PickupType::LETTER)
+	{
+
+		newPickup->pickupCollider = app->collisions->AddCollider(newPickup->pickupHitbox, ObjectType::LETTER, this);
+		newPickup->type = PickupType::LETTER;
+	}
+	else if (type == PickupType::HEALTH)
+	{
+		newPickup->pickupCollider = app->collisions->AddCollider(newPickup->pickupHitbox, ObjectType::HEALTH, this);
+		newPickup->type = PickupType::HEALTH;
+	}
 
 	pickupList.add(newPickup);
 }
@@ -97,8 +108,14 @@ void Pickups::DrawAnimations()
 	{
 		if (!pickupIterator->data->collected)
 		{
-			app->map->DrawStaticAnimation(pickupIterator->data->name.GetString(), "letter_tileset", pickupIterator->data->position, &pickupIterator->data->animInfo);
-
+			if (pickupIterator->data->type == PickupType::LETTER)
+			{
+				app->map->DrawStaticAnimation(pickupIterator->data->name.GetString(), "letter_tileset", pickupIterator->data->position, &pickupIterator->data->animInfo);
+			}
+			if (pickupIterator->data->type == PickupType::HEALTH)
+			{
+				app->map->DrawStaticAnimation(pickupIterator->data->name.GetString(), "heart", pickupIterator->data->position, &pickupIterator->data->animInfo);
+			}
 		}
 		pickupIterator = pickupIterator->next;
 	}
@@ -111,8 +128,14 @@ void Pickups::OnCollision(Collider* A, Collider* B)
 		A->toDelete = true;
 		GetCollected();
 		app->scene->CheckLevelProgress();
-
 	}
+	if (A->type == ObjectType::HEALTH && B->type == ObjectType::PLAYER)
+	{
+		A->toDelete = true;
+		GetCollected();
+		app->player->addLife = true;
+	}
+
 }
 
 void Pickups::GetCollected()
@@ -136,7 +159,11 @@ void Pickups::DebugCollectAll()
 
 	while (pickupIterator != NULL)
 	{
-		pickupIterator->data->collected = true;
+		if (pickupIterator->data->type == PickupType::LETTER)
+		{
+			pickupIterator->data->collected = true;
+			
+		}
 		pickupIterator = pickupIterator->next;
 	}
 

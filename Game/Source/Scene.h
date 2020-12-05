@@ -37,6 +37,8 @@ public:
 	void CheckLevelProgress();
 	void SetUp(int level);
 	void DebugKeys();
+	void ShowLives();
+	void RestartScene();
 
 public:
 
@@ -45,13 +47,21 @@ public:
 	bool			levelCompleted; //used to check if the player has collected all the pickups
 
 	SDL_Rect		cameraRect;
-	
-	
+
+	int playerLives;
+	int maxLives;
+
+	bool showUI;
 
 private:
 
 	SDL_Rect		backgroundRect;
 	SDL_Texture*	background;
+
+	SDL_Rect livesRect;
+	SDL_Rect livesRect2;
+	SDL_Rect livesRect3;
+	SDL_Texture* livesTex;
 
 };
 

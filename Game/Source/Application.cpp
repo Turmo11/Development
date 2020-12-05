@@ -117,7 +117,7 @@ bool Application::Awake()
 
 	config = LoadConfig(configFile);
 
-	frameCap = CAP_AT_30;
+	frameCap = CAP_AT_60;
 
 	if (config.empty() == false)
 	{
@@ -286,8 +286,8 @@ void Application::FinishUpdate()
 
 	static char title[256];
 
-	sprintf_s(title, 256, "Av.FPS: %.2f / Last Frame Ms: %02u / Last sec frames: %i / Last dt: %.3f / Time since startup: %.3f / Frame Count: %llu / Vsync: %s / Frame cap: %s",
-		avgFps, lastFrameMs, framesOnLastUpdate, dt, secondsSinceStartup, frameCount, vsyncActive, frameCapActive);
+	sprintf_s(title, 256, "Av.FPS: %.2f / Last Frame Ms: %02u / Last sec frames: %i / Last dt: %.3f / Time since startup: %.3f / Frame Count: %llu / Vsync: %s / Frame cap: %s / Camera:(%d, %d)",
+		avgFps, lastFrameMs, framesOnLastUpdate, dt, secondsSinceStartup, frameCount, vsyncActive, frameCapActive, app->render->camera.x, app->render->camera.y);
 
 	app->win->SetTitle(title);
 }
@@ -398,6 +398,23 @@ const char* Application::GetTitle() const
 const char* Application::GetOrganization() const
 {
 	return organization.GetString();
+}
+
+float Application::GetDt() const
+{
+	if (!pause)
+	{
+		return dt;
+	}
+	else
+	{
+		return 0.0f;
+	}
+}
+
+float Application::GetUnpausableDt() const
+{
+	return dt;
 }
 
 // Load / Save

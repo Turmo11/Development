@@ -101,11 +101,7 @@ void WalkingEnemy::DrawAnimations()
 
 void WalkingEnemy::OnCollision(Collider* A, Collider* B)
 {
-	if (A->type == ObjectType::ENEMY && B->type == ObjectType::PLAYER)
-	{
-		A->toDelete = true;
-		GetKilled();
-	}
+
 }
 
 void WalkingEnemy::GetKilled()

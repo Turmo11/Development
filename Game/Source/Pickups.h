@@ -9,6 +9,12 @@
 struct SDL_Texture;
 struct Collider;
 
+enum class PickupType
+{
+	LETTER,
+	HEALTH
+};
+
 struct AnimationInfo
 {
 	int			i = 0;
@@ -24,7 +30,8 @@ struct Goal
 
 struct Pickup
 {
-	SString		name;
+	SString name;
+	PickupType type;
 
 	iPoint			position;
 	SDL_Rect		pickupHitbox;
@@ -58,7 +65,7 @@ public:
 
 public:
 
-	void CreatePickup(SString name, iPoint position);
+	void CreatePickup(PickupType type, SString name, iPoint position);
 	void OnCollision(Collider* A, Collider* B);
 	void DrawAnimations();
 	void GetCollected();

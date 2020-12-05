@@ -87,15 +87,17 @@ public:
 public:
 
 	//Movement
-	void HorizontalMovement();
-	void MoveRight();
-	void MoveLeft();
-	void MoveUp();
-	void MoveDown();
+	void HorizontalMovement(float dt);
+	void MoveRight(float dt);
+	void MoveLeft(float dt);
+	void MoveUp(float dt);
+	void MoveDown(float dt);
 
 	void GodMode();
 	bool SummonPlayer();
 	void ResetPlayer();
+	void TakeLife();
+	void AddLife();
 	void Ascend(float time = 2.0f);
 
 	bool CheckAirborne();
@@ -107,6 +109,7 @@ public:
 public:
 
 	Player player;
+	bool addLife;
 
 private:
 
@@ -121,6 +124,7 @@ private:
 	float xAxis, yAxis;
 	Uint32		startTime = 0;
 	Uint32		totalTime = 0;
+
 };
 
 

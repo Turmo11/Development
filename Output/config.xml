@@ -33,6 +33,12 @@
     <currentLevel value="1"/>
     <backgroundRect x="0" y="0" h="6816" w="3072"/>
     <cameraRect x="0" y="5000" h="-3800" w="-3150"/>
+    <lives>
+	<maxLives value="3"/>
+        <livesRect x="0" y="0" h="92" w="92"/>
+        <livesRect2 x="0" y="0" h="92" w="184"/>
+        <livesRect3 x="0" y="0" h="92" w="276"/>
+    </lives>
     <levelCompleted value="false"/>
   </scene>
 

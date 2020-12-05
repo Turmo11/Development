@@ -28,7 +28,7 @@ bool Render::Awake(pugi::xml_node& config)
 	// load flags
 	Uint32 flags = SDL_RENDERER_ACCELERATED;
 
-	if(config.child("vsync").attribute("value").as_bool(true) == true)
+	if (config.child("vsync").attribute("value").as_bool(true) == true)
 	{
 		flags |= SDL_RENDERER_PRESENTVSYNC;
 		LOG("Using vsync");
@@ -36,7 +36,7 @@ bool Render::Awake(pugi::xml_node& config)
 
 	renderer = SDL_CreateRenderer(app->win->window, -1, flags);
 
-	if(renderer == NULL)
+	if (renderer == NULL)
 	{
 		LOG("Could not create the renderer! SDL_Error: %s\n", SDL_GetError());
 		ret = false;
@@ -90,7 +90,7 @@ bool Render::PostUpdate()
 	{
 		SDL_SetRenderDrawColor(renderer, 0, 0, 0, background.a);
 	}
-	
+
 	SDL_RenderPresent(renderer);
 	return true;
 }
@@ -142,36 +142,53 @@ void Render::ResetViewPort()
 
 // Blit to screen
 // Blit to screen
-bool Render::DrawTexture(SDL_Texture* texture, int x, int y, const SDL_Rect* section, bool flip, float speed, double angle, int pivotX, int pivotY) const
+bool Render::DrawTexture(SDL_Texture* texture, int x, int y, const SDL_Rect* section, bool flip, float speed, bool half, float newScale, double angle, int pivotX, int pivotY) const
 {
 	bool ret = true;
-	uint scale = app->win->GetScale();
+	float scale = app->win->GetScale() * newScale;
 
 	SDL_Rect rect;
 	if (flip)
 	{
-		rect.x = ((int)(camera.x * speed) + x * scale) + 92; //Add player width when flipping it
-		rect.y = (int)(camera.y * speed) + y * scale;
+		rect.x = ((int)(camera.x * speed) + x * (int)scale) + 92; //Add player width when flipping it
+		rect.y = (int)(camera.y * speed) + y * (int)scale;
 	}
 	else
 	{
-		rect.x = (int)(camera.x * speed) + x * scale;
-		rect.y = (int)(camera.y * speed) + y * scale;
+		rect.x = (int)(camera.x * speed) + x * (int)scale;
+		rect.y = (int)(camera.y * speed) + y * (int)scale;
 
 	}
 
 	if (section != NULL)
 	{
-		if (flip)
+		if (!half)
 		{
-			rect.w = -section->w;
-			rect.h = section->h;
+			if (flip)
+			{
+				rect.w = -section->w;
+				rect.h = section->h;
+			}
+			else
+			{
+				rect.w = section->w;
+				rect.h = section->h;
+			}
 		}
 		else
 		{
-			rect.w = section->w;
-			rect.h = section->h;
+			if (flip)
+			{
+				rect.w = -section->w / 2;
+				rect.h = section->h / 2;
+			}
+			else
+			{
+				rect.w = section->w / 2;
+				rect.h = section->h / 2;
+			}
 		}
+
 	}
 	else
 	{
@@ -209,7 +226,7 @@ bool Render::DrawQuad(const SDL_Rect& rect, Uint8 r, Uint8 g, Uint8 b, Uint8 a, 
 	SDL_SetRenderDrawColor(renderer, r, g, b, a);
 
 	SDL_Rect rec(rect);
-	if(useCamera)
+	if (useCamera)
 	{
 		rec.x = (int)(camera.x + rect.x * scale);
 		rec.y = (int)(camera.y + rect.y * scale);
@@ -219,7 +236,7 @@ bool Render::DrawQuad(const SDL_Rect& rect, Uint8 r, Uint8 g, Uint8 b, Uint8 a, 
 
 	int result = (filled) ? SDL_RenderFillRect(renderer, &rec) : SDL_RenderDrawRect(renderer, &rec);
 
-	if(result != 0)
+	if (result != 0)
 	{
 		LOG("Cannot draw quad to screen. SDL_RenderFillRect error: %s", SDL_GetError());
 		ret = false;
@@ -238,12 +255,12 @@ bool Render::DrawLine(int x1, int y1, int x2, int y2, Uint8 r, Uint8 g, Uint8 b,
 
 	int result = -1;
 
-	if(useCamera)
+	if (useCamera)
 		result = SDL_RenderDrawLine(renderer, camera.x + x1 * scale, camera.y + y1 * scale, camera.x + x2 * scale, camera.y + y2 * scale);
 	else
 		result = SDL_RenderDrawLine(renderer, x1 * scale, y1 * scale, x2 * scale, y2 * scale);
 
-	if(result != 0)
+	if (result != 0)
 	{
 		LOG("Cannot draw quad to screen. SDL_RenderFillRect error: %s", SDL_GetError());
 		ret = false;
@@ -265,7 +282,7 @@ bool Render::DrawCircle(int x, int y, int radius, Uint8 r, Uint8 g, Uint8 b, Uin
 
 	float factor = (float)M_PI / 180.0f;
 
-	for(uint i = 0; i < 360; ++i)
+	for (uint i = 0; i < 360; ++i)
 	{
 		points[i].x = (int)(x + radius * cos(i * factor));
 		points[i].y = (int)(y + radius * sin(i * factor));
@@ -273,7 +290,7 @@ bool Render::DrawCircle(int x, int y, int radius, Uint8 r, Uint8 g, Uint8 b, Uin
 
 	result = SDL_RenderDrawPoints(renderer, points, 360);
 
-	if(result != 0)
+	if (result != 0)
 	{
 		LOG("Cannot draw quad to screen. SDL_RenderFillRect error: %s", SDL_GetError());
 		ret = false;

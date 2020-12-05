@@ -50,6 +50,7 @@ enum class ObjectType
 	GROUND,
 	PLATFORM,
 	LETTER,
+	HEALTH,
 	ENEMY,
 	GOAL,
 	DEATH

@@ -5,6 +5,7 @@
 #include "Audio.h"
 #include "Textures.h"
 #include "EntityPlayer.h"
+#include "WalkingEnemy.h"
 #include "Window.h"
 #include "Map.h"
 #include "Input.h"
@@ -26,7 +27,7 @@ EntityPlayer::EntityPlayer() : Module()
 EntityPlayer::~EntityPlayer()
 {}
 
-bool EntityPlayer::Save(pugi::xml_node& node) const 
+bool EntityPlayer::Save(pugi::xml_node& node) const
 {
 	LOG("Saving Player...");
 	pugi::xml_node position = node.append_child("position");
@@ -43,7 +44,7 @@ bool EntityPlayer::Save(pugi::xml_node& node) const
 	return true;
 }
 
-bool EntityPlayer::Load(pugi::xml_node& node) 
+bool EntityPlayer::Load(pugi::xml_node& node)
 {
 	LOG("Loading Player...");
 
@@ -156,7 +157,7 @@ bool EntityPlayer::Update(float dt)
 			player.speed.y = 0;
 		}
 
-		HorizontalMovement();
+		HorizontalMovement(dt);
 
 		if (!player.godMode)
 		{
@@ -241,11 +242,11 @@ bool EntityPlayer::Update(float dt)
 
 			if (app->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT)
 			{
-				MoveUp();
+				MoveUp(dt);
 			}
 			else if (app->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT)
 			{
-				MoveDown();
+				MoveDown(dt);
 			}
 			player.position.x += player.speed.x * 2;
 		}
@@ -277,6 +278,11 @@ bool EntityPlayer::PostUpdate()
 	if (player.disabled) //if the player is disable, it stops updating the logic
 	{
 		return true;
+	}
+
+	if (addLife)
+	{
+		AddLife();
 	}
 
 	return true;
@@ -322,7 +328,7 @@ void EntityPlayer::ResetPlayer()
 }
 
 //Collisions
-void EntityPlayer::OnCollision(Collider* A, Collider* B) 
+void EntityPlayer::OnCollision(Collider* A, Collider* B)
 {
 	if (B->type == ObjectType::PLAYER) {
 		Collider temp = *A;
@@ -413,10 +419,39 @@ void EntityPlayer::OnCollision(Collider* A, Collider* B)
 				{
 					player.speed.y = 0;
 				}
+				
+				TakeLife();
+				return;
+			}
+		}
+
+		// ------------ Player Colliding with enemy ------------------
+		if (A->type == ObjectType::PLAYER && B->type == ObjectType::ENEMY) {
+
+			//Colliding from top
+			if (A->rect.y + A->rect.h - player.maxSpeed.y - 2 < B->rect.y
+				&& A->rect.x < B->rect.x + B->rect.w
+				&& A->rect.x + A->rect.w > B->rect.x)
+			{
+				B->toDelete = true;
+				app->walkingEnemy->GetKilled();
+
+			}
+			//Colliding from the sides
+			else if (A->rect.y + (A->rect.h * 1.0f / 4.0f) < B->rect.y + B->rect.h
+				&& A->rect.y + (A->rect.h * 3.0f / 4.0f) > B->rect.y)
+			{
+				ResetPlayer();
+				app->fadeToBlack->FadeToBlackScene("GameOverScene");
+			}
+			//from below
+			else if (A->rect.y < (B->rect.y + B->rect.h))
+			{
 				ResetPlayer();
 				app->fadeToBlack->FadeToBlackScene("GameOverScene");
 			}
 		}
+
 	}
 
 	if (app->scene->levelCompleted)
@@ -442,18 +477,18 @@ void EntityPlayer::OnCollision(Collider* A, Collider* B)
 }
 
 //Handles movement on the x-axis and sets the proper flip
-void EntityPlayer::HorizontalMovement()
+void EntityPlayer::HorizontalMovement(float dt)
 {
 	if (app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT /*|| app->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT*/)
 	{
 		player.movingRight = true;
-		MoveRight();
+		MoveRight(dt);
 		player.flip = false;
 	}
 	else if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT /*|| app->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT*/)
 	{
 		player.movingLeft = true;
-		MoveLeft();
+		MoveLeft(dt);
 		player.flip = true;
 	}
 	else
@@ -463,7 +498,7 @@ void EntityPlayer::HorizontalMovement()
 }
 
 //Movement basic functions
-void EntityPlayer::MoveRight() // Move Right the player at set speed
+void EntityPlayer::MoveRight(float dt) // Move Right the player at set speed
 {
 	player.speed.x += player.acceleration.x;
 
@@ -473,7 +508,7 @@ void EntityPlayer::MoveRight() // Move Right the player at set speed
 	}
 }
 
-void EntityPlayer::MoveLeft() // Move Left the player at speed
+void EntityPlayer::MoveLeft(float dt) // Move Left the player at speed
 {
 	player.speed.x -= player.acceleration.x;
 
@@ -483,12 +518,12 @@ void EntityPlayer::MoveLeft() // Move Left the player at speed
 	}
 }
 
-void EntityPlayer::MoveDown() // Move Right the player at set speed
+void EntityPlayer::MoveDown(float dt) // Move Right the player at set speed
 {
 	player.position.y += (player.maxSpeed.y);
 }
 
-void EntityPlayer::MoveUp() // Move Right the player at set speed
+void EntityPlayer::MoveUp(float dt) // Move Right the player at set speed
 {
 	player.position.y -= (player.maxSpeed.y);
 }
@@ -565,6 +600,32 @@ void EntityPlayer::SetCamera()
 			app->render->camera.y = app->scene->cameraRect.h + app->win->screenSurface->h;;
 		}
 	}
+}
+
+void EntityPlayer::TakeLife()
+{
+	app->scene->showUI = false;
+	if (app->scene->playerLives > 0)
+	{
+		app->fadeToBlack->FadeToBlackPlayerOnly(1.0f);
+		app->scene->playerLives--;
+		LOG("Lives: %d", app->scene->playerLives);
+	}
+	else
+	{
+		ResetPlayer();
+		app->fadeToBlack->FadeToBlackScene("GameOverScene");
+	}
+	
+}
+
+void EntityPlayer::AddLife()
+{
+	if (app->scene->playerLives < app->scene->maxLives)
+	{
+		app->scene->playerLives++;
+	}
+	addLife = false;
 }
 
 //Player completes level

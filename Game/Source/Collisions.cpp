@@ -122,6 +122,9 @@ void Collisions::DebugDraw()
 		case ObjectType::LETTER: // pink
 			app->render->DrawQuad(colliderIterator->data->rect, 255, 0, 255, alpha);
 			break;
+		case ObjectType::HEALTH: // red
+			app->render->DrawQuad(colliderIterator->data->rect, 255, 0, 0, alpha);
+			break;
 		case ObjectType::ENEMY: // purple
 			app->render->DrawQuad(colliderIterator->data->rect, 85, 0, 255, alpha);
 			break;

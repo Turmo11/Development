@@ -71,10 +71,10 @@ bool FadeToBlack::Update(float dt)
 			if (!sceneSwitch)
 			{
 
-
 				if (fadingPlayer)
 				{
 					app->player->ResetPlayer();
+					app->scene->showUI = true;
 				}
 				else
 				{

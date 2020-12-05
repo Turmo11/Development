@@ -95,6 +95,7 @@ void TitleScene::DebugKeys()
 	if (app->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN)
 	{
 		app->fadeToBlack->FadeToBlackScene("Scene");
+		app->scene->RestartScene();
 		app->audio->ResumeMusic();
 	}
 	if (app->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN)
