@@ -356,12 +356,16 @@ void Scene::SetUp(int level)
 		app->pickups->CreatePickup(PickupType::LETTER, "chi", { 528, 3024 });
 		app->pickups->CreatePickup(PickupType::LETTER, "rho", { 2960, 784 });
 		app->pickups->CreatePickup(PickupType::LETTER, "eta", { 656, 1936 });
-		app->pickups->SetGoal({ 1552, 656 });
-		//app->enemy->CreateEnemy(EnemyType::SOUL, { 925, 3475 });
-		app->enemy->CreateEnemy(EnemyType::F_SOUL, { 900, 3300 });
-		app->pickups->CreatePickup(PickupType::HEALTH, "heart", { 925, 3536 });
-		//app->enemy->CreateEnemy(EnemyType::SOUL, { 900, 3536 });
 
+		app->pickups->SetGoal({ 1552, 656 });
+		
+		app->enemy->CreateEnemy(EnemyType::F_SOUL, { 1030, 2250 });
+		app->enemy->CreateEnemy(EnemyType::F_SOUL, { 600, 1110 });
+		app->enemy->CreateEnemy(EnemyType::F_SOUL, { 2576, 1660 });
+		app->enemy->CreateEnemy(EnemyType::F_SOUL, { 2360, 684 });
+
+		app->pickups->CreatePickup(PickupType::HEALTH, "heart", { 2304, 1472 });
+				
 		checkpointPos = app->map->data.startingPosition;
 
 		break;
@@ -387,6 +391,14 @@ void Scene::SetUp(int level)
 		//app->pickups->SetGoal({ 1552, 656 });
 		////app->enemy->CreateEnemy(EnemyType::SOUL, { 925, 3475 });
 		//app->enemy->CreateEnemy(EnemyType::SOUL, { 976, 3536 });
+
+		app->enemy->CreateEnemy(EnemyType::F_SOUL, { 2240, 5248 });
+		app->enemy->CreateEnemy(EnemyType::F_SOUL, { 960, 5248 });
+		app->enemy->CreateEnemy(EnemyType::F_SOUL, { 1408, 2432 });
+		app->enemy->CreateEnemy(EnemyType::F_SOUL, { 1600, 3904 });
+		app->enemy->CreateEnemy(EnemyType::F_SOUL, { 576, 1472 });
+
+		app->pickups->CreatePickup(PickupType::HEALTH, "heart", { 1728, 2880 });
 
 		checkpointPos = app->map->data.startingPosition;
 

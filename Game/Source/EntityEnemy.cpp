@@ -105,7 +105,7 @@ void EntityEnemy::CreateEnemy(EnemyType type, iPoint position)
 	newEnemy->velocity.x = 100.0f;
 	newEnemy->velocity.y = 150.0f;
 	newEnemy->gravity = 150.0f;
-	newEnemy->range = 500;
+	newEnemy->range = 400;
 	newEnemy->safeZone = 0;
 
 	enemyList.add(newEnemy);
