@@ -220,12 +220,8 @@
    </animation>
   </tile>
  </tileset>
- <tileset firstgid="163" name="clouds" tilewidth="128" tileheight="128" tilecount="9" columns="3">
-  <image source="../textures/clouds.png" width="384" height="384"/>
- </tileset>
- <tileset firstgid="172" name="clouds2" tilewidth="256" tileheight="256" tilecount="9" columns="3">
-  <image source="../textures/cloudsx2.png" width="768" height="768"/>
- </tileset>
+ <tileset firstgid="163" source="clouds.tsx"/>
+ <tileset firstgid="172" source="clouds2.tsx"/>
  <tileset firstgid="181" name="heart" tilewidth="64" tileheight="64" tilecount="6" columns="2">
   <image source="../Textures/UI/heart.png" width="128" height="192"/>
   <tile id="0">
@@ -300,7 +296,7 @@
    </animation>
   </tile>
  </tileset>
- <layer id="27" name="SecondParallax" width="50" height="60" visible="0">
+ <layer id="27" name="SecondParallax" width="50" height="60">
   <data>
    <tile/>
    <tile/>
@@ -3304,7 +3300,7 @@
    <tile/>
   </data>
  </layer>
- <layer id="28" name="Parallax" width="50" height="60" visible="0">
+ <layer id="28" name="Parallax" width="50" height="60">
   <data>
    <tile/>
    <tile/>
@@ -15326,7 +15322,7 @@
    <tile gid="77"/>
   </data>
  </layer>
- <objectgroup id="5" name="Colliders">
+ <objectgroup id="5" name="Colliders" visible="0">
   <object id="1" name="ground" type="ground" x="1" y="3584" width="638" height="256"/>
   <object id="2" name="ground" type="ground" x="833.5" y="3585.33" width="648.333" height="256"/>
   <object id="3" name="ground" type="ground" x="961" y="3200.5" width="253.5" height="255.5"/>

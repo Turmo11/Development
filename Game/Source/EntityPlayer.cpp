@@ -33,7 +33,7 @@ bool EntityPlayer::Save(pugi::xml_node& node) const
 	LOG("Saving Player...");
 	pugi::xml_node position = node.append_child("position");
 	position.append_attribute("x") = player.position.x;
-	position.append_attribute("y") = player.position.y - 20;
+	position.append_attribute("y") = player.position.y - 10;
 
 	pugi::xml_node flags = node.append_child("flags");
 	flags.append_attribute("jumping") = player.jumping;
@@ -56,12 +56,12 @@ bool EntityPlayer::Load(pugi::xml_node& node)
 	pugi::xml_node position = node.child("position");
 
 	player.position.x = position.attribute("x").as_float();
-	player.position.y = position.attribute("y").as_float() - 1;
+	player.position.y = position.attribute("y").as_float();
 
 	pugi::xml_node flags = node.child("flags");
-	player.ableToDrop = flags.attribute("dropPlat").as_bool();
+	player.ableToDrop = flags.attribute("ableToDrop").as_bool();
 	player.jumping = flags.attribute("jumping").as_bool();
-	player.grounded = flags.attribute("playerGrounded").as_bool();
+	player.grounded = flags.attribute("grounded").as_bool();
 	player.godMode = flags.attribute("godMode").as_bool();
 
 	player.currentState = PlayerStates::IDLE;
