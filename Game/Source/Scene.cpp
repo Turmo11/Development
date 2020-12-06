@@ -200,6 +200,11 @@ void Scene::ShowUi()
 
 }
 
+void Scene::AddScore(int score)
+{
+	SetScore(GetScore() + score);
+}
+
 
 void Scene::RestartScene()
 {

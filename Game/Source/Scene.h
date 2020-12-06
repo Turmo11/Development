@@ -46,6 +46,11 @@ public:
 
 	void DrawPath();
 
+	void AddScore(int score);
+
+	int GetScore() const{ return score; }
+	void SetScore(int newScore) { score = newScore; }
+
 public:
 
 	int				currentLevel;
@@ -81,7 +86,7 @@ private:
 	SDL_Rect pathDebugRect;
 	SDL_Texture* pathDebugTex;
 
-	
+	int score = 0;
 };
 
 #endif // __SCENE_H__

@@ -745,6 +745,10 @@ void EntityPlayer::TakeLife()
 		app->fadeToBlack->FadeToBlackPlayerOnly(1.0f);
 		app->scene->playerLives--;
 		LOG("Lives: %d", app->scene->playerLives);
+		int newScore;
+		srand(time(NULL));
+		newScore = (rand() % 400) + 100;
+		app->scene->AddScore(-newScore);
 	}
 	else
 	{
@@ -760,6 +764,10 @@ void EntityPlayer::AddLife()
 	{
 		app->scene->playerLives++;
 	}
+	int newScore;
+	srand(time(NULL));
+	newScore = (rand() % 300) + 150;
+	app->scene->AddScore(newScore);
 	addLife = false;
 }
 

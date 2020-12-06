@@ -9,6 +9,7 @@
 #include "EntityPlayer.h"
 #include "EntityEnemy.h"
 #include "Audio.h"
+#include <ctime>
 
 
 Pickups::Pickups() : Module()
@@ -129,6 +130,10 @@ void Pickups::OnCollision(Collider* A, Collider* B)
 		GetCollected();
 		app->scene->CheckLevelProgress();
 		app->audio->PlayFx(app->player->pickupSound);
+		int newScore;
+		srand(time(NULL));
+		newScore = (rand() % 400) + 200;
+		app->scene->AddScore(newScore);
 	}
 	if (A->type == ObjectType::HEALTH && B->type == ObjectType::PLAYER)
 	{
@@ -136,6 +141,7 @@ void Pickups::OnCollision(Collider* A, Collider* B)
 		GetCollected();
 		app->player->addLife = true;
 		app->audio->PlayFx(app->player->healthSound);
+
 	}
 
 }

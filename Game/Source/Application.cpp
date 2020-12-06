@@ -289,8 +289,8 @@ void Application::FinishUpdate()
 
 	static char title[256];
 
-	sprintf_s(title, 256, "Av.FPS: %.2f / Last Frame Ms: %02u / Last sec frames: %i / Last dt: %.3f / Time since startup: %.3f / Frame Count: %llu / Vsync: %s / Frame cap: %s / Camera:(%d, %d)",
-		avgFps, lastFrameMs, framesOnLastUpdate, dt, secondsSinceStartup, frameCount, vsyncActive, frameCapActive, app->render->camera.x, app->render->camera.y);
+	sprintf_s(title, 256, "Av.FPS: %.2f / Last Frame Ms: %02u / Last sec frames: %i / Last dt: %.3f / Time since startup: %.3f / Frame Count: %llu / Vsync: %s / Frame cap: %s / PlayerScore = %d",
+		avgFps, lastFrameMs, framesOnLastUpdate, dt, secondsSinceStartup, frameCount, vsyncActive, frameCapActive, app->scene->GetScore());
 
 	app->win->SetTitle(title);
 }

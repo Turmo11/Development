@@ -9,6 +9,8 @@
 #include "Render.h"
 #include "Audio.h"
 #include "Textures.h"
+#include "Scene.h"
+#include <ctime>
 
 
 Projectile::Projectile() : Module()
@@ -121,6 +123,11 @@ void Projectile::OnCollision(Collider* A, Collider* B)
 		app->audio->PlayFx(app->player->hitSound);
 		B->toDelete = true;
 		app->enemy->GetKilled();
+
+		int newScore;
+		srand(time(NULL));
+		newScore = (rand() % 550) + 450;
+		app->scene->AddScore(newScore);
 	}
 
 
