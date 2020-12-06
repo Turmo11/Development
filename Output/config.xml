@@ -51,6 +51,7 @@
     <hitbox w="30" h="96"/>
     <projectile cd="0.9"/>
     <shield cd="15" duration="5" />
+    <checkpoint cd="10.0"/>
   </player>
 
   <file_system>

@@ -137,6 +137,9 @@ void Collisions::DebugDraw()
 		case ObjectType::DEATH: // black
 			app->render->DrawQuad(colliderIterator->data->rect, 0, 0, 0, alpha);
 			break;
+		case ObjectType::CHECKPOINT: // white
+			app->render->DrawQuad(colliderIterator->data->rect, 255, 255, 255, alpha);
+			break;
 
 		}
 		colliderIterator = colliderIterator->next;

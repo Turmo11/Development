@@ -85,8 +85,11 @@ bool EntityPlayer::Awake(pugi::xml_node& config)
 	player.hitboxHeight = config.child("hitbox").attribute("h").as_int();
 
 	projectileCooldown = config.child("projectile").attribute("cd").as_float();
+
 	shieldCooldown = config.child("shield").attribute("cd").as_float();
 	shieldDuration = config.child("shield").attribute("duration").as_float();
+	checkpointCooldown = config.child("checkpoint").attribute("cd").as_float();
+
 
 	return true;
 }
@@ -235,6 +238,24 @@ bool EntityPlayer::Update(float dt)
 					showShieldUi = true;
 				}
 			}
+		}
+
+
+		// Cooldown to tp a checkpoint
+
+		if (checkpointTimer != 0.0f)
+		{
+			checkpointTimer += dt;
+			if (checkpointTimer >= checkpointCooldown)
+			{
+				checkpointTimer = 0.0f;
+			}
+		}
+
+		if (checkpointTimer == 0.0f && app->input->GetKey(SDL_SCANCODE_KP_1) == KEY_DOWN)
+		{
+			app->scene->LoadCheckpoint();
+			checkpointTimer += dt;
 		}
 
 		HorizontalMovement(dt);
@@ -419,7 +440,8 @@ bool EntityPlayer::CleanUp()
 //Setting up the player on start
 bool EntityPlayer::SummonPlayer()
 {
-	player.position = app->map->data.startingPosition;
+	player.position = { app->scene->checkpointPos.x, app->scene->checkpointPos.y - app->player->player.hitboxHeight };
+	//player.position.y = ;
 
 	player.playerHitbox = { (int)player.position.x, (int)player.position.y, player.hitboxWidth, player.hitboxHeight };
 
@@ -554,6 +576,15 @@ void EntityPlayer::OnCollision(Collider* A, Collider* B)
 			{
 				TakeLife();
 			}
+		}
+
+		// ------------ Player Colliding with checkpoint ------------------
+		if (A->type == ObjectType::PLAYER && B->type == ObjectType::CHECKPOINT)
+		{
+			app->scene->checkpointPos.x = B->rect.x;
+			app->scene->checkpointPos.y = B->rect.y;
+
+			B->toDelete = true;
 		}
 	}
 

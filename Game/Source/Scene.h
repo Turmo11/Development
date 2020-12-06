@@ -38,6 +38,8 @@ public:
 	void SetUp(int level);
 	void DebugKeys();
 
+	void LoadCheckpoint();
+
 	//UI
 	void ShowUi();
 	void RestartScene();
@@ -47,6 +49,8 @@ public:
 public:
 
 	int				currentLevel;
+
+	Point<float> checkpointPos;
 
 	bool			levelCompleted; //used to check if the player has collected all the pickups
 

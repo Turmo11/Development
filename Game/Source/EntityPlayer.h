@@ -143,7 +143,9 @@ private:
 	Uint32		totalTime = 0;
 
 	float projectileCooldown;
+	float checkpointCooldown;
 	float projectileTimer = 0.0f;
+	float checkpointTimer = 0.0f;
 
 	float shieldCooldown;
 	float shieldDuration;
