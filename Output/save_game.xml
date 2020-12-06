@@ -3,22 +3,25 @@
 	<input />
 	<window />
 	<textures />
-	<audio volume="0.100000001" />
+	<audio mVolume="0.100000001" fxVolume="1" />
 	<map>
 		<map_name filename="tutorial.tmx" />
 	</map>
+	<pathfinding />
 	<scene />
 	<GameOverScene />
 	<TitleScene />
 	<LogoScene />
-	<fade />
+	<enemy />
 	<pickups />
 	<player>
-		<position x="470" y="3489" />
+		<position x="1234.99927" y="3246" />
 		<flags jumping="false" ableToDrop="false" grounded="true" flip="false" godMode="false" />
 	</player>
+	<:anonymous />
+	<fade />
 	<collisions />
 	<renderer>
-		<camera x="-1" y="-3032" />
+		<camera x="-594" y="-2906" />
 	</renderer>
 </game_state>
