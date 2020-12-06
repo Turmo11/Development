@@ -83,6 +83,7 @@ bool Scene::Start()
 	livesTex = app->tex->Load("Assets/Textures/UI/lives.png");
 	cdTex = app->tex->Load("Assets/Textures/UI/cooldown.png");
 	pathDebugTex = app->tex->Load("Assets/Textures/UI/debug_path.png");
+	shieldCdTex = app->tex->Load("Assets/Textures/UI/shield.png");
 
 	SetUp(currentLevel);
 
@@ -122,7 +123,7 @@ bool Scene::Update(float dt)
 
 	if (showUI)
 	{
-		ShowLives();
+		ShowUi();
 	}
 
 	return true;
@@ -166,7 +167,7 @@ void Scene::CheckLevelProgress()
 
 	while (pickupIterator != NULL)
 	{
-		if (!pickupIterator->data->collected)
+		if (!pickupIterator->data->collected && pickupIterator->data->type == PickupType::LETTER)
 		{
 			return;
 		}
@@ -175,20 +176,24 @@ void Scene::CheckLevelProgress()
 	levelCompleted = true;
 }
 
-void Scene::ShowLives()
+void Scene::ShowUi()
 {
+	app->render->DrawQuad({ -app->render->camera.x, -app->render->camera.y + app->render->camera.h - 100, 300, 100 }, 0, 0, 0, 180);
 	switch (playerLives)
 	{
 	case 3:
-		app->render->DrawTexture(livesTex, -app->render->camera.x + 20, -app->render->camera.y + app->render->camera.h - 75, &livesRect3, false, 1.0f, true);
+		app->render->DrawTexture(livesTex, -app->render->camera.x + 15, -app->render->camera.y + app->render->camera.h - 75, &livesRect3, false, 1.0f, true);
 		break;
 	case 2:
-		app->render->DrawTexture(livesTex, -app->render->camera.x + 20, -app->render->camera.y + app->render->camera.h - 75, &livesRect2, false, 1.0f, true);
+		app->render->DrawTexture(livesTex, -app->render->camera.x + 15, -app->render->camera.y + app->render->camera.h - 75, &livesRect2, false, 1.0f, true);
 		break;
 	case 1:
-		app->render->DrawTexture(livesTex, -app->render->camera.x + 20, -app->render->camera.y + app->render->camera.h - 75, &livesRect, false, 1.0f, true);
+		app->render->DrawTexture(livesTex, -app->render->camera.x + 15, -app->render->camera.y + app->render->camera.h - 75, &livesRect, false, 1.0f, true);
 		break;
 	}
+	app->projectile->active = true;
+	
+	app->player->ShowShieldUI(true);
 
 }
 

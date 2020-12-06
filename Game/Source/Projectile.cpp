@@ -8,6 +8,7 @@
 #include "Map.h"
 #include "Render.h"
 #include "Audio.h"
+#include "Textures.h"
 
 
 Projectile::Projectile() : Module()
@@ -25,6 +26,7 @@ bool Projectile::Start()
 	name = "beam";
 	testBeam = new Beam;
 	testBeam->animInfo.flip = false;
+	uiBeamTex = app->tex->Load("Assets/Textures/UI/beam.png");
 
 	return true;
 }
@@ -39,15 +41,20 @@ bool Projectile::Update(float dt)
 	DoUpdate(dt);
 	DrawAnimations();
 
-	if (showCd)
+	if (active)
 	{
-		ShowCd();
+		if (showCd)
+		{
+			ShowCd();
+		}
+		else
+		{
+			app->render->DrawTexture(uiBeamTex, -app->render->camera.x + 185, -app->render->camera.y + app->render->camera.h - 69);
+			testBeam->animInfo.i = 0;
+			testBeam->animInfo.frameCount = 0.0f;
+		}
 	}
-	else
-	{
-		testBeam->animInfo.i = 0;
-		testBeam->animInfo.frameCount = 0.0f;
-	}
+	
 
 	return true;
 }
@@ -151,7 +158,7 @@ void Projectile::DoUpdate(float dt)
 		beamIterator = beamIterator->next;
 	}
 }
-
+ 
 void Projectile::ShowCd()
 {
 	app->map->DrawStaticAnimation("cooldown", "cooldown", { -app->render->camera.x + 200, -app->render->camera.y + app->render->camera.h - 50 }, &testBeam->animInfo);

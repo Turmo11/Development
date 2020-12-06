@@ -46,6 +46,7 @@ struct Player
 	bool locked;			//used during cutscenes when we want to take away the control from the player
 	bool godMode;
 	bool ascending;
+	bool shielded;
 
 	bool flip;			 //used to handle texture flips
 
@@ -103,6 +104,8 @@ public:
 	void AddLife();
 	void Ascend(float time = 2.0f);
 
+	void ShowShieldUI(bool active);
+
 	bool CheckAirborne();
 
 	void EntityPlayer::OnCollision(Collider* A, Collider* B);
@@ -114,6 +117,8 @@ public:
 
 	Player player;
 	bool addLife;
+
+	SDL_Texture* shieldTex;
 
 	//Sound
 	uint jumpSound;
@@ -139,6 +144,15 @@ private:
 
 	float projectileCooldown;
 	float projectileTimer = 0.0f;
+
+	float shieldCooldown;
+	float shieldDuration;
+	float shieldTimer = 0.0f;
+
+	bool showShieldCd;
+	bool blinkShield;
+	float accumulatedTime;
+	bool showShieldUi;
 
 };
 

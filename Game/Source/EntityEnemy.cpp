@@ -244,6 +244,22 @@ void Enemy::Move(DynArray<iPoint>& path, float dt)
 		{
 			direction = app->pathfinding->CheckDirection(path, direction);
 		}
+		else if (xDiff == 0 && yDiff == 1)
+		{
+			direction = PathMovement::DOWN;
+		}
+		else if (xDiff == 0 && yDiff == -1)
+		{
+			direction = PathMovement::UP;
+		}
+		else if (xDiff == 1 && yDiff == 0)
+		{
+			direction = PathMovement::RIGHT;
+		}
+		else if (xDiff == -1 && yDiff == 0)
+		{
+			direction = PathMovement::LEFT;
+		}
 	}
 	else
 	{

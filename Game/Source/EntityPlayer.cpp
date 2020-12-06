@@ -85,6 +85,8 @@ bool EntityPlayer::Awake(pugi::xml_node& config)
 	player.hitboxHeight = config.child("hitbox").attribute("h").as_int();
 
 	projectileCooldown = config.child("projectile").attribute("cd").as_float();
+	shieldCooldown = config.child("shield").attribute("cd").as_float();
+	shieldDuration = config.child("shield").attribute("duration").as_float();
 
 	return true;
 }
@@ -93,7 +95,10 @@ bool EntityPlayer::Start()
 {
 	SummonPlayer();
 	LoadSoundFx();
-	
+
+	shieldTex = app->tex->Load("Assets/Textures/Player/shield.png");
+	showShieldUi = true;
+
 	return true;
 }
 
@@ -112,6 +117,7 @@ bool EntityPlayer::PreUpdate()
 {
 	if (player.disabled) //if the player is disable, it stops updating the logic
 	{
+
 		return true;
 	}
 
@@ -157,6 +163,7 @@ bool EntityPlayer::PreUpdate()
 
 	}
 
+
 	return true;
 }
 
@@ -190,6 +197,45 @@ bool EntityPlayer::Update(float dt)
 			app->projectile->showCd = true;
 			app->audio->PlayFx(beamSound);
 		}
+		if (shieldTimer == 0.0f && app->input->GetKey(SDL_SCANCODE_E) == KEY_DOWN)
+		{
+			player.shielded = true;
+			shieldTimer += dt;
+
+			//app->audio->PlayFx(beamSound);
+		}
+
+		if (shieldTimer != 0.0f)
+		{
+			if (player.shielded)
+			{
+				shieldTimer += dt;
+				if (shieldDuration - shieldTimer < 2.0f && !blinkShield)
+				{
+					blinkShield = true;
+					accumulatedTime = 0.0f;
+				}
+				if (shieldTimer >= shieldDuration)
+				{
+					shieldTimer = 0.1f;
+					player.shielded = false;
+					blinkShield = false;
+					showShieldUi = false;
+					showShieldCd = true;
+
+				}
+			}
+			else
+			{
+				shieldTimer += dt;
+				if (shieldTimer >= shieldCooldown)
+				{
+					shieldTimer = 0.0f;
+					showShieldCd = false;
+					showShieldUi = true;
+				}
+			}
+		}
 
 		HorizontalMovement(dt);
 
@@ -222,7 +268,7 @@ bool EntityPlayer::Update(float dt)
 			case PlayerStates::JUMP:
 
 				//LOG("Current State: JUMP");
-				player.speed.y -= player.acceleration.y;
+				player.speed.y -= player.acceleration.y * app->GetDt();
 				player.jumping = true;
 
 				break;
@@ -248,7 +294,7 @@ bool EntityPlayer::Update(float dt)
 			//Jump logic
 			if (player.jumping)
 			{
-				player.speed.y += player.gravity; // Speed.y is +gravity when not grounded
+				player.speed.y += player.gravity * app->GetDt(); // Speed.y is +gravity when not grounded
 
 				if (player.speed.y >= player.maxSpeed.y) // Speed.y is capped an maxSpeed
 				{
@@ -282,7 +328,15 @@ bool EntityPlayer::Update(float dt)
 			{
 				MoveDown(dt);
 			}
-			player.position.x += player.speed.x * 2;
+			if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
+			{
+				player.position.x -= (player.maxSpeed.x * dt);
+			}
+			else if (app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
+			{
+				player.position.x += (player.maxSpeed.x * dt);
+			}
+			
 		}
 	}
 
@@ -304,8 +358,43 @@ bool EntityPlayer::Update(float dt)
 		Ascend();
 	}
 
+	if (player.shielded)
+	{
+		if (!blinkShield)
+		{
+			app->render->DrawTexture(shieldTex, player.position.x, player.position.y + 2);
+		}
+		else
+		{
+			SDL_SetTextureAlphaMod(shieldTex, accumulatedTime * 100.0f);
+			app->render->DrawTexture(shieldTex, player.position.x, player.position.y + 2);
+			accumulatedTime += 7.5f * dt;
+		}
+	}
+
+
+
 	return true;
 }
+
+void EntityPlayer::ShowShieldUI(bool active)
+{
+	if (app->fadeToBlack->activeScene == "Scene")
+	{
+		if (active)
+		{
+			if (showShieldUi)
+			{
+				app->render->DrawTexture(app->scene->shieldCdTex, -app->render->camera.x + 245, -app->render->camera.y + app->render->camera.h - 67);
+			}
+			else if(showShieldCd)
+			{
+				app->map->DrawStaticAnimation("yellow_cooldown", "yellow_cooldown", { -app->render->camera.x + 261, -app->render->camera.y + app->render->camera.h - 52 }, &app->projectile->animInfoYellow);
+			}
+		}
+	}
+}
+
 
 bool EntityPlayer::PostUpdate()
 {
@@ -379,7 +468,7 @@ void EntityPlayer::OnCollision(Collider* A, Collider* B)
 		if (A->type == ObjectType::PLAYER && B->type == ObjectType::GROUND) {
 
 			//Colliding from above
-			if (A->rect.y + A->rect.h - player.maxSpeed.y - 2 < B->rect.y
+			if (A->rect.y + A->rect.h - (player.maxSpeed.y / 50) - 2 < B->rect.y
 				&& A->rect.x < B->rect.x + B->rect.w
 				&& A->rect.x + A->rect.w > B->rect.x)
 			{
@@ -413,7 +502,7 @@ void EntityPlayer::OnCollision(Collider* A, Collider* B)
 			//from below
 			else if (A->rect.y < (B->rect.y + B->rect.h))
 			{
-				player.speed.y = player.maxSpeed.y / 8;
+				player.speed.y = player.maxSpeed.y / 8 * app->GetDt();
 				player.position.y = B->rect.y + B->rect.h;
 			}
 		}
@@ -424,18 +513,18 @@ void EntityPlayer::OnCollision(Collider* A, Collider* B)
 			if (A->type == ObjectType::PLAYER && B->type == ObjectType::PLATFORM) {
 
 				//Colliding from above
-				if (A->rect.y + A->rect.h - player.maxSpeed.y - 5 < B->rect.y
+				if (A->rect.y + A->rect.h < B->rect.y + (B->rect.h / 2.0f)
 					&& A->rect.x < B->rect.x + B->rect.w
-					&& A->rect.x + A->rect.w > B->rect.x)
+					&& A->rect.x + A->rect.w > B->rect.x && player.speed.y >= 0)
 				{
+					
+					player.position.y = B->rect.y - player.playerCollider->rect.h + 2;
+					player.grounded = true;
+					player.jumping = false;
 					if (player.speed.y > 0)
 					{
 						player.speed.y = 0;
 					}
-
-					player.position.y = B->rect.y - player.playerCollider->rect.h + 1;
-					player.grounded = true;
-					player.jumping = false;
 				}
 			}
 
@@ -458,11 +547,13 @@ void EntityPlayer::OnCollision(Collider* A, Collider* B)
 				return;
 			}
 		}
-
-		// ------------ Player Colliding with enemy ------------------
-		if (A->type == ObjectType::PLAYER && B->type == ObjectType::ENEMY)
+		if (!player.shielded)
 		{
-			TakeLife();
+			// ------------ Player Colliding with enemy ------------------
+			if (A->type == ObjectType::PLAYER && B->type == ObjectType::ENEMY)
+			{
+				TakeLife();
+			}
 		}
 	}
 
@@ -512,32 +603,32 @@ void EntityPlayer::HorizontalMovement(float dt)
 //Movement basic functions
 void EntityPlayer::MoveRight(float dt) // Move Right the player at set speed
 {
-	player.speed.x += player.acceleration.x;
+	player.speed.x += player.acceleration.x * dt;
 
-	if (player.speed.x > player.maxSpeed.x)
+	if (player.speed.x > player.maxSpeed.x * dt)
 	{
-		player.speed.x = player.maxSpeed.x;
+		player.speed.x = player.maxSpeed.x * dt;
 	}
 }
 
 void EntityPlayer::MoveLeft(float dt) // Move Left the player at speed
 {
-	player.speed.x -= player.acceleration.x;
+	player.speed.x -= player.acceleration.x * dt;
 
-	if (player.speed.x < -player.maxSpeed.x)
+	if (player.speed.x < -player.maxSpeed.x * dt)
 	{
-		player.speed.x = -player.maxSpeed.x;
+		player.speed.x = -player.maxSpeed.x * dt;
 	}
 }
 
 void EntityPlayer::MoveDown(float dt) // Move Right the player at set speed
 {
-	player.position.y += (player.maxSpeed.y);
+	player.position.y += (player.maxSpeed.y * dt);
 }
 
 void EntityPlayer::MoveUp(float dt) // Move Right the player at set speed
 {
-	player.position.y -= (player.maxSpeed.y);
+	player.position.y -= (player.maxSpeed.y * dt);
 }
 
 //Toggles god mode

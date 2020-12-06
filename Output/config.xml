@@ -44,12 +44,13 @@
   </scene>
 
   <player>
-    <acceleration x="2" y="18"/>
-    <gravity value="0.75" />
+    <acceleration x="100" y="1000"/>
+    <gravity value="37.5" />
     <speed x="0" y="0" />
-    <maxSpeed x="10" y="50"/>
+    <maxSpeed x="600" y="2500"/>
     <hitbox w="30" h="96"/>
     <projectile cd="0.9"/>
+    <shield cd="15" duration="5" />
   </player>
 
   <file_system>

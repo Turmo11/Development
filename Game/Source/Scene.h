@@ -39,7 +39,7 @@ public:
 	void DebugKeys();
 
 	//UI
-	void ShowLives();
+	void ShowUi();
 	void RestartScene();
 
 	void DrawPath();
@@ -58,6 +58,8 @@ public:
 	bool showUI;
 	bool firstGame = true;
 
+	SDL_Texture* shieldCdTex;
+
 private:
 
 	SDL_Rect		backgroundRect;
@@ -74,6 +76,8 @@ private:
 
 	SDL_Rect pathDebugRect;
 	SDL_Texture* pathDebugTex;
+
+	
 };
 
 #endif // __SCENE_H__

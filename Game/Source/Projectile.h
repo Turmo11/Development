@@ -61,7 +61,12 @@ public:
 	SString name;
 	Beam* testBeam;
 
+	SDL_Texture* uiBeamTex;
+
+	bool active = false;
 	bool showCd = false;
+
+	AnimationInfo animInfoYellow;
 	
 };
 
