@@ -7,6 +7,7 @@
 #include "Collisions.h"
 #include "Map.h"
 #include "Render.h"
+#include "Audio.h"
 
 
 Projectile::Projectile() : Module()
@@ -105,6 +106,7 @@ void Projectile::OnCollision(Collider* A, Collider* B)
 	if (A->type == ObjectType::PROJECTILE && B->type == ObjectType::GROUND)
 	{
 		A->toDelete = true;
+		app->audio->PlayFx(app->player->hitSound);
 	}
 	if (A->type == ObjectType::PROJECTILE && B->type == ObjectType::ENEMY)
 	{

@@ -128,12 +128,14 @@ void Pickups::OnCollision(Collider* A, Collider* B)
 		A->toDelete = true;
 		GetCollected();
 		app->scene->CheckLevelProgress();
+		app->audio->PlayFx(app->player->pickupSound);
 	}
 	if (A->type == ObjectType::HEALTH && B->type == ObjectType::PLAYER)
 	{
 		A->toDelete = true;
 		GetCollected();
 		app->player->addLife = true;
+		app->audio->PlayFx(app->player->healthSound);
 	}
 
 }

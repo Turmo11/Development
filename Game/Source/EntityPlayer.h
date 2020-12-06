@@ -118,6 +118,9 @@ public:
 	//Sound
 	uint jumpSound;
 	uint beamSound;
+	uint healthSound;
+	uint pickupSound;
+	uint hitSound;
 
 private:
 

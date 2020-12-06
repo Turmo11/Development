@@ -101,6 +101,9 @@ void EntityPlayer::LoadSoundFx()
 {
 	jumpSound = app->audio->LoadFx("Assets/Audio/Fx/jump.wav");
 	beamSound = app->audio->LoadFx("Assets/Audio/Fx/beam.wav");
+	healthSound = app->audio->LoadFx("Assets/Audio/Fx/health.wav");
+	pickupSound = app->audio->LoadFx("Assets/Audio/Fx/pickup.wav");
+	hitSound = app->audio->LoadFx("Assets/Audio/Fx/hit.wav");
 }
 
 
