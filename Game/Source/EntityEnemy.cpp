@@ -103,9 +103,10 @@ void EntityEnemy::CreateEnemy(EnemyType type, iPoint position)
 	newEnemy->dead = false;
 
 	newEnemy->velocity.x = 100.0f;
-	newEnemy->velocity.y = 100.0f;
+	newEnemy->velocity.y = 150.0f;
 	newEnemy->gravity = 150.0f;
 	newEnemy->range = 500;
+	newEnemy->safeZone = 0;
 
 	enemyList.add(newEnemy);
 }
@@ -134,7 +135,59 @@ void EntityEnemy::DrawAnimations()
 
 void EntityEnemy::OnCollision(Collider* A, Collider* B)
 {
-	
+	ListItem<Enemy*>* enemyIterator = enemyList.start;
+
+	while (enemyIterator != NULL)
+	{
+		if (!enemyIterator->data->collider->toDelete)
+		{
+			enemyIterator->data->OnCollision(A, B);
+		}
+		enemyIterator = enemyIterator->next;
+	}
+
+}
+
+void Enemy::OnCollision(Collider* A, Collider* B)
+{
+	// ------------ Player Colliding with the ground ------------------
+	if (A->type == ObjectType::ENEMY && B->type == ObjectType::GROUND) {
+
+		//Colliding from above
+		if (A->rect.y + A->rect.h - velocity.y - 2 < B->rect.y
+			&& A->rect.x < B->rect.x + B->rect.w
+			&& A->rect.x + A->rect.w > B->rect.x)
+		{
+			if (velocity.y > 0)
+			{
+				velocity.y = 0;
+			}
+
+			position.y = B->rect.y - collider->rect.h - 20;
+		}
+		//Colliding from the sides
+		else if (A->rect.y + (A->rect.h * 1.0f / 4.0f) < B->rect.y + B->rect.h
+			&& A->rect.y + (A->rect.h * 3.0f / 4.0f) > B->rect.y)
+		{
+
+			if ((A->rect.x + A->rect.w) < (B->rect.x + B->rect.w / 4))
+			{ //Player to the left 
+				position.x = B->rect.x - A->rect.w - 32;
+			}
+			else if (A->rect.x > (B->rect.x + B->rect.w * 3 / 4))
+			{ //Player to the right
+				position.x = B->rect.x + B->rect.w + 20;
+			}
+
+		}
+		//from below
+		else if (A->rect.y < (B->rect.y + B->rect.h))
+		{
+			velocity.y = 0;
+			position.y = B->rect.y + B->rect.h;
+		}
+	}
+
 }
 
 void EntityEnemy::GetKilled()
@@ -168,18 +221,34 @@ void Enemy::Update(float dt)
 	{
 		collider->SetPos(position.x - 4, position.y + 10);
 	}
-	
-	LOG("Velocity = %f", velocity.x);
 }
 void Enemy::DebugRange()
 {
 	int diameter = range * 2;
 	app->render->DrawQuad({ position.x - range + (collider->rect.w / 2), position.y - range, diameter, diameter }, 255, 0, 0, 255, false);
+	app->render->DrawQuad({ position.x - safeZone + (hitbox.w / 2), position.y - safeZone + (hitbox.h / 2), safeZone * 2, safeZone * 2 }, 0, 255, 0, 255, false);
+
 }
 
 void Enemy::Move(DynArray<iPoint>& path, float dt)
 {
-	direction = app->pathfinding->CheckDirection(path, direction);
+	if (path.Count() > 2)
+	{
+		iPoint tile = path[0];
+		iPoint nextTile = path[1];
+
+		int xDiff = nextTile.x - tile.x;
+		int yDiff = nextTile.y - tile.y;
+
+		if (xDiff != 0 || yDiff != 0)
+		{
+			direction = app->pathfinding->CheckDirection(path, direction);
+		}
+	}
+	else
+	{
+		direction = app->pathfinding->CheckDirection(path, direction);
+	}
 
 	switch (direction)
 	{
@@ -226,6 +295,10 @@ void Enemy::Move(DynArray<iPoint>& path, float dt)
 		position.x += 1.5f * velocity.x * dt;
 
 		break;
+	case PathMovement::NO_MOVE:
+		position = position;
+
+		break;
 	}
 }
 
@@ -236,15 +309,15 @@ void Enemy::Pathfind()
 	if (target.DistanceTo(position) < range)
 	{
 		iPoint origin = { app->map->WorldToMap((int)position.x, (int)position.y) };
-		iPoint destination = { app->map->WorldToMap((int)target.x, (int)target.y + 64) };
-	
+		iPoint destination /*= { app->map->WorldToMap((int)target.x, (int)target.y + 64) }*/;
+
 		if (position.x < target.x)
 		{
-			LOG("TO THE RIGHT");
+			destination = { app->map->WorldToMap((int)target.x + 32, (int)target.y + 64) };
 		}
 		else if (position.x > target.x)
 		{
-			LOG("TO THE LEFT");
+			destination = { app->map->WorldToMap((int)target.x + 64, (int)target.y + 64) };
 		}
 		/*if (position.x < target.x)
 		{
@@ -255,7 +328,14 @@ void Enemy::Pathfind()
 			destination = { app->map->WorldToMap((int)(target.x), (int)(target.y + app->player->player.playerHitbox.y)) };
 		}*/
 
-		path = app->pathfinding->CreatePath(origin, destination);
+		if (target.DistanceTo(position) > safeZone)
+		{
+			path = app->pathfinding->CreatePath(origin, destination);
+		}
+		else
+		{
+			LOG("SAFE ZONE");
+		}
 		if (path != NULL)
 		{
 			Move(*path, app->GetDt());
@@ -271,7 +351,7 @@ void Enemy::Pathfind()
 		path->Clear();
 		pathCreated = false;
 	}
-
+}
 
 
 ////Pathfinding -------------------------------------------
@@ -316,4 +396,4 @@ void Enemy::Pathfind()
 //	}
 //}
 
-}
+

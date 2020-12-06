@@ -32,6 +32,7 @@ struct Enemy
 
 	fPoint velocity;
 	int range;
+	int safeZone;
 
 	SDL_Rect		hitbox;
 	Collider*		collider;
@@ -55,6 +56,7 @@ struct Enemy
 	void Update(float dt);
 
 	void Move(DynArray<iPoint>& path, float dt);
+	void OnCollision(Collider* A, Collider* B);
 };
 
 class EntityEnemy : public Module

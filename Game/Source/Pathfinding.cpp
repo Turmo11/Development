@@ -65,7 +65,7 @@ PathMovement Pathfinding::CheckDirection(DynArray<iPoint>& path, PathMovement la
 {
 	if(path.Count() != 0)
 	{
-		if (path.Count() >= 2)
+		if (path.Count() > 2)
 		{
 			iPoint tile = path[0];
 			iPoint nextTile = path[1];
@@ -78,6 +78,19 @@ PathMovement Pathfinding::CheckDirection(DynArray<iPoint>& path, PathMovement la
 			else if (xDiff == -1 && yDiff == 1) return PathMovement::DOWN_LEFT;
 			else if (xDiff == -1 && yDiff == -1) return PathMovement::UP_LEFT;
 			else if (xDiff == 1) return PathMovement::RIGHT;
+			else if (xDiff == -1) return PathMovement::LEFT;
+			else if (yDiff == 1) return PathMovement::DOWN;
+			else if (yDiff == -1) return PathMovement::UP;
+		}
+		else if (path.Count() == 2)
+		{
+			iPoint tile = path[0];
+			iPoint nextTile = path[1];
+
+			int xDiff = nextTile.x - tile.x;
+			int yDiff = nextTile.y - tile.y;
+
+			if (xDiff == 1) return PathMovement::RIGHT;
 			else if (xDiff == -1) return PathMovement::LEFT;
 			else if (yDiff == 1) return PathMovement::DOWN;
 			else if (yDiff == -1) return PathMovement::UP;
@@ -252,7 +265,7 @@ DynArray<iPoint>* Pathfinding::CreatePath(const iPoint& origin, const iPoint& de
 	lastPath.Clear();
 
 	// Making sure origin and destination are walkable
-	if (IsWalkable(origin) && IsWalkable(destination))
+	if (/*IsWalkable(origin) &&*/ IsWalkable(destination))
 	{
 		// Creating list open and close
 		PathList open, close;
