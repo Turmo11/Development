@@ -92,6 +92,9 @@ bool Scene::Start()
 	levelCompleted = false;
 
 	showUI = true;
+
+
+
 	return true;
 }
 
@@ -243,7 +246,6 @@ void Scene::DebugKeys()
 	{
 		app->map->debug = !app->map->debug;
 	}
-		
 
 	if (app->input->GetKey(SDL_SCANCODE_F11) == KEY_DOWN)
 	{
@@ -359,6 +361,9 @@ void Scene::SetUp(int level)
 		app->enemy->CreateEnemy(EnemyType::F_SOUL, { 900, 3300 });
 		app->pickups->CreatePickup(PickupType::HEALTH, "heart", { 925, 3536 });
 		//app->enemy->CreateEnemy(EnemyType::SOUL, { 900, 3536 });
+
+		checkpointPos = app->map->data.startingPosition;
+
 		break;
 
 	case 2:
@@ -382,9 +387,18 @@ void Scene::SetUp(int level)
 		//app->pickups->SetGoal({ 1552, 656 });
 		////app->enemy->CreateEnemy(EnemyType::SOUL, { 925, 3475 });
 		//app->enemy->CreateEnemy(EnemyType::SOUL, { 976, 3536 });
+
+		checkpointPos = app->map->data.startingPosition;
+
 		break;
 
 	default:
 		break;
 	}
 }
+
+void Scene::LoadCheckpoint()
+{
+	app->player->player.position = { checkpointPos.x ,checkpointPos.y - app->player->player.hitboxHeight };
+}
+

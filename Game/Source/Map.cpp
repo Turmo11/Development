@@ -722,6 +722,10 @@ bool Map::LoadObjectLayers(pugi::xml_node& node, ObjectGroup* objectGroup)
 			temp->data.vString = iteratorNode.child("properties").child("property").attribute("value").as_string();
 			objectGroup->objects[i].properties.propertyList.add(temp);
 		}
+		else if (type == "checkpoint")
+		{
+			objectGroup->objects[i].type = ObjectType::CHECKPOINT;
+		}
 		else
 		{
 			objectGroup->objects[i].type = ObjectType::UNKNOWN;

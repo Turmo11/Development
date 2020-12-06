@@ -54,7 +54,8 @@ enum class ObjectType
 	HEALTH,
 	ENEMY,
 	GOAL,
-	DEATH
+	DEATH,
+	CHECKPOINT
 };
 
 struct Object

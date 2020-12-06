@@ -50,6 +50,7 @@
     <maxSpeed x="10" y="50"/>
     <hitbox w="30" h="96"/>
     <projectile cd="0.9"/>
+    <checkpoint cd="10.0"/>
   </player>
 
   <file_system>
