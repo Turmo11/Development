@@ -33,7 +33,7 @@ bool EntityPlayer::Save(pugi::xml_node& node) const
 	LOG("Saving Player...");
 	pugi::xml_node position = node.append_child("position");
 	position.append_attribute("x") = player.position.x;
-	position.append_attribute("y") = player.position.y;
+	position.append_attribute("y") = player.position.y - 20;
 
 	pugi::xml_node flags = node.append_child("flags");
 	flags.append_attribute("jumping") = player.jumping;
