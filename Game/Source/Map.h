@@ -93,7 +93,7 @@ struct MapLayer
 	uint* data;
 	Properties properties;
 	bool wantToDraw;
-
+	bool navigation;
 
 
 	MapLayer() : data(NULL)
@@ -108,6 +108,10 @@ struct MapLayer
 	inline uint Get(int x, int y) const
 	{
 		return data[(y*width) + x];
+	}
+	inline uint GetPath(int x, int y) const
+	{
+		return data[(y * width) + x];
 	}
 };
 
@@ -207,6 +211,7 @@ public:
 
 	iPoint MapToWorld(int x, int y) const;
 	iPoint WorldToMap(int x, int y) const;
+	iPoint MapToWorldCentered(int x, int y) const;
 
 private:
 
@@ -218,14 +223,13 @@ private:
 	bool LoadProperties(pugi::xml_node& node, Properties& properties);
 	bool LoadTilesetAnimation(pugi::xml_node& tilesetNode, TileSet* set);
 
-
-
 	TileSet* GetTilesetFromTileId(int id) const;
+	bool CreateWalkabilityMap(int& width, int& height, uchar** buffer) const;
 
 public:
 
 	MapData data;
-
+	bool debug = false;
 	float parallaxVelocity;
 
 private:

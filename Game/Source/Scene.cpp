@@ -13,6 +13,7 @@
 #include "WalkingEnemy.h"
 #include "FadeToBlack.h"
 #include "Projectile.h" //includes Pickups.h
+#include "Pathfinding.h"
 
 Scene::Scene() : Module()
 {
@@ -81,6 +82,8 @@ bool Scene::Start()
 	background = app->tex->Load("Assets/Textures/tower.png");
 	livesTex = app->tex->Load("Assets/Textures/UI/lives.png");
 	cdTex = app->tex->Load("Assets/Textures/UI/cooldown.png");
+	pathDebugTex = app->tex->Load("Assets/Textures/UI/debug_path.png");
+
 	SetUp(currentLevel);
 
 	app->render->camera.x = app->render->startingCamPos.x;
@@ -115,10 +118,11 @@ bool Scene::Update(float dt)
 
 	app->map->Draw();
 
+	DrawPath();
+
 	if (showUI)
 	{
 		ShowLives();
-		
 	}
 
 	return true;
@@ -141,6 +145,19 @@ bool Scene::CleanUp()
 	LOG("Freeing scene");
 
 	return true;
+}
+
+void Scene::DrawPath()
+{
+	// Draw path of the closest entity
+	const DynArray<iPoint>* path = app->pathfinding->GetLastPath();
+	if (app->map->debug) {
+		for (uint i = 0; i < path->Count(); ++i)
+		{
+			iPoint pos = app->map->MapToWorld(path->At(i)->x, path->At(i)->y);
+			app->render->DrawTexture(pathDebugTex, pos.x, pos.y);
+		}
+	}
 }
 
 void Scene::CheckLevelProgress()
@@ -178,10 +195,13 @@ void Scene::ShowLives()
 
 void Scene::RestartScene()
 {
-	playerLives = app->scene->maxLives;
-	showUI = true;
+	if (!firstGame)
+	{
+		playerLives = app->scene->maxLives;
+		showUI = true;
 
-	SetUp(currentLevel);
+		SetUp(currentLevel);
+	}
 }
 
 void Scene::DebugKeys()
@@ -219,6 +239,12 @@ void Scene::DebugKeys()
 	{
 		app->fadeToBlack->FadeToBlackScene("GameOverScene");
 	}
+	if (app->input->GetKey(SDL_SCANCODE_F9) == KEY_DOWN) 
+	{
+		app->map->debug = !app->map->debug;
+	}
+		
+
 	if (app->input->GetKey(SDL_SCANCODE_F11) == KEY_DOWN)
 	{
 		if (app->frameCap == CAP_AT_60)
@@ -330,8 +356,9 @@ void Scene::SetUp(int level)
 		app->pickups->CreatePickup(PickupType::LETTER, "eta", { 656, 1936 });
 		app->pickups->SetGoal({ 1552, 656 });
 		//app->walkingEnemy->CreateEnemy(EnemyType::SOUL, { 925, 3475 });
+		app->walkingEnemy->CreateEnemy(EnemyType::SOUL, { 650, 3300 });
 		app->pickups->CreatePickup(PickupType::HEALTH, "heart", { 925, 3536 });
-		app->walkingEnemy->CreateEnemy(EnemyType::SOUL, { 900, 3536 });
+		//app->walkingEnemy->CreateEnemy(EnemyType::SOUL, { 900, 3536 });
 		break;
 
 	case 2:

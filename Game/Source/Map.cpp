@@ -6,6 +6,7 @@
 #include "Map.h"
 #include "EntityPlayer.h"
 #include "Pickups.h"
+#include "Pathfinding.h"
 #include <math.h>
 
 Map::Map() : Module(), mapLoaded(false)
@@ -58,13 +59,18 @@ void Map::Draw()
 	// TODO 4: Make sure we draw all the layers and not just the first one
 	ListItem<MapLayer*>* layer = data.layers.start;
 	while (layer != nullptr) {
+
+		if (layer->data->navigation == true && debug == false) //Render walkability map only when debugging
+		{ 
+			break; 
+		}
 		for (int y = 0; y < data.height; ++y)
 		{
 			for (int x = 0; x < data.width; ++x)
 			{
 				if (layer->data->name == "Parallax")
 					parallaxVelocity = parallax;
-					
+
 				else if (layer->data->name == "SecondParallax")
 					parallaxVelocity = secondParallax;
 				else
@@ -128,15 +134,15 @@ void Map::DrawAnimation(SString name, SString tileset, bool flip)
 	prevAnimName = currentAnim->name;
 
 	app->render->DrawTexture(animTileset->texture,									//Texture of the animation(tileset) 
-	app->player->player.position.x, app->player->player.position.y,			//drawn at player position
-	animTileset->PlayerTileRect(currentAnim->frames[i]), flip);			//draw frames tile id
+		app->player->player.position.x, app->player->player.position.y,			//drawn at player position
+		animTileset->PlayerTileRect(currentAnim->frames[i]), flip);			//draw frames tile id
 
 	if (frameCount % (currentAnim->speed / 10) == 0)	//counts frames each loop (60 fps using vsync) Magic Numbers
 	{
 		i++;
 	}
 	if (i >= currentAnim->nFrames)		//Iterate from 0 to nFrames (number of frames in animation)
-	{				
+	{
 		i = 0;
 	}
 
@@ -181,7 +187,7 @@ void Map::DrawStaticAnimation(SString name, SString tileset, iPoint position, An
 
 	animInfo->prevSAnimName = currentAnim->name;
 
-	app->render->DrawTexture(sAnimTileset->texture, position.x - 16, position.y - 16, sAnimTileset->PlayerTileRect(currentAnim->frames[animInfo->i]), animInfo->flip);			
+	app->render->DrawTexture(sAnimTileset->texture, position.x - 16, position.y - 16, sAnimTileset->PlayerTileRect(currentAnim->frames[animInfo->i]), animInfo->flip);
 
 	if (animInfo->frameCount > currentAnim->speed / 10)	//counts time for each frame of animation
 	{
@@ -205,17 +211,17 @@ TileSet* Map::GetTilesetFromTileId(int id) const
 	TileSet* ret = nullptr;
 
 	ListItem<TileSet*>* i = data.tilesets.start;
-	while (i->next != nullptr) 
+	while (i->next != nullptr)
 	{
 
-		if (id >= i->data->firstgid && id < i->next->data->firstgid) 
+		if (id >= i->data->firstgid && id < i->next->data->firstgid)
 		{
 			ret = i->data;
 			break;
 		}
 		i = i->next;
 	}
-	if (ret == nullptr) 
+	if (ret == nullptr)
 	{
 		ret = data.tilesets.end->data;
 	}
@@ -231,6 +237,29 @@ iPoint Map::MapToWorld(int x, int y) const
 	{
 		ret.x = x * data.tileWidth;
 		ret.y = y * data.tileHeight;
+	}
+	else if (data.type == MapTypes::ISOMETRIC)
+	{
+		ret.x = (x - y) * (data.tileWidth * 0.5f);
+		ret.y = (x + y) * (data.tileHeight * 0.5f);
+	}
+	else
+	{
+		LOG("Unknown map type");
+		ret.x = x; ret.y = y;
+	}
+
+	return ret;
+}
+
+iPoint Map::MapToWorldCentered(int x, int y) const
+{
+	iPoint ret;
+
+	if (data.type == MapTypes::ORTHOGONAL)
+	{
+		ret.x = x * data.tileWidth + data.tileWidth / 2;
+		ret.y = y * data.tileHeight + data.tileHeight / 2;
 	}
 	else if (data.type == MapTypes::ISOMETRIC)
 	{
@@ -272,6 +301,7 @@ iPoint Map::WorldToMap(int x, int y) const
 	return ret;
 }
 
+
 SDL_Rect TileSet::GetTileRect(int id) const
 {
 	int relativeId = id - firstgid;
@@ -297,7 +327,7 @@ bool Map::CleanUp()
 	{
 		item->data->animations.clear();
 		delete item->data->playerTileRect;
-		
+
 
 		SDL_DestroyTexture(item->data->texture);
 
@@ -440,7 +470,14 @@ bool Map::Load(const char* fileCName)
 			itemLayer = itemLayer->next;
 		}
 	}
-
+	//Walkability Map
+	int w, h;
+	uchar* data = NULL;
+	if (app->map->CreateWalkabilityMap(w, h, &data))
+	{
+		app->pathfinding->SetMap(w, h, data);
+	}
+		
 	mapLoaded = ret;
 
 	return ret;
@@ -586,6 +623,15 @@ bool Map::LoadLayer(pugi::xml_node& node, MapLayer* layer)
 	layer->name = node.attribute("name").as_string();
 	layer->width = node.attribute("width").as_int();
 	layer->height = node.attribute("height").as_int();
+	if (strcmp(node.attribute("name").as_string(), "Navigation") == 0)
+	{
+		layer->navigation = node.child("properties").child("property").attribute("value").as_bool();
+	}
+	else
+	{
+		layer->navigation = false;
+	}
+
 	LoadProperties(node, layer->properties);
 	pugi::xml_node layerData = node.child("data");
 
@@ -597,8 +643,8 @@ bool Map::LoadLayer(pugi::xml_node& node, MapLayer* layer)
 	}
 	else
 	{
-		layer->data = new uint[layer->width*layer->height];
-		memset(layer->data, 0, layer->width*layer->height);
+		layer->data = new uint[layer->width * layer->height];
+		memset(layer->data, 0, layer->width * layer->height);
 
 		int i = 0;
 		for (pugi::xml_node tile = layerData.child("tile"); tile; tile = tile.next_sibling("tile"))
@@ -640,7 +686,7 @@ bool Map::LoadObjectLayers(pugi::xml_node& node, ObjectGroup* objectGroup)
 
 		if (type == "ground")
 		{
-		objectGroup->objects[i].type = ObjectType::GROUND;
+			objectGroup->objects[i].type = ObjectType::GROUND;
 		}
 		else if (type == "platform")
 		{
@@ -731,7 +777,7 @@ bool Map::LoadTilesetAnimation(pugi::xml_node& tilesetNode, TileSet* set)
 	bool ret = true;
 
 	for (pugi::xml_node iteratorNode = tilesetNode.child("tile"); iteratorNode; iteratorNode = iteratorNode.next_sibling("tile")) //Iterator for all animation childs
-	{ 
+	{
 		Animations* newAnimation = new Animations;
 
 		newAnimation->id = iteratorNode.attribute("id").as_uint(); // Get the id of the animated tile
@@ -746,7 +792,7 @@ bool Map::LoadTilesetAnimation(pugi::xml_node& tilesetNode, TileSet* set)
 
 		int j = 0;
 		for (pugi::xml_node iteratorNodeAnim = iteratorNode.child("animation").child("frame"); iteratorNodeAnim; j++) //Enters the frame of the animation child inside the tile we are in
-		{ 
+		{
 			newAnimation->frames[j] = iteratorNodeAnim.attribute("tileid").as_uint(); //Set frames ids
 			newAnimation->speed = iteratorNodeAnim.attribute("duration").as_uint();//set animation speed
 			iteratorNodeAnim = iteratorNodeAnim.next_sibling("frame"); // next frame
@@ -760,3 +806,45 @@ bool Map::LoadTilesetAnimation(pugi::xml_node& tilesetNode, TileSet* set)
 	return ret;
 };
 
+bool Map::CreateWalkabilityMap(int& width, int& height, uchar** buffer) const
+{
+	bool ret = false;
+	ListItem<MapLayer*>* item;
+	item = data.layers.start;
+
+	for (item = data.layers.start; item != NULL; item = item->next)
+	{
+		MapLayer* layer = item->data;
+
+		if (layer->navigation == false)
+			continue;
+
+		uchar* map = new uchar[layer->width * layer->height];
+		memset(map, 1, layer->width * layer->height * sizeof(uchar));
+
+		for (int y = 0; y < data.height; ++y)
+		{
+			for (int x = 0; x < data.width; ++x)
+			{
+				int i = (y * layer->width) + x;
+
+				int tile_id = layer->GetPath(x, y);
+				TileSet* tileset = (tile_id > 0) ? GetTilesetFromTileId(tile_id) : NULL;
+
+				if (tileset != NULL)
+				{
+					map[i] = (tile_id - tileset->firstgid) > 0 ? 0 : 1;
+				}
+			}
+		}
+
+		*buffer = map;
+		width = data.width;
+		height = data.height;
+		ret = true;
+
+		break;
+	}
+
+	return ret;
+}

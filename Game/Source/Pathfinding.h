@@ -8,6 +8,18 @@
 #define DEFAULT_PATH_LENGTH 50
 #define INVALID_WALK_CODE 255
 
+enum class PathMovement
+{
+	NO_MOVE = -1,
+	UP,
+	DOWN,
+	RIGHT,
+	LEFT,
+	UP_RIGHT,
+	UP_LEFT,
+	DOWN_RIGHT,
+	DOWN_LEFT
+};
 
 class Pathfinding : public Module
 {
@@ -25,7 +37,7 @@ public:
 	void SetMap(uint width, uint height, uchar* data);
 
 	// Main function to request a path from A to B
-	int CreatePath(const iPoint& origin, const iPoint& destination);
+	DynArray<iPoint>* CreatePath(const iPoint& origin, const iPoint& destination);
 
 	// To request all tiles involved in the last generated path
 	const DynArray<iPoint>* GetLastPath() const;
@@ -39,7 +51,12 @@ public:
 	// Utility: return the walkability value of a tile
 	uchar GetTileAt(const iPoint& pos) const;
 
+	PathMovement CheckDirection(DynArray<iPoint>& path) const;
+	PathMovement CheckDirectionGround(DynArray<iPoint>& path) const;
+
 private:
+
+	DynArray<iPoint>* path = nullptr;
 
 	// size of the map
 	uint width;
@@ -74,7 +91,7 @@ struct PathNode
 	int g;
 	int h;
 	iPoint pos;
-	const PathNode* parent; // needed to reconstruct the path in the end
+	const PathNode* parent = nullptr; // needed to reconstruct the path in the end
 };
 
 // ---------------------------------------------------------------------

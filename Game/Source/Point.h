@@ -111,6 +111,8 @@ public:
 		TYPE fx = x - v.x;
 		TYPE fy = y - v.y;
 
+		TYPE square = sqrtf((fx * fx) + (fy * fy));
+
 		return sqrtf((fx*fx) + (fy*fy));
 	}
 

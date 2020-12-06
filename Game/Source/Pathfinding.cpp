@@ -1,6 +1,6 @@
 #include "Defs.h"
 #include "Log.h"
-#include "application.h"
+#include "Application.h"
 #include "Pathfinding.h"
 //#include "External/BroFiler/Brofiler.h"
 
@@ -32,17 +32,15 @@ void Pathfinding::SetMap(uint width, uint height, uchar* data)
 	this->height = height;
 
 	RELEASE_ARRAY(map);
-	map = new uchar[width*height];
-	memcpy(map, data, width*height);
+	map = new uchar[width * height];
+	memcpy(map, data, width * height);
 }
 
 // Utility: return true if pos is inside the map boundaries
 bool Pathfinding::CheckBoundaries(const iPoint& pos) const
 {
-	bool debug = (pos.x >= 0 && pos.x <= (int)width &&
-		pos.y >= 0 && pos.y <= (int)height);
-	return (pos.x >= 0 && pos.x <= (int)width &&
-			pos.y >= 0 && pos.y <= (int)height);
+	bool debug = (pos.x >= 0 && pos.x <= (int)width && pos.y >= 0 && pos.y <= (int)height);
+	return debug;
 }
 
 // Utility: returns true is the tile is walkable
@@ -56,10 +54,52 @@ bool Pathfinding::IsWalkable(const iPoint& pos) const
 // Utility: return the walkability value of a tile
 uchar Pathfinding::GetTileAt(const iPoint& pos) const
 {
-	if(CheckBoundaries(pos))
-		return map[(pos.y*width) + pos.x];
-
+	if (CheckBoundaries(pos))
+	{
+		return map[(pos.y * width) + pos.x];
+	}
 	return INVALID_WALK_CODE;
+}
+
+PathMovement Pathfinding::CheckDirection(DynArray<iPoint>& path) const
+{
+	if (path.Count() >= 2)
+	{
+		iPoint tile = path[0];
+		iPoint nextTile = path[1];
+
+		int xDiff = nextTile.x - tile.x;
+		int yDiff = nextTile.y - tile.y;
+
+		if (xDiff == 1 && yDiff == 1) return PathMovement::DOWN_RIGHT;
+		else if (xDiff == 1 && yDiff == -1) return PathMovement::UP_RIGHT;
+		else if (xDiff == -1 && yDiff == 1) return PathMovement::DOWN_LEFT;
+		else if (xDiff == -1 && yDiff == -1) return PathMovement::UP_LEFT;
+		else if (xDiff == 1) return PathMovement::RIGHT;
+		else if (xDiff == -1) return PathMovement::LEFT;
+		else if (yDiff == 1)	return PathMovement::DOWN;
+		else if (yDiff == -1) return PathMovement::UP;
+	}
+
+	else return PathMovement::NO_MOVE;
+}
+
+PathMovement Pathfinding::CheckDirectionGround(DynArray<iPoint>& path) const
+{
+	if (path.Count() >= 2)
+	{
+		iPoint tile = path[0];
+		iPoint nextTile = path[1];
+
+		int xDiff = nextTile.x - tile.x;
+		int yDiff = nextTile.y - tile.y;
+
+		if (xDiff == 1) return PathMovement::RIGHT;
+		else if (xDiff == -1) return PathMovement::LEFT;
+		else if (yDiff == 1)	return PathMovement::DOWN;
+		else if (yDiff == -1) return PathMovement::UP;
+	}
+	else return PathMovement::NO_MOVE;
 }
 
 // To request all tiles involved in the last generated path
@@ -124,24 +164,44 @@ uint PathNode::FindWalkableAdjacents(PathList& listToFill) const
 	iPoint cell;
 	uint before = listToFill.list.count();
 
-	// north
+	// UP RIGHT
+	cell.create(pos.x + 1, pos.y + 1);
+	if (app->pathfinding->IsWalkable(cell))
+		listToFill.list.add(PathNode(-1, -1, cell, this));
+
+	// UP LEFT
+	cell.create(pos.x - 1, pos.y + 1);
+	if (app->pathfinding->IsWalkable(cell))
+		listToFill.list.add(PathNode(-1, -1, cell, this));
+
+	// DOWN RIGHT
+	cell.create(pos.x + 1, pos.y - 1);
+	if (app->pathfinding->IsWalkable(cell))
+		listToFill.list.add(PathNode(-1, -1, cell, this));
+
+	// DOWN LEFT
+	cell.create(pos.x - 1, pos.y - 1);
+	if (app->pathfinding->IsWalkable(cell))
+		listToFill.list.add(PathNode(-1, -1, cell, this));
+
+	// UP
 	cell.create(pos.x, pos.y + 1);
-	if(app->pathfinding->IsWalkable(cell))
+	if (app->pathfinding->IsWalkable(cell))
 		listToFill.list.add(PathNode(-1, -1, cell, this));
 
-	// south
+	// DOWN
 	cell.create(pos.x, pos.y - 1);
-	if(app->pathfinding->IsWalkable(cell))
+	if (app->pathfinding->IsWalkable(cell))
 		listToFill.list.add(PathNode(-1, -1, cell, this));
 
-	// east
+	// RIGHT
 	cell.create(pos.x + 1, pos.y);
-	if(app->pathfinding->IsWalkable(cell))
+	if (app->pathfinding->IsWalkable(cell))
 		listToFill.list.add(PathNode(-1, -1, cell, this));
 
-	// west
+	// LEFT
 	cell.create(pos.x - 1, pos.y);
-	if(app->pathfinding->IsWalkable(cell))
+	if (app->pathfinding->IsWalkable(cell))
 		listToFill.list.add(PathNode(-1, -1, cell, this));
 
 	return listToFill.list.count();
@@ -161,7 +221,11 @@ int PathNode::Score() const
 int PathNode::CalculateF(const iPoint& destination)
 {
 	g = parent->g + 1;
-	h = pos.DistanceTo(destination);
+
+	int xDist = abs(pos.x - destination.x);
+	int yDist = abs(pos.y - destination.y);
+
+	h = (xDist + yDist) * min(xDist, yDist);
 
 	return g + h;
 }
@@ -169,91 +233,72 @@ int PathNode::CalculateF(const iPoint& destination)
 // ----------------------------------------------------------------------------------
 // Actual A* algorithm: return number of steps in the creation of the path or -1 ----
 // ----------------------------------------------------------------------------------
-int Pathfinding::CreatePath(const iPoint& origin, const iPoint& destination)
+DynArray<iPoint>* Pathfinding::CreatePath(const iPoint& origin, const iPoint& destination)
 {
 	//BROFILER_CATEGORY("Pathfinding::CreatePath", Profiler::Color::Chartreuse);
-	int ret = -1;
+	lastPath.Clear();
 
-	if (!IsWalkable(origin) || !IsWalkable(destination))
+	// Making sure origin and destination are walkable
+	if (IsWalkable(origin) && IsWalkable(destination))
 	{
-		ret = -1;
-		return ret;
-	}
-	int iterations = 0;
+		// Creating list open and close
+		PathList open, close;
+		PathNode origin(0, origin.DistanceNoSqrt(destination), origin, nullptr);
+		open.list.add(origin);
 
-	PathList open;
-	PathList close;
+		while (open.list.count() > 0)
+		{
+			close.list.add(open.GetNodeLowestScore()->data);
+			open.list.del(open.GetNodeLowestScore());
 
+			if (close.list.end->data.pos != destination) {
 
-	open.list.add(PathNode(0, 0, origin, nullptr));
+				PathList adjacent;
 
-	while (open.list.count() != 0) {
+				close.list.end->data.FindWalkableAdjacents(adjacent);
 
+				for (ListItem<PathNode>* iterator = adjacent.list.start; iterator != nullptr; iterator = iterator->next)
+				{
+					if (close.Find(iterator->data.pos))
+						continue;
 
-		//Move the lowest score cell from open list to the closed list
-		ListItem<PathNode>* node = close.list.add(open.GetNodeLowestScore()->data);
-		open.list.del(open.GetNodeLowestScore());
+					else if (open.Find(iterator->data.pos))
+					{
+						PathNode tmp = open.Find(iterator->data.pos)->data;
+						iterator->data.CalculateF(destination);
 
-		//If we just added the destination, we are done!
-		if (node->data.pos == destination) {
-			lastPath.Clear();
+						if (tmp.g > iterator->data.g)
+						{
+							tmp.parent = iterator->data.parent;
+						}
+					}
 
-
-			// Backtrack to create the final path
-			const PathNode *path_node = &node->data;
-			while (path_node) {
-
-				lastPath.PushBack(path_node->pos);
-
-				path_node = path_node->parent;
+					else
+					{
+						iterator->data.CalculateF(destination);
+						open.list.add(iterator->data);
+					}
+				}
+				adjacent.list.clear();
 			}
 
+			else
+			{
+				for (ListItem<PathNode>* iterator = close.list.end; iterator->data.parent != nullptr; iterator = close.Find(iterator->data.parent->pos))
+				{
+					lastPath.PushBack(iterator->data.pos);
 
-			// Use the Pathnode::parent and Flip() the path when you are finish
-			lastPath.Flip();
-			ret = lastPath.Count();
-			break;
-		}
+					if (iterator->data.parent == nullptr)
+						lastPath.PushBack(close.list.start->data.pos);
+				}
 
-	
-		// Fill a list of all adjancent nodes
-		PathList neighbours;
-		node->data.FindWalkableAdjacents(neighbours);
+				lastPath.Flip();
 
-
-		// Iterate adjancent nodes:
-
-		// If it is NOT found, calculate its F and add it to the open list
-		// If it is already in the open list, check if it is a better path (compare G)
-		// If it is a better path, Update the parent
-		
-		ListItem<PathNode>* item = neighbours.list.start;
-
-		while(item != nullptr)  {
-
-			// ignore nodes in the closed list
-			if (close.Find(item->data.pos) != NULL) {
-				
-				item = item->next;
-				continue;
+				return &lastPath;
 			}
-
-			item->data.CalculateF(destination);
-			
-
-			if (open.Find(item->data.pos) == NULL) {
-				open.list.add(item->data);
-			}
-			else if (item->data.g < open.Find(item->data.pos)->data.g) {
-					
-				open.Find(item->data.pos)->data.parent = item->data.parent;
-			}
-
-			item = item->next;
-			iterations++;
 		}
 	}
-	ret = iterations;
-	return ret;
+
+	else return nullptr;
 }
 

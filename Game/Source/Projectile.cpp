@@ -110,6 +110,8 @@ void Projectile::OnCollision(Collider* A, Collider* B)
 	}
 	if (A->type == ObjectType::PROJECTILE && B->type == ObjectType::ENEMY)
 	{
+		A->toDelete = true;
+		app->audio->PlayFx(app->player->hitSound);
 		B->toDelete = true;
 		app->walkingEnemy->GetKilled();
 	}

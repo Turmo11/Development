@@ -40,8 +40,9 @@ public:
 
 	//UI
 	void ShowLives();
-	void ShowCd();
 	void RestartScene();
+
+	void DrawPath();
 
 public:
 
@@ -55,6 +56,7 @@ public:
 	int maxLives;
 
 	bool showUI;
+	bool firstGame = true;
 
 private:
 
@@ -70,6 +72,8 @@ private:
 	SDL_Rect cdRect;
 	SDL_Texture* cdTex;
 
+	SDL_Rect pathDebugRect;
+	SDL_Texture* pathDebugTex;
 };
 
 #endif // __SCENE_H__

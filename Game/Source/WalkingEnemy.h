@@ -6,10 +6,13 @@
 #include "List.h"
 #include "Module.h"
 #include "Pickups.h"
+#include "DynArray.h"
 
 struct SDL_Texture;
 struct Collider;
 struct AnimationInfo;
+
+enum class PathMovement;
 
 enum class EnemyType 
 {
@@ -24,13 +27,34 @@ struct Enemy
 	EnemyType		type;
 
 	iPoint			position;
+	iPoint			target;
+
+	fPoint velocity;
+	int range;
+
 	SDL_Rect		hitbox;
 	Collider*		collider;
 
-	bool			dead;
+	bool fall = false;
+	bool dead = false;
+
+	PathMovement direction;
+
+	bool pathCreated = false;
+
+	DynArray<iPoint>* path;
+
+	float gravity;
+	int adjustCollider, adjust;
+	iPoint adjustPath;
 
 	AnimationInfo	animInfo;
 
+	void Pathfind();
+	void DebugRange();
+	void Update(float dt);
+
+	void Move(DynArray<iPoint>& path, float dt);
 };
 
 class WalkingEnemy : public Module
@@ -49,6 +73,8 @@ public:
 	bool PreUpdate();
 	bool Update(float dt);
 	bool PostUpdate();
+
+	void DoUpdate(float dt);
 
 	// Called before quitting
 	bool CleanUp();
