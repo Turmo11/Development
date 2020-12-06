@@ -350,11 +350,11 @@ void Scene::SetUp(int level)
 		cameraRect.h = -3800;
 
 		app->audio->PlayMusic("Assets/Audio/Music/tutorial.ogg", 0.0f);
-		app->pickups->CreatePickup(PickupType::LETTER, "alpha", { 2128, 2448 });
-		app->pickups->CreatePickup(PickupType::LETTER, "chi", { 528, 3024 });
-		app->pickups->CreatePickup(PickupType::LETTER, "rho", { 2960, 784 });
-		app->pickups->CreatePickup(PickupType::LETTER, "eta", { 656, 1936 });
-		app->pickups->SetGoal({ 1552, 656 });
+		app->pickups->CreatePickup(PickupType::LETTER, "psi", { 256, 880 });
+		app->pickups->CreatePickup(PickupType::LETTER, "omega", { 1248, 3320 });
+		app->pickups->CreatePickup(PickupType::LETTER, "mu", { 2656, 1984 });
+		app->pickups->CreatePickup(PickupType::LETTER, "iota", { 2320, 1920 });
+		app->pickups->SetGoal({ 1486, 1040 });
 		//app->enemy->CreateEnemy(EnemyType::SOUL, { 925, 3475 });
 		app->enemy->CreateEnemy(EnemyType::F_SOUL, { 900, 3300 });
 		app->pickups->CreatePickup(PickupType::HEALTH, "heart", { 925, 3536 });
