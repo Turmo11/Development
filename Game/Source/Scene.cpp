@@ -265,11 +265,6 @@ void Scene::DebugKeys()
 		app->pickups->DebugCollectAll();
 	}
 
-	if (app->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN)
-	{
-		app->projectile->SpawnBeam(app->player->player.flip);
-	}
-
 	//Lives
 
 	//+1
