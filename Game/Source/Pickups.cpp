@@ -132,7 +132,7 @@ void Pickups::OnCollision(Collider* A, Collider* B)
 		app->audio->PlayFx(app->player->pickupSound);
 		int newScore;
 		srand(time(NULL));
-		newScore = (rand() % 400) + 200;
+		newScore = (rand() % 200) + 100;
 		app->scene->AddScore(newScore);
 	}
 	if (A->type == ObjectType::HEALTH && B->type == ObjectType::PLAYER)

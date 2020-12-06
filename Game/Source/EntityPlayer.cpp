@@ -748,7 +748,15 @@ void EntityPlayer::TakeLife()
 		int newScore;
 		srand(time(NULL));
 		newScore = (rand() % 400) + 100;
-		app->scene->AddScore(-newScore);
+		if (app->scene->GetScore() - newScore > 0)
+		{
+			app->scene->AddScore(-newScore);
+		}
+		else
+		{
+			app->scene->SetScore(0);
+		}
+		
 	}
 	else
 	{
