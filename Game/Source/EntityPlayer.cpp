@@ -491,7 +491,7 @@ void EntityPlayer::OnCollision(Collider* A, Collider* B)
 			app->scene->checkpointPos.x = B->rect.x;
 			app->scene->checkpointPos.y = B->rect.y;
 
-			B->toDelete;
+			B->toDelete = true;
 		}
 	}
 
