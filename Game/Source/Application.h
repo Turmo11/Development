@@ -112,44 +112,44 @@ public:
 	Projectile* projectile;
 	FadeToBlack* fadeToBlack;
 
-	uint				frameCap;								// Stores the frames per second cap to be applied.
-	uint				initFrameCap;						// Stores the original frame cap at application start.
-	float				secondsSinceStartup;					// Secons that have elapsed since app start.
+	uint frameCap;								// Stores the frames per second cap to be applied.
+	uint initFrameCap;						// Stores the original frame cap at application start.
+	float secondsSinceStartup;					// Secons that have elapsed since app start.
 
-	bool				frameCapOn;						// Keeps track whether the frame cap is on or off.
-	bool				vsyncOn;						// Keeps track whether Vsync is on or off.
-	bool				pause;
+	bool frameCapOn;						// Keeps track whether the frame cap is on or off.
+	bool vsyncOn;						// Keeps track whether Vsync is on or off.
+	bool pause;
 	
 
 private:
 
-	List<Module*>		modules;
-	int					argc;
-	char**				args;
+	List<Module*> modules;
+	int argc;
+	char** args;
 
-	SString			title;
-	SString			organization;
+	SString title;
+	SString organization;
 
-	mutable bool		wantToSave;
-	bool				wantToLoad;
-	SString				loadGame;
-	mutable SString		saveGame;
+	mutable bool wantToSave;
+	bool wantToLoad;
+	SString loadGame;
+	mutable SString saveGame;
 
 	//Framerate
-	uint64					frameCount;
-	Timer					startupTimer;							// Used to keep track of time since app start.
-	Timer					frameTimer;								// Keeps track of everything time related in the span of a frame.
-	PerfTimer				perfTimer;								// Creates a pointer to PerfTimer tool. Gives access to PerfTimer's elements. Used to keep track of time since app start.
-	PerfTimer				lastSecondTimer;						// Creates a pointer to PerfTimer tool. Used to calculate variables in spans of one second.
-	uint32					lastUpdateMs;							// Calculates the amount of milliseconds that the last update spent running.
-	uint32					frameslastSecond;						// Calculates the amount of frames that where processed the last second.
-	uint32					prevSecFrames;
+	uint64 frameCount;
+	Timer startupTimer;							// Used to keep track of time since app start.
+	Timer frameTimer;								// Keeps track of everything time related in the span of a frame.
+	PerfTimer perfTimer;								// Creates a pointer to PerfTimer tool. Gives access to PerfTimer's elements. Used to keep track of time since app start.
+	PerfTimer lastSecondTimer;						// Creates a pointer to PerfTimer tool. Used to calculate variables in spans of one second.
+	uint32 lastUpdateMs;							// Calculates the amount of milliseconds that the last update spent running.
+	uint32 frameslastSecond;						// Calculates the amount of frames that where processed the last second.
+	uint32 prevSecFrames;
 
-	PerfTimer				trueDelayTimer;							// Timer that will be used to see the actual amount of delay that was applied to cap the framerate.
-	float					dt;										// Keeps track of the amount of time in milliseconds that has passed in a frame. 
+	PerfTimer trueDelayTimer;							// Timer that will be used to see the actual amount of delay that was applied to cap the framerate.
+	float dt;										// Keeps track of the amount of time in milliseconds that has passed in a frame. 
 																	// Will be used to make everything (update()) be in the same timestep.
-	char*					frameCapActive;							// String that is set to 'On' when the frame cap is on and  'Off' when it is off.
-	char*					vsyncActive;
+	char* frameCapActive;							// String that is set to 'On' when the frame cap is on and  'Off' when it is off.
+	char* vsyncActive;
 };
 
 extern Application* app;

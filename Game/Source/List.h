@@ -9,9 +9,9 @@
 template<class tdata>
 struct ListItem
 {
-	tdata	data;
-	ListItem<tdata>*   next;
-	ListItem<tdata>*   prev;
+	tdata data;
+	ListItem<tdata>* next;
+	ListItem<tdata>* prev;
 
 	inline ListItem(const tdata& _data)
 	{
@@ -32,12 +32,12 @@ class List
 
 public:
 
-	ListItem<tdata>*   start;
-	ListItem<tdata>*   end;
+	ListItem<tdata>* start;
+	ListItem<tdata>* end;
 
 private:
 
-	unsigned int  size;
+	unsigned int size;
 
 public:
 
@@ -71,7 +71,7 @@ public:
 	*/
 	ListItem<tdata>* add(const tdata& item)
 	{
-		ListItem<tdata>*   pDataItem;
+		ListItem<tdata>* pDataItem;
 		pDataItem = new ListItem<tdata>(item);
 
 		if(start == NULL)
@@ -136,8 +136,8 @@ public:
 	*/
 	void clear()
 	{
-		ListItem<tdata>*   pData;
-		ListItem<tdata>*   pNext;
+		ListItem<tdata>* pData;
+		ListItem<tdata>* pNext;
 		pData = start;
 
 		while(pData != NULL)
@@ -156,8 +156,8 @@ public:
 	*/
 	tdata& operator  [](const unsigned int index)
 	{
-		long                  pos;
-		ListItem<tdata>*   pItem;
+		long pos;
+		ListItem<tdata>* pItem;
 		pos = 0;
 		pItem = start;
 
@@ -180,8 +180,8 @@ public:
 	*/
 	const tdata& operator  [](const unsigned int index) const
 	{
-		long                  pos;
-		ListItem<tdata>*   pItem;
+		long pos;
+		ListItem<tdata>* pItem;
 		pos = 0;
 		pItem = start;
 
@@ -206,7 +206,7 @@ public:
 	*/
 	const List<tdata>& operator +=(const List<tdata>& otherList)
 	{
-		ListItem<tdata>*   pItem = otherList.start;
+		ListItem<tdata>* pItem = otherList.start;
 
 		while(pItem != NULL)
 		{
@@ -222,8 +222,8 @@ public:
 	*/
 	const ListItem<tdata>* At(unsigned int index) const
 	{
-		long                  pos = 0;
-		ListItem<tdata>*   pItem = start;
+		long pos = 0;
+		ListItem<tdata>* pItem = start;
 
 		while(pItem != NULL)
 		{
@@ -241,8 +241,8 @@ public:
 	*/
 	ListItem<tdata>* At(unsigned int index)
 	{
-		long                  pos = 0;
-		ListItem<tdata>*   pItem = start;
+		long pos = 0;
+		ListItem<tdata>* pItem = start;
 
 		while(pItem != NULL)
 		{

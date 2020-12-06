@@ -14,9 +14,9 @@ class DynArray
 {
 private:
 
-	VALUE*			data;
-	unsigned int	mem_capacity;
-	unsigned int	num_elements;
+	VALUE* data;
+	unsigned int mem_capacity;
+	unsigned int num_elements;
 
 public:
 

@@ -39,11 +39,11 @@ public:
 
 private:
 
-	SDL_Rect		logoRect;
-	SDL_Texture*	logoTexture;
+	SDL_Rect logoRect;
+	SDL_Texture* logoTexture;
 
-	float	accumulatedTime;
-	float	duration;
+	float accumulatedTime;
+	float duration;
 };
 
 #endif // __SCENE_H__

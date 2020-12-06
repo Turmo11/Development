@@ -11,10 +11,10 @@ struct Properties;
 
 struct Collider
 {
-	SDL_Rect	rect;					//Collider box
-	bool		toDelete = false;			//deletes collider if true
-	ObjectType	type;				//enum class collider type defined in map.h
-	Module*		callBack = nullptr;	
+	SDL_Rect rect;					//Collider box
+	bool toDelete = false;			//deletes collider if true
+	ObjectType type;				//enum class collider type defined in map.h
+	Module* callBack = nullptr;	
 	Properties* userData;
 
 	Collider(SDL_Rect rectangle, ObjectType type, Module* callBack = nullptr) :

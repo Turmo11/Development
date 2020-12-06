@@ -25,17 +25,17 @@ enum class EnemyType
 
 struct Enemy
 {
-	EnemyType		type;
+	EnemyType type;
 
-	iPoint			position;
-	iPoint			target;
+	iPoint position;
+	iPoint target;
 
 	fPoint velocity;
 	int range;
 	int safeZone;
 
-	SDL_Rect		hitbox;
-	Collider*		collider;
+	SDL_Rect hitbox;
+	Collider* collider;
 
 
 	bool fall = false;
@@ -49,7 +49,7 @@ struct Enemy
 
 	float gravity;
 
-	AnimationInfo	animInfo;
+	AnimationInfo animInfo;
 
 	void Pathfind();
 	void DebugRange();
@@ -90,7 +90,7 @@ public:
 
 public:
 
-	List<Enemy*>	enemyList;
+	List<Enemy*> enemyList;
 
 
 };

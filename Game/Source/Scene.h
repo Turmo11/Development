@@ -53,13 +53,13 @@ public:
 
 public:
 
-	int				currentLevel;
+	int currentLevel;
 
 	Point<float> checkpointPos;
 
-	bool			levelCompleted; //used to check if the player has collected all the pickups
+	bool levelCompleted; //used to check if the player has collected all the pickups
 
-	SDL_Rect		cameraRect;
+	SDL_Rect cameraRect;
 
 	int playerLives;
 	int maxLives;
@@ -71,8 +71,8 @@ public:
 
 private:
 
-	SDL_Rect		backgroundRect;
-	SDL_Texture*	background;
+	SDL_Rect backgroundRect;
+	SDL_Texture* background;
 
 	//UI
 	SDL_Rect livesRect;

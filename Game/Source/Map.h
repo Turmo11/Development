@@ -239,9 +239,9 @@ private:
 
 	int frameCount = 1;
 
-	pugi::xml_document	mapFile;
-	SString			folder;
-	bool				mapLoaded;
+	pugi::xml_document mapFile;
+	SString	folder;
+	bool mapLoaded;
 
 	float parallax, normalSpeed, secondParallax;
 

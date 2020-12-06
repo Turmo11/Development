@@ -47,8 +47,8 @@ public:
 
 private:
 
-	_Mix_Music*			music;
-	List<Mix_Chunk*>	fx;
+	_Mix_Music* music;
+	List<Mix_Chunk*> fx;
 
 public:
 

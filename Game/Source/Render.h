@@ -45,11 +45,11 @@ public:
 
 public:
 
-	SDL_Renderer*	renderer;
-	SDL_Rect		camera;
-	Point<int>   startingCamPos;
-	SDL_Rect		viewport;
-	SDL_Color		background;
+	SDL_Renderer* renderer;
+	SDL_Rect camera;
+	Point<int> startingCamPos;
+	SDL_Rect viewport;
+	SDL_Color background;
 };
 
 #endif // __RENDER_H__

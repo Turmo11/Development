@@ -25,8 +25,8 @@ struct AnimationInfo
 
 struct Goal
 {
-	iPoint			position;
-	AnimationInfo	animInfo;
+	iPoint position;
+	AnimationInfo animInfo;
 };
 
 struct Pickup
@@ -34,13 +34,13 @@ struct Pickup
 	SString name;
 	PickupType type;
 
-	iPoint			position;
-	SDL_Rect		pickupHitbox;
-	Collider*		pickupCollider;
+	iPoint position;
+	SDL_Rect pickupHitbox;
+	Collider* pickupCollider;
 
-	bool			collected;
+	bool collected;
 
-	AnimationInfo	animInfo;
+	AnimationInfo animInfo;
 
 };
 

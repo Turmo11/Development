@@ -32,19 +32,17 @@ private:
 
 public:
 
-	int			nextLevel;
-	bool		fadingPlayer;
-	bool		sceneSwitch;
-	char*		wantToSwitchScene;
-	char*		activeScene;
+	int nextLevel;
+	bool fadingPlayer;
+	bool sceneSwitch;
+	char* wantToSwitchScene;
+	char* activeScene;
 
 private:
 	
-	Uint32		startTime = 0;
-	Uint32		totalTime = 0;
-	SDL_Rect	screen;
-	
-	
+	Uint32 startTime = 0;
+	Uint32 totalTime = 0;
+	SDL_Rect screen;
 
 };
 

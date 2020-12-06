@@ -112,9 +112,9 @@ bool Application::Awake()
 {
 	PERF_START(perfTimer);
 
-	pugi::xml_document	configFile;
-	pugi::xml_node		config;
-	pugi::xml_node		appConfig;
+	pugi::xml_document configFile;
+	pugi::xml_node config;
+	pugi::xml_node appConfig;
 
 	bool ret = false;
 
