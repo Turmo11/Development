@@ -104,6 +104,7 @@ void EntityPlayer::LoadSoundFx()
 	healthSound = app->audio->LoadFx("Assets/Audio/Fx/health.wav");
 	pickupSound = app->audio->LoadFx("Assets/Audio/Fx/pickup.wav");
 	hitSound = app->audio->LoadFx("Assets/Audio/Fx/hit.wav");
+	deathSound = app->audio->LoadFx("Assets/Audio/Fx/death.wav");
 }
 
 
@@ -616,6 +617,7 @@ void EntityPlayer::SetCamera()
 void EntityPlayer::TakeLife()
 {
 	app->scene->showUI = false;
+	app->audio->PlayFx(deathSound);
 	if (app->scene->playerLives > 0)
 	{
 		app->fadeToBlack->FadeToBlackPlayerOnly(1.0f);

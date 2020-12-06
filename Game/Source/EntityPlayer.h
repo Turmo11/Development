@@ -121,6 +121,7 @@ public:
 	uint healthSound;
 	uint pickupSound;
 	uint hitSound;
+	uint deathSound;
 
 private:
 
