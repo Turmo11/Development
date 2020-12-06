@@ -61,14 +61,14 @@
     <ClCompile Include="Source\External\PugiXml\src\pugixml.cpp">
       <Filter>External\PugiXml</Filter>
     </ClCompile>
-    <ClCompile Include="Source\WalkingEnemy.cpp">
-      <Filter>Entities\Enemies</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Pathfinding.cpp">
       <Filter>Modules</Filter>
     </ClCompile>
     <ClCompile Include="Source\Projectile.cpp">
       <Filter>Entities\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\EntityEnemy.cpp">
+      <Filter>Entities\Enemies</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -153,14 +153,14 @@
     <ClInclude Include="Source\Defs.h">
       <Filter>Core</Filter>
     </ClInclude>
-    <ClInclude Include="Source\WalkingEnemy.h">
-      <Filter>Entities\Enemies</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Pathfinding.h">
       <Filter>Modules</Filter>
     </ClInclude>
     <ClInclude Include="Source\Projectile.h">
       <Filter>Entities\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\EntityEnemy.h">
+      <Filter>Entities\Enemies</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

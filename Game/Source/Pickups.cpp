@@ -7,7 +7,7 @@
 #include "Pickups.h"
 #include "Scene.h"
 #include "EntityPlayer.h"
-#include "WalkingEnemy.h"
+#include "EntityEnemy.h"
 #include "Audio.h"
 
 

@@ -5,7 +5,7 @@
 #include "Audio.h"
 #include "Textures.h"
 #include "EntityPlayer.h"
-#include "WalkingEnemy.h"
+#include "EntityEnemy.h"
 #include "Projectile.h"
 #include "Window.h"
 #include "Map.h"

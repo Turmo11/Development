@@ -5,41 +5,44 @@
 #include "Map.h"
 #include "Collisions.h"
 #include "Scene.h"
-#include "WalkingEnemy.h"
+#include "EntityEnemy.h"
 #include "EntityPlayer.h"
 #include "Pathfinding.h"
+#include "FadeToBlack.h"
 
 
-WalkingEnemy::WalkingEnemy() : Module()
+EntityEnemy::EntityEnemy() : Module()
 {
 	name.Create("enemy");
 }
 
 
 // Destructor
-WalkingEnemy::~WalkingEnemy()
+EntityEnemy::~EntityEnemy()
 {}
 
-bool WalkingEnemy::Start()
+bool EntityEnemy::Start()
 {
 
 
 	return true;
 }
 
-bool WalkingEnemy::PreUpdate()
+bool EntityEnemy::PreUpdate()
 {
 	return true;
 }
 
-bool WalkingEnemy::Update(float dt)
+bool EntityEnemy::Update(float dt)
 {
-	DoUpdate(dt);
-	DrawAnimations();
-
+	if (app->fadeToBlack->activeScene == "Scene")
+	{
+		DoUpdate(dt);
+		DrawAnimations();
+	}
 	return true;
 }
-void WalkingEnemy::DoUpdate(float dt)
+void EntityEnemy::DoUpdate(float dt)
 {
 	ListItem<Enemy*>* enemyIterator = enemyList.start;
 
@@ -53,12 +56,12 @@ void WalkingEnemy::DoUpdate(float dt)
 	}
 }
 
-bool WalkingEnemy::PostUpdate()
+bool EntityEnemy::PostUpdate()
 {
 	return true;
 }
 
-bool WalkingEnemy::CleanUp()
+bool EntityEnemy::CleanUp()
 {
 	// Remove pickups
 	ListItem<Enemy*>* item;
@@ -73,22 +76,27 @@ bool WalkingEnemy::CleanUp()
 	return true;
 }
 
-void WalkingEnemy::CreateEnemy(EnemyType type, iPoint position)
+void EntityEnemy::CreateEnemy(EnemyType type, iPoint position)
 {
 	Enemy* newEnemy = new Enemy;
 
 	newEnemy->type = type;
 	newEnemy->position = position;
 
-	newEnemy->hitbox.x = position.x + 16;
-	newEnemy->hitbox.y = position.y + 32;
-	newEnemy->hitbox.w = 64;
-	newEnemy->hitbox.h = 75;
-
-	/*newEnemy->hitbox.x = position.x - 4;
-	newEnemy->hitbox.y = position.y + 10;
-	newEnemy->hitbox.w = 38;
-	newEnemy->hitbox.h = 38;*/
+	if (type == EnemyType::W_SOUL)
+	{
+		newEnemy->hitbox.x = position.x + 16;
+		newEnemy->hitbox.y = position.y + 32;
+		newEnemy->hitbox.w = 64;
+		newEnemy->hitbox.h = 75;
+	}
+	else if (type == EnemyType::F_SOUL)
+	{
+		newEnemy->hitbox.x = position.x - 4;
+		newEnemy->hitbox.y = position.y + 10;
+		newEnemy->hitbox.w = 38;
+		newEnemy->hitbox.h = 38;
+	}
 
 	newEnemy->collider = app->collisions->AddCollider(newEnemy->hitbox, ObjectType::ENEMY, this);
 
@@ -99,16 +107,10 @@ void WalkingEnemy::CreateEnemy(EnemyType type, iPoint position)
 	newEnemy->gravity = 150.0f;
 	newEnemy->range = 500;
 
-	newEnemy->adjust = 2;
-	newEnemy->adjustCollider = 20;
-	newEnemy->adjustPath = { 7, 6 };
-
-
 	enemyList.add(newEnemy);
-
 }
 
-void WalkingEnemy::DrawAnimations()
+void EntityEnemy::DrawAnimations()
 {
 	ListItem<Enemy*>* enemyIterator = enemyList.start;
 
@@ -116,9 +118,13 @@ void WalkingEnemy::DrawAnimations()
 	{
 		if (!enemyIterator->data->dead)
 		{
-			if (enemyIterator->data->type == EnemyType::SOUL)
+			if (enemyIterator->data->type == EnemyType::W_SOUL)
 			{
 				app->map->DrawStaticAnimation("soul", "soul_enemy", enemyIterator->data->position, &enemyIterator->data->animInfo);
+			}
+			if (enemyIterator->data->type == EnemyType::F_SOUL)
+			{
+				app->map->DrawStaticAnimation("soul", "soul_enemyx64", enemyIterator->data->position, &enemyIterator->data->animInfo);
 			}
 
 		}
@@ -126,31 +132,12 @@ void WalkingEnemy::DrawAnimations()
 	}
 }
 
-void WalkingEnemy::OnCollision(Collider* A, Collider* B)
+void EntityEnemy::OnCollision(Collider* A, Collider* B)
 {
-	/*if (A->type == ObjectType::ENEMY && B->type == ObjectType::GROUND)
-	{
-		if (A->rect.y + A->rect.h >= B->rect.y && A->rect.y < B->rect.y)
-		{
-			if (fall)
-			{
-				fall = false;
-				dead = true;
-
-				if (collider != nullptr)
-					collider->to_delete = true;
-				collider = nullptr;
-
-				position.y = B->rect.y + B->rect.h - adjustCollider;
-
-				ColUp = false;
-				ColDown = true;
-			}
-		}
-	}*/
+	
 }
 
-void WalkingEnemy::GetKilled()
+void EntityEnemy::GetKilled()
 {
 	ListItem<Enemy*>* enemyIterator = enemyList.start;
 
@@ -173,7 +160,15 @@ void Enemy::Update(float dt)
 		DebugRange();
 	}
 
-	collider->SetPos(position.x + 16, position.y + 32);
+	if (type == EnemyType::W_SOUL)
+	{
+		collider->SetPos(position.x + 16, position.y + 32);
+	}
+	else if (type == EnemyType::F_SOUL)
+	{
+		collider->SetPos(position.x - 4, position.y + 10);
+	}
+	
 	LOG("Velocity = %f", velocity.x);
 }
 void Enemy::DebugRange()
@@ -184,7 +179,7 @@ void Enemy::DebugRange()
 
 void Enemy::Move(DynArray<iPoint>& path, float dt)
 {
-	direction = app->pathfinding->CheckDirection(path);
+	direction = app->pathfinding->CheckDirection(path, direction);
 
 	switch (direction)
 	{
@@ -228,7 +223,7 @@ void Enemy::Move(DynArray<iPoint>& path, float dt)
 		break;
 
 	case PathMovement::RIGHT:
-		position.x += velocity.x * dt;
+		position.x += 1.5f * velocity.x * dt;
 
 		break;
 	}
@@ -241,15 +236,23 @@ void Enemy::Pathfind()
 	if (target.DistanceTo(position) < range)
 	{
 		iPoint origin = { app->map->WorldToMap((int)position.x, (int)position.y) };
-		iPoint destination = { app->map->WorldToMap((int)target.x, (int)target.y) };
-
-		/*if (position.x < app->player->player.position.x)
+		iPoint destination = { app->map->WorldToMap((int)target.x, (int)target.y + 64) };
+	
+		if (position.x < target.x)
 		{
-			destination = { app->map->WorldToMap((int)(app->player->player.position.x + app->player->player.playerHitbox.x), (int)(app->player->player.position.y + app->player->player.playerHitbox.y / 2)) };
+			LOG("TO THE RIGHT");
+		}
+		else if (position.x > target.x)
+		{
+			LOG("TO THE LEFT");
+		}
+		/*if (position.x < target.x)
+		{
+			destination = { app->map->WorldToMap((int)(target.x + app->player->player.playerHitbox.x), (int)(target.y + app->player->player.playerHitbox.y / 2)) };
 		}
 		else
 		{
-			destination = { app->map->WorldToMap((int)(app->player->player.position.x), (int)(app->player->player.position.y + app->player->player.playerHitbox.y)) };
+			destination = { app->map->WorldToMap((int)(target.x), (int)(target.y + app->player->player.playerHitbox.y)) };
 		}*/
 
 		path = app->pathfinding->CreatePath(origin, destination);

@@ -19,7 +19,7 @@
 #include "EntityPlayer.h"
 #include "Pickups.h"
 #include "Collisions.h"
-#include "WalkingEnemy.h"
+#include "EntityEnemy.h"
 #include "Projectile.h"
 
 #include "FadeToBlack.h"
@@ -53,7 +53,7 @@ Application::Application(int argc, char* args[]) : argc(argc), args(args)
 	pickups = new Pickups();
 	collisions = new Collisions();
 	fadeToBlack = new FadeToBlack();
-	walkingEnemy = new WalkingEnemy();
+	enemy = new EntityEnemy();
 	projectile = new Projectile();
 
 	// Ordered for awake / Start / Update
@@ -70,7 +70,7 @@ Application::Application(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(gameOverScene);
 	AddModule(titleScene);
 	AddModule(logoScene);
-	AddModule(walkingEnemy);
+	AddModule(enemy);
 	AddModule(pickups);
 	AddModule(player);
 	AddModule(projectile);

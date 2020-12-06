@@ -10,7 +10,7 @@
 #include "Scene.h"
 #include "EntityPlayer.h"
 //#include "Pickups.h"
-#include "WalkingEnemy.h"
+#include "EntityEnemy.h"
 #include "FadeToBlack.h"
 #include "Projectile.h" //includes Pickups.h
 #include "Pathfinding.h"
@@ -155,7 +155,7 @@ void Scene::DrawPath()
 		for (uint i = 0; i < path->Count(); ++i)
 		{
 			iPoint pos = app->map->MapToWorld(path->At(i)->x, path->At(i)->y);
-			app->render->DrawTexture(pathDebugTex, pos.x, pos.y);
+			app->render->DrawTexture(pathDebugTex, pos.x + 16, pos.y + 16);
 		}
 	}
 }
@@ -323,7 +323,7 @@ void Scene::DebugKeys()
 void Scene::SetUp(int level)
 {
 	app->pickups->CleanUp();
-	//app->walkingEnemy->CleanUp();
+	//app->enemy->CleanUp();
 
 	LOG("SetUp level = %d", level);
 
@@ -355,10 +355,10 @@ void Scene::SetUp(int level)
 		app->pickups->CreatePickup(PickupType::LETTER, "rho", { 2960, 784 });
 		app->pickups->CreatePickup(PickupType::LETTER, "eta", { 656, 1936 });
 		app->pickups->SetGoal({ 1552, 656 });
-		//app->walkingEnemy->CreateEnemy(EnemyType::SOUL, { 925, 3475 });
-		app->walkingEnemy->CreateEnemy(EnemyType::SOUL, { 650, 3300 });
+		//app->enemy->CreateEnemy(EnemyType::SOUL, { 925, 3475 });
+		app->enemy->CreateEnemy(EnemyType::F_SOUL, { 900, 3300 });
 		app->pickups->CreatePickup(PickupType::HEALTH, "heart", { 925, 3536 });
-		//app->walkingEnemy->CreateEnemy(EnemyType::SOUL, { 900, 3536 });
+		//app->enemy->CreateEnemy(EnemyType::SOUL, { 900, 3536 });
 		break;
 
 	case 2:
@@ -379,8 +379,8 @@ void Scene::SetUp(int level)
 		//app->pickups->CreatePickup("rho", { 2960, 784 });
 		//app->pickups->CreatePickup("eta", { 656, 1936 });
 		//app->pickups->SetGoal({ 1552, 656 });
-		////app->walkingEnemy->CreateEnemy(EnemyType::SOUL, { 925, 3475 });
-		//app->walkingEnemy->CreateEnemy(EnemyType::SOUL, { 976, 3536 });
+		////app->enemy->CreateEnemy(EnemyType::SOUL, { 925, 3475 });
+		//app->enemy->CreateEnemy(EnemyType::SOUL, { 976, 3536 });
 		break;
 
 	default:

@@ -51,7 +51,7 @@ public:
 	// Utility: return the walkability value of a tile
 	uchar GetTileAt(const iPoint& pos) const;
 
-	PathMovement CheckDirection(DynArray<iPoint>& path) const;
+	PathMovement CheckDirection(DynArray<iPoint>& path, PathMovement lastMov) const;
 	PathMovement CheckDirectionGround(DynArray<iPoint>& path) const;
 
 private:

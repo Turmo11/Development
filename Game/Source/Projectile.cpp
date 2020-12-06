@@ -3,7 +3,7 @@
 #include "Application.h"
 #include "Projectile.h"
 #include "EntityPlayer.h"
-#include "WalkingEnemy.h"
+#include "EntityEnemy.h"
 #include "Collisions.h"
 #include "Map.h"
 #include "Render.h"
@@ -113,7 +113,7 @@ void Projectile::OnCollision(Collider* A, Collider* B)
 		A->toDelete = true;
 		app->audio->PlayFx(app->player->hitSound);
 		B->toDelete = true;
-		app->walkingEnemy->GetKilled();
+		app->enemy->GetKilled();
 	}
 
 

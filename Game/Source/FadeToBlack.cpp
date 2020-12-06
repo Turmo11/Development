@@ -9,7 +9,7 @@
 #include "EntityPlayer.h"
 #include "Collisions.h"
 #include "Pickups.h"
-#include "WalkingEnemy.h"
+#include "EntityEnemy.h"
 #include "Map.h"
 #include "Scene.h"
 #include "TitleScene.h"
@@ -201,7 +201,7 @@ bool FadeToBlack::SwitchMap(int level)
 	}
 
 	app->map->data.objectGroups.clear();
-	app->walkingEnemy->CleanUp();
+	app->enemy->CleanUp();
 
 	app->scene->SetUp(level);		//Load specified map
 	app->collisions->LoadFromMap();		//Load Collisions
@@ -242,7 +242,7 @@ bool FadeToBlack::SwitchScenes(char* scene)
 
 			app->player->active = false;
 			app->pickups->active = false;
-			//app->walkingEnemy->active = false;
+			//app->enemy->active = false;
 			app->map->active = false;
 		}
 		if (scene == "GameOverScene")
@@ -255,7 +255,7 @@ bool FadeToBlack::SwitchScenes(char* scene)
 
 			app->player->active = false;
 			app->pickups->active = false;
-			//app->walkingEnemy->active = false;
+			//app->enemy->active = false;
 			app->map->active = false;
 		}
 		if (scene == "LogoScene")
@@ -268,7 +268,7 @@ bool FadeToBlack::SwitchScenes(char* scene)
 
 			app->player->active = false;
 			app->pickups->active = false;
-			//app->walkingEnemy->active = false;
+			//app->enemy->active = false;
 			app->map->active = false;
 		}
 		if (scene == "Scene")
@@ -280,7 +280,7 @@ bool FadeToBlack::SwitchScenes(char* scene)
 
 			app->player->active = true;
 			app->pickups->active = true;
-			//app->walkingEnemy->active = true;
+			//app->enemy->active = true;
 			app->map->active = true;
 		}
 

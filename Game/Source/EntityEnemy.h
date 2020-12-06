@@ -1,5 +1,5 @@
-#ifndef __WALKING_ENEMY_H__
-#define __WALKING_ENEMY_H__
+#ifndef __ENTITY_ENEMY_H__
+#define __ENTITY_ENEMY_H__
 
 #include "Point.h"
 #include "External/PugiXml/src/pugixml.hpp"
@@ -17,7 +17,8 @@ enum class PathMovement;
 enum class EnemyType 
 {
 	UNKNOWN = 0,
-	SOUL
+	W_SOUL,
+	F_SOUL
 };
 
 
@@ -35,6 +36,7 @@ struct Enemy
 	SDL_Rect		hitbox;
 	Collider*		collider;
 
+
 	bool fall = false;
 	bool dead = false;
 
@@ -45,8 +47,6 @@ struct Enemy
 	DynArray<iPoint>* path;
 
 	float gravity;
-	int adjustCollider, adjust;
-	iPoint adjustPath;
 
 	AnimationInfo	animInfo;
 
@@ -57,16 +57,16 @@ struct Enemy
 	void Move(DynArray<iPoint>& path, float dt);
 };
 
-class WalkingEnemy : public Module
+class EntityEnemy : public Module
 {
 
 public:
 
 	//Constructor
-	WalkingEnemy();
+	EntityEnemy();
 
 	// Destructor
-	virtual ~WalkingEnemy();
+	virtual ~EntityEnemy();
 
 	//Called at first
 	bool Start();

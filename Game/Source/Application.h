@@ -26,7 +26,7 @@ class Pathfinding;
 class EntityPlayer;
 class Pickups;
 class Collisions;
-class WalkingEnemy;
+class EntityEnemy;
 class Projectile;
 class FadeToBlack;
 class Application
@@ -108,7 +108,7 @@ public:
 	EntityPlayer* player;
 	Pickups* pickups;
 	Collisions* collisions;
-	WalkingEnemy* walkingEnemy;
+	EntityEnemy* enemy;
 	Projectile* projectile;
 	FadeToBlack* fadeToBlack;
 

@@ -61,27 +61,37 @@ uchar Pathfinding::GetTileAt(const iPoint& pos) const
 	return INVALID_WALK_CODE;
 }
 
-PathMovement Pathfinding::CheckDirection(DynArray<iPoint>& path) const
+PathMovement Pathfinding::CheckDirection(DynArray<iPoint>& path, PathMovement lastMov) const
 {
-	if (path.Count() >= 2)
+	if(path.Count() != 0)
 	{
-		iPoint tile = path[0];
-		iPoint nextTile = path[1];
+		if (path.Count() >= 2)
+		{
+			iPoint tile = path[0];
+			iPoint nextTile = path[1];
 
-		int xDiff = nextTile.x - tile.x;
-		int yDiff = nextTile.y - tile.y;
+			int xDiff = nextTile.x - tile.x;
+			int yDiff = nextTile.y - tile.y;
 
-		if (xDiff == 1 && yDiff == 1) return PathMovement::DOWN_RIGHT;
-		else if (xDiff == 1 && yDiff == -1) return PathMovement::UP_RIGHT;
-		else if (xDiff == -1 && yDiff == 1) return PathMovement::DOWN_LEFT;
-		else if (xDiff == -1 && yDiff == -1) return PathMovement::UP_LEFT;
-		else if (xDiff == 1) return PathMovement::RIGHT;
-		else if (xDiff == -1) return PathMovement::LEFT;
-		else if (yDiff == 1)	return PathMovement::DOWN;
-		else if (yDiff == -1) return PathMovement::UP;
+			if (xDiff == 1 && yDiff == 1) return PathMovement::DOWN_RIGHT;
+			else if (xDiff == 1 && yDiff == -1) return PathMovement::UP_RIGHT;
+			else if (xDiff == -1 && yDiff == 1) return PathMovement::DOWN_LEFT;
+			else if (xDiff == -1 && yDiff == -1) return PathMovement::UP_LEFT;
+			else if (xDiff == 1) return PathMovement::RIGHT;
+			else if (xDiff == -1) return PathMovement::LEFT;
+			else if (yDiff == 1) return PathMovement::DOWN;
+			else if (yDiff == -1) return PathMovement::UP;
+		}
+		else if (path.Count() == 1)
+		{
+			return lastMov;
+		}
+		else
+		{
+			return PathMovement::NO_MOVE;
+		}
 	}
-
-	else return PathMovement::NO_MOVE;
+	
 }
 
 PathMovement Pathfinding::CheckDirectionGround(DynArray<iPoint>& path) const
@@ -220,12 +230,15 @@ int PathNode::Score() const
 // ----------------------------------------------------------------------------------
 int PathNode::CalculateF(const iPoint& destination)
 {
-	g = parent->g + 1;
+	/*g = parent->g + 1;
 
 	int xDist = abs(pos.x - destination.x);
 	int yDist = abs(pos.y - destination.y);
 
-	h = (xDist + yDist) * min(xDist, yDist);
+	h = (xDist + yDist) * min(xDist, yDist);*/
+
+	g = parent->g + 1;
+	h = pos.DistanceTo(destination);
 
 	return g + h;
 }
