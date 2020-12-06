@@ -34,7 +34,7 @@ bool GameOverScene::Start()
 {
 	app->fadeToBlack->activeScene = "GameOverScene";
 
-	background = app->tex->Load("Assets/Textures/UI/gameover.png");
+	background = app->tex->Load("Assets/Textures/UI/game_over.png");
 
 	backgroundRect.h = 512;
 	backgroundRect.w = 1024;

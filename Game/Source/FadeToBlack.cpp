@@ -282,6 +282,7 @@ bool FadeToBlack::SwitchScenes(char* scene)
 			app->pickups->active = true;
 			//app->enemy->active = true;
 			app->map->active = true;
+			app->scene->firstGame = false;
 		}
 
 		activeScene = scene;

@@ -127,6 +127,7 @@ public:
 	uint pickupSound;
 	uint hitSound;
 	uint deathSound;
+	uint checkSound;
 
 private:
 

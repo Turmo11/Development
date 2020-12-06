@@ -12,7 +12,7 @@
   </renderer>
 
   <audio>
-    <volume m="0.1f" fx="1.0"/>
+    <volume m="0.1f" fx="0.8"/>
     <maxVolume value ="1.0f"/>
   </audio>
 
@@ -49,9 +49,8 @@
     <speed x="0" y="0" />
     <maxSpeed x="600" y="2500"/>
     <hitbox w="30" h="96"/>
-    <projectile cd="0.9"/>
+    <projectile cd="0.95"/>
     <shield cd="15" duration="5" />
-    <checkpoint cd="1.0"/>
   </player>
 
   <file_system>

@@ -113,6 +113,7 @@ void EntityPlayer::LoadSoundFx()
 	pickupSound = app->audio->LoadFx("Assets/Audio/Fx/pickup.wav");
 	hitSound = app->audio->LoadFx("Assets/Audio/Fx/hit.wav");
 	deathSound = app->audio->LoadFx("Assets/Audio/Fx/death.wav");
+	checkSound = app->audio->LoadFx("Assets/Audio/Fx/checkpoint.wav");
 }
 
 
@@ -255,6 +256,7 @@ bool EntityPlayer::Update(float dt)
 		if (checkpointTimer == 0.0f && app->input->GetKey(SDL_SCANCODE_KP_1) == KEY_DOWN)
 		{
 			app->scene->LoadCheckpoint();
+			app->audio->PlayFx(checkSound);
 			checkpointTimer += dt;
 		}
 
@@ -585,6 +587,7 @@ void EntityPlayer::OnCollision(Collider* A, Collider* B)
 			app->scene->checkpointPos.y = B->rect.y;
 
 			B->toDelete = true;
+			app->audio->PlayFx(checkSound);
 		}
 	}
 
@@ -739,6 +742,7 @@ void EntityPlayer::SetCamera()
 void EntityPlayer::TakeLife()
 {
 	app->scene->showUI = false;
+	app->projectile->active = false;
 	app->audio->PlayFx(deathSound);
 	if (app->scene->playerLives > 0)
 	{
@@ -747,7 +751,7 @@ void EntityPlayer::TakeLife()
 		LOG("Lives: %d", app->scene->playerLives);
 		int newScore;
 		srand(time(NULL));
-		newScore = (rand() % 400) + 100;
+		newScore = (rand() % 250) + 300;
 		if (app->scene->GetScore() - newScore > 0)
 		{
 			app->scene->AddScore(-newScore);
@@ -760,6 +764,7 @@ void EntityPlayer::TakeLife()
 	}
 	else
 	{
+		app->projectile->active = false;
 		ResetPlayer();
 		app->fadeToBlack->FadeToBlackScene("GameOverScene");
 	}
