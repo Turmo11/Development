@@ -107,8 +107,9 @@ Beta version (06/12/2020):
  - (-) Turn volume down
  - (+) Turn volume up
  - (*)  Automatically gather up all the pieces
- - (Arrow up) Adds a live
- - (Arrow down) Removes a live
+ - (Arrow up) Add a live
+ - (Arrow down) Remove a live
+ - NUMPAD 1 - Teleport to the last checkpoint
  
 ## Developers
 
