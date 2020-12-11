@@ -137,7 +137,8 @@ struct TileSet
 	List<Animations*> animations;
 
 	SDL_Rect* playerTileRect = new SDL_Rect;
-	SDL_Rect* PlayerTileRect(uint tileId) {
+	SDL_Rect* PlayerTileRect(uint tileId) 
+	{
 
 		SDL_Rect* ret = playerTileRect;
 

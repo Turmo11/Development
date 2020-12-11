@@ -27,9 +27,8 @@ FadeToBlack::FadeToBlack()
 FadeToBlack::~FadeToBlack()
 {}
 
-bool FadeToBlack::Awake(pugi::xml_node& conf) {
-
-
+bool FadeToBlack::Awake(pugi::xml_node& conf) 
+{
 	uint width, height;
 	app->win->GetWindowSize(width, height);
 	screen.w = width + 200;

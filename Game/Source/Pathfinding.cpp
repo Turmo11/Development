@@ -277,7 +277,8 @@ DynArray<iPoint>* Pathfinding::CreatePath(const iPoint& origin, const iPoint& de
 			close.list.add(open.GetNodeLowestScore()->data);
 			open.list.del(open.GetNodeLowestScore());
 
-			if (close.list.end->data.pos != destination) {
+			if (close.list.end->data.pos != destination) 
+			{
 
 				PathList adjacent;
 

@@ -307,7 +307,8 @@ bool Application::PreUpdate()
 	{
 		pModule = item->data;
 
-		if (pModule->active == false) {
+		if (pModule->active == false) 
+		{
 			continue;
 		}
 
@@ -329,7 +330,8 @@ bool Application::DoUpdate()
 	{
 		pModule = item->data;
 
-		if (pModule->active == false) {
+		if (pModule->active == false) 
+		{
 			continue;
 		}
 
@@ -350,7 +352,8 @@ bool Application::PostUpdate()
 	{
 		pModule = item->data;
 
-		if (pModule->active == false) {
+		if (pModule->active == false) 
+		{
 			continue;
 		}
 

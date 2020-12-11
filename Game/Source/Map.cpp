@@ -58,7 +58,8 @@ void Map::Draw()
 
 	// TODO 4: Make sure we draw all the layers and not just the first one
 	ListItem<MapLayer*>* layer = data.layers.start;
-	while (layer != nullptr) {
+	while (layer != nullptr) 
+	{
 
 		if (layer->data->navigation == true && debug == false) //Render walkability map only when debugging
 		{ 
@@ -670,7 +671,8 @@ bool Map::LoadObjectLayers(pugi::xml_node& node, ObjectGroup* objectGroup)
 	memset(objectGroup->objects, 0, amountObjects * sizeof(Object));
 
 	int i = 0;
-	for (pugi::xml_node iteratorNode = node.child("object"); iteratorNode; iteratorNode = iteratorNode.next_sibling("object"), i++) {
+	for (pugi::xml_node iteratorNode = node.child("object"); iteratorNode; iteratorNode = iteratorNode.next_sibling("object"), i++) 
+	{
 		SDL_Rect* collider = new SDL_Rect;
 
 		collider->x = iteratorNode.attribute("x").as_uint();

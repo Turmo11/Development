@@ -477,19 +477,22 @@ void EntityPlayer::ResetPlayer()
 //Collisions
 void EntityPlayer::OnCollision(Collider* A, Collider* B)
 {
-	if (B->type == ObjectType::PLAYER) {
+	if (B->type == ObjectType::PLAYER) 
+	{
 		Collider temp = *A;
 		A = B;
 		B = &temp;
 	}
-	if (A->type != ObjectType::PLAYER) {
+	if (A->type != ObjectType::PLAYER) 
+	{
 		return;
 	}
 
 	if (!player.godMode && !player.disabled)
 	{
 		// ------------ Player Colliding with the ground ------------------
-		if (A->type == ObjectType::PLAYER && B->type == ObjectType::GROUND) {
+		if (A->type == ObjectType::PLAYER && B->type == ObjectType::GROUND) 
+		{
 
 			//Colliding from above
 			if (A->rect.y + A->rect.h - (player.maxSpeed.y / 50) - 2 < B->rect.y
@@ -534,7 +537,8 @@ void EntityPlayer::OnCollision(Collider* A, Collider* B)
 		if (!player.ableToDrop)
 		{
 			// ------------ Player Colliding with platforms ------------------
-			if (A->type == ObjectType::PLAYER && B->type == ObjectType::PLATFORM) {
+			if (A->type == ObjectType::PLAYER && B->type == ObjectType::PLATFORM) 
+			{
 
 				//Colliding from above
 				if (A->rect.y + A->rect.h < B->rect.y + (B->rect.h / 2.0f)
@@ -555,7 +559,8 @@ void EntityPlayer::OnCollision(Collider* A, Collider* B)
 		}
 
 		// ------------ Player Colliding with death limit ------------------
-		if (A->type == ObjectType::PLAYER && B->type == ObjectType::DEATH) {
+		if (A->type == ObjectType::PLAYER && B->type == ObjectType::DEATH) 
+		{
 
 			//from above
 			if (A->rect.y + A->rect.h - player.maxSpeed.y - 5 < B->rect.y
@@ -594,7 +599,8 @@ void EntityPlayer::OnCollision(Collider* A, Collider* B)
 	if (app->scene->levelCompleted)
 	{
 		// ------------ Player Colliding with the goal ------------------
-		if (A->type == ObjectType::PLAYER && B->type == ObjectType::GOAL) {
+		if (A->type == ObjectType::PLAYER && B->type == ObjectType::GOAL) 
+		{
 
 			//Colliding from above
 			if (A->rect.y + A->rect.h - player.maxSpeed.y - 2 < B->rect.y

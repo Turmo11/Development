@@ -176,9 +176,10 @@ Collider* Collisions::AddCollider(SDL_Rect rect, ObjectType type, Module* callBa
 void Collisions::LoadFromMap() 
 {
 	ListItem<ObjectGroup*>* listIt = app->map->data.objectGroups.start;
-	while (listIt != nullptr) {
-		for (int i = 0; i < listIt->data->objectsSize; i++) {
-
+	while (listIt != nullptr) 
+	{
+		for (int i = 0; i < listIt->data->objectsSize; i++) 
+		{
 			AddCollider(*listIt->data->objects[i].collider, listIt->data->objects[i].type, nullptr, &listIt->data->objects[i].properties);
 		}
 		listIt = listIt->next;

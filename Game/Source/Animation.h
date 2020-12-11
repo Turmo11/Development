@@ -52,12 +52,14 @@ public:
 	}
 
 	//NEW-------------------------------------
-	void SetOffset(int frame, int offsetX = 0, int offsetY = 0) {
+	void SetOffset(int frame, int offsetX = 0, int offsetY = 0) 
+	{
 		offset[frame].x = offsetX;
 		offset[frame].y = offsetY;
 	}
 
-	void SetSpeed(float new_speed) {
+	void SetSpeed(float new_speed) 
+	{
 		speed = new_speed;
 	}
 	//---------------------------
