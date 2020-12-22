@@ -5,7 +5,7 @@
 #include "Map.h"
 #include "Collisions.h"
 #include "Pickups.h"
-#include "Scene.h"
+#include "GameScene.h"
 #include "EntityPlayer.h"
 #include "EntityEnemy.h"
 #include "Audio.h"
@@ -128,12 +128,12 @@ void Pickups::OnCollision(Collider* A, Collider* B)
 	{
 		A->toDelete = true;
 		GetCollected();
-		app->scene->CheckLevelProgress();
+		app->gameScene->CheckLevelProgress();
 		app->audio->PlayFx(app->player->pickupSound);
 		int newScore;
 		srand(time(NULL));
 		newScore = (rand() % 200) + 100;
-		app->scene->AddScore(newScore);
+		app->gameScene->AddScore(newScore);
 	}
 	if (A->type == ObjectType::HEALTH && B->type == ObjectType::PLAYER)
 	{
@@ -175,7 +175,7 @@ void Pickups::DebugCollectAll()
 		pickupIterator = pickupIterator->next;
 	}
 
-	app->scene->CheckLevelProgress();
+	app->gameScene->CheckLevelProgress();
 }
 
 
@@ -199,7 +199,7 @@ void Pickups::UpdateGoal()
 
 	while (goalIterator != NULL)
 	{
-		if (app->scene->levelCompleted)
+		if (app->gameScene->levelCompleted)
 		{
 			app->map->DrawStaticAnimation("goal", "goal", goalIterator->data->position, &goalIterator->data->animInfo);
 

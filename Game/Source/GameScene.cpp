@@ -7,7 +7,7 @@
 #include "Render.h"
 #include "Window.h"
 #include "Map.h"
-#include "Scene.h"
+#include "GameScene.h"
 #include "EntityPlayer.h"
 //#include "Pickups.h"
 #include "EntityEnemy.h"
@@ -15,17 +15,17 @@
 #include "Projectile.h" //includes Pickups.h
 #include "Pathfinding.h"
 
-Scene::Scene() : Module()
+GameScene::GameScene() : Module()
 {
 	name.Create("scene");
 }
 
 // Destructor
-Scene::~Scene()
+GameScene::~GameScene()
 {}
 
 // Called before render is available
-bool Scene::Awake(pugi::xml_node& config)
+bool GameScene::Awake(pugi::xml_node& config)
 {
 	currentLevel = config.child("currentLevel").attribute("value").as_int();
 
@@ -75,7 +75,7 @@ bool Scene::Awake(pugi::xml_node& config)
 }
 
 // Called before the first frame
-bool Scene::Start()
+bool GameScene::Start()
 {
 	app->fadeToBlack->activeScene = "Scene";
 
@@ -100,13 +100,13 @@ bool Scene::Start()
 }
 
 // Called each loop iteration
-bool Scene::PreUpdate()
+bool GameScene::PreUpdate()
 {
 	return true;
 }
 
 // Called each loop iteration
-bool Scene::Update(float dt)
+bool GameScene::Update(float dt)
 {
 	DebugKeys();
 
@@ -133,7 +133,7 @@ bool Scene::Update(float dt)
 }
 
 // Called each loop iteration
-bool Scene::PostUpdate()
+bool GameScene::PostUpdate()
 {
 	bool ret = true;
 
@@ -144,18 +144,19 @@ bool Scene::PostUpdate()
 }
 
 // Called before quitting
-bool Scene::CleanUp()
+bool GameScene::CleanUp()
 {
 	LOG("Freeing scene");
 
 	return true;
 }
 
-void Scene::DrawPath()
+void GameScene::DrawPath()
 {
 	// Draw path of the closest entity
 	const DynArray<iPoint>* path = app->pathfinding->GetLastPath();
-	if (app->map->debug) {
+	if (app->map->debug) 
+	{
 		for (uint i = 0; i < path->Count(); ++i)
 		{
 			iPoint pos = app->map->MapToWorld(path->At(i)->x, path->At(i)->y);
@@ -164,7 +165,7 @@ void Scene::DrawPath()
 	}
 }
 
-void Scene::CheckLevelProgress()
+void GameScene::CheckLevelProgress()
 {
 	ListItem<Pickup*>* pickupIterator = app->pickups->pickupList.start;
 
@@ -179,7 +180,7 @@ void Scene::CheckLevelProgress()
 	levelCompleted = true;
 }
 
-void Scene::ShowUi()
+void GameScene::ShowUi()
 {
 	app->render->DrawQuad({ -app->render->camera.x, -app->render->camera.y + app->render->camera.h - 100, 300, 100 }, 0, 0, 0, 180);
 	switch (playerLives)
@@ -200,24 +201,24 @@ void Scene::ShowUi()
 
 }
 
-void Scene::AddScore(int score)
+void GameScene::AddScore(int score)
 {
 	SetScore(GetScore() + score);
 }
 
 
-void Scene::RestartScene()
+void GameScene::RestartScene()
 {
 	if (!firstGame)
 	{
-		playerLives = app->scene->maxLives;
+		playerLives = app->gameScene->maxLives;
 		showUI = true;
 
 		SetUp(currentLevel);
 	}
 }
 
-void Scene::DebugKeys()
+void GameScene::DebugKeys()
 {
 	//Debug keys
 	if (app->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN)
@@ -327,7 +328,7 @@ void Scene::DebugKeys()
 	}
 }
 
-void Scene::SetUp(int level)
+void GameScene::SetUp(int level)
 {
 	app->pickups->CleanUp();
 	//app->enemy->CleanUp();
@@ -414,7 +415,7 @@ void Scene::SetUp(int level)
 	}
 }
 
-void Scene::LoadCheckpoint()
+void GameScene::LoadCheckpoint()
 {
 	app->player->player.position = { checkpointPos.x ,checkpointPos.y - app->player->player.hitboxHeight };
 }

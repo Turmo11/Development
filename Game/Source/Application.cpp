@@ -9,7 +9,7 @@
 #include "Textures.h"
 #include "Audio.h"
 
-#include "Scene.h"
+#include "GameScene.h"
 #include "TitleScene.h"
 #include "GameOverScene.h"
 #include "LogoScene.h"
@@ -42,7 +42,7 @@ Application::Application(int argc, char* args[]) : argc(argc), args(args)
 	tex = new Textures();
 	audio = new Audio();
 
-	scene = new Scene();
+	gameScene = new GameScene();
 	titleScene = new TitleScene();
 	gameOverScene = new GameOverScene();
 	logoScene = new LogoScene();
@@ -66,7 +66,7 @@ Application::Application(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(pathfinding);
 
 	//player and scenes
-	AddModule(scene);
+	AddModule(gameScene);
 	AddModule(gameOverScene);
 	AddModule(titleScene);
 	AddModule(logoScene);
@@ -169,7 +169,7 @@ bool Application::Start()
 		ret = item->data->Start();
 		item = item->next;
 	}
-	scene->active = false;
+	gameScene->active = false;
 	titleScene->active = false;
 	gameOverScene->active = false;
 	player->active = false;
@@ -290,7 +290,7 @@ void Application::FinishUpdate()
 	static char title[256];
 
 	sprintf_s(title, 256, "Av.FPS: %.2f / Last Frame Ms: %02u / Last sec frames: %i / Last dt: %.3f / Time since startup: %.3f / Frame Count: %llu / Vsync: %s / Frame cap: %s / PlayerScore = %d",
-		avgFps, lastFrameMs, framesOnLastUpdate, dt, secondsSinceStartup, frameCount, vsyncActive, frameCapActive, app->scene->GetScore());
+		avgFps, lastFrameMs, framesOnLastUpdate, dt, secondsSinceStartup, frameCount, vsyncActive, frameCapActive, app->gameScene->GetScore());
 
 	app->win->SetTitle(title);
 }

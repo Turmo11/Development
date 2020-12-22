@@ -101,7 +101,7 @@
     <ClCompile Include="Source\Pickups.cpp" />
     <ClCompile Include="Source\EntityPlayer.cpp" />
     <ClCompile Include="Source\Projectile.cpp" />
-    <ClCompile Include="Source\Scene.cpp" />
+    <ClCompile Include="Source\GameScene.cpp" />
     <ClCompile Include="Source\Timer.cpp" />
     <ClCompile Include="Source\TitleScene.cpp" />
     <ClCompile Include="Source\Log.cpp" />
@@ -122,7 +122,7 @@
     <ClInclude Include="Source\Pickups.h" />
     <ClInclude Include="Source\EntityPlayer.h" />
     <ClInclude Include="Source\Projectile.h" />
-    <ClInclude Include="Source\Scene.h" />
+    <ClInclude Include="Source\GameScene.h" />
     <ClInclude Include="Source\Timer.h" />
     <ClInclude Include="Source\TitleScene.h" />
     <ClInclude Include="Source\Animation.h" />

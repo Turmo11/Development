@@ -17,7 +17,7 @@ class Input;
 class Render;
 class Textures;
 class Audio;
-class Scene;
+class GameScene;
 class TitleScene;
 class GameOverScene;
 class LogoScene;
@@ -99,7 +99,7 @@ public:
 	Render* render;
 	Textures* tex;
 	Audio* audio;
-	Scene* scene;
+	GameScene* gameScene;
 	TitleScene*	titleScene;
 	GameOverScene* gameOverScene;
 	LogoScene* logoScene;

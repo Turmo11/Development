@@ -9,7 +9,7 @@
 #include "LogoScene.h"
 #include "EntityPlayer.h"
 #include "FadeToBlack.h"
-#include "Scene.h"
+#include "GameScene.h"
 
 LogoScene::LogoScene() : Module()
 {

@@ -1,18 +1,18 @@
-#ifndef __SCENE_H__
-#define __SCENE_H__
+#ifndef __GAME_SCENE_H__
+#define __GAME_SCENE_H__
 
 #include "Module.h"
 
 struct SDL_Texture;
 
-class Scene : public Module
+class GameScene : public Module
 {
 public:
 
-	Scene();
+	GameScene();
 
 	// Destructor
-	virtual ~Scene();
+	virtual ~GameScene();
 
 	// Called before render is available
 	bool Awake(pugi::xml_node& conf);
@@ -72,19 +72,19 @@ public:
 private:
 
 	SDL_Rect backgroundRect;
-	SDL_Texture* background;
+	SDL_Texture* background = nullptr;
 
 	//UI
 	SDL_Rect livesRect;
 	SDL_Rect livesRect2;
 	SDL_Rect livesRect3;
-	SDL_Texture* livesTex;
+	SDL_Texture* livesTex = nullptr;
 
 	SDL_Rect cdRect;
 	SDL_Texture* cdTex;
 
 	SDL_Rect pathDebugRect;
-	SDL_Texture* pathDebugTex;
+	SDL_Texture* pathDebugTex = nullptr;
 
 	int score = 0;
 };

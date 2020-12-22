@@ -4,7 +4,7 @@
 #include "Render.h"
 #include "Map.h"
 #include "Collisions.h"
-#include "Scene.h"
+#include "GameScene.h"
 #include "EntityEnemy.h"
 #include "EntityPlayer.h"
 #include "Pathfinding.h"
@@ -151,7 +151,8 @@ void EntityEnemy::OnCollision(Collider* A, Collider* B)
 void Enemy::OnCollision(Collider* A, Collider* B)
 {
 	// ------------ Player Colliding with the ground ------------------
-	if (A->type == ObjectType::ENEMY && B->type == ObjectType::GROUND) {
+	if (A->type == ObjectType::ENEMY && B->type == ObjectType::GROUND) 
+	{
 
 		//Colliding from above
 		if (A->rect.y + A->rect.h - velocity.y - 2 < B->rect.y
@@ -368,48 +369,5 @@ void Enemy::Pathfind()
 		pathCreated = false;
 	}
 }
-
-
-////Pathfinding -------------------------------------------
-//target = { (int)app->player->player.position.x, (int)app->player->player.position.y };
-
-
-//if (target.DistanceTo(position) < range) //Detection area
-//{
-//	//Find the closest tile to current position
-//	app->pathfinding->CreatePath(app->map->WorldToMap(position.x, position.y), app->map->WorldToMap(target.x, target.y));
-
-//	const DynArray<iPoint>* Path = app->pathfinding->GetLastPath();
-
-//	const iPoint* tile;
-//	if (Path->Count() != 0) {
-//		if (Path->Count() > 2) {
-//			tile = Path->At(2);
-//		}
-//		else if (Path->Count() > 1) {
-//			tile = Path->At(1);
-//		}
-//		else
-//		{
-//			tile = Path->At(0);
-//		}
-
-//		iPoint closest_center = app->map->MapToWorldCentered(tile->x, tile->y);
-
-//		float dt = app->GetDt();
-
-//		if (closest_center.x > position.x + collider->rect.w / 2)
-//		{
-//			position.x += 2 * (velocity.x * dt);
-//			LOG("PLAYER TO THE RIGHT");
-
-//		}
-//		else if (closest_center.x < position.x + collider->rect.w / 2)
-//		{
-//			position.x -= (velocity.x * dt);
-//			LOG("PLAYER TO THE LEFT");
-//		}
-//	}
-//}
 
 

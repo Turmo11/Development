@@ -19,9 +19,6 @@
     <ClCompile Include="Source\LogoScene.cpp">
       <Filter>Scenes</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Scene.cpp">
-      <Filter>Scenes</Filter>
-    </ClCompile>
     <ClCompile Include="Source\TitleScene.cpp">
       <Filter>Scenes</Filter>
     </ClCompile>
@@ -70,6 +67,9 @@
     <ClCompile Include="Source\EntityEnemy.cpp">
       <Filter>Entities\Enemies</Filter>
     </ClCompile>
+    <ClCompile Include="Source\GameScene.cpp">
+      <Filter>Scenes</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Application.h">
@@ -88,9 +88,6 @@
       <Filter>Scenes</Filter>
     </ClInclude>
     <ClInclude Include="Source\LogoScene.h">
-      <Filter>Scenes</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Scene.h">
       <Filter>Scenes</Filter>
     </ClInclude>
     <ClInclude Include="Source\TitleScene.h">
@@ -161,6 +158,9 @@
     </ClInclude>
     <ClInclude Include="Source\EntityEnemy.h">
       <Filter>Entities\Enemies</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\GameScene.h">
+      <Filter>Scenes</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -9,7 +9,7 @@
 #include "Render.h"
 #include "Audio.h"
 #include "Textures.h"
-#include "Scene.h"
+#include "GameScene.h"
 #include <ctime>
 
 
@@ -127,7 +127,7 @@ void Projectile::OnCollision(Collider* A, Collider* B)
 		int newScore;
 		srand(time(NULL));
 		newScore = (rand() % 550) + 450;
-		app->scene->AddScore(newScore);
+		app->gameScene->AddScore(newScore);
 	}
 
 

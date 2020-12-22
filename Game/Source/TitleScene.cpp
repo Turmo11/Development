@@ -9,7 +9,7 @@
 #include "TitleScene.h"
 #include "EntityPlayer.h"
 #include "FadeToBlack.h"
-#include "Scene.h"
+#include "GameScene.h"
 
 TitleScene::TitleScene() : Module()
 {
@@ -95,7 +95,7 @@ void TitleScene::DebugKeys()
 	if (app->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN)
 	{
 		app->fadeToBlack->FadeToBlackScene("Scene");
-		app->scene->RestartScene();
+		app->gameScene->RestartScene();
 		app->audio->ResumeMusic();
 	}
 	if (app->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN)

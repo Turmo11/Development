@@ -9,7 +9,7 @@
 #include "GameOverScene.h"
 #include "EntityPlayer.h"
 #include "FadeToBlack.h"
-#include "Scene.h"
+#include "GameScene.h"
 
 GameOverScene::GameOverScene() : Module()
 {

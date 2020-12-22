@@ -11,7 +11,7 @@
 #include "Pickups.h"
 #include "EntityEnemy.h"
 #include "Map.h"
-#include "Scene.h"
+#include "GameScene.h"
 #include "TitleScene.h"
 #include "GameOverScene.h"
 #include "LogoScene.h"
@@ -73,7 +73,7 @@ bool FadeToBlack::Update(float dt)
 				if (fadingPlayer)
 				{
 					app->player->ResetPlayer();
-					app->scene->showUI = true;
+					app->gameScene->showUI = true;
 				}
 				else
 				{
@@ -202,7 +202,7 @@ bool FadeToBlack::SwitchMap(int level)
 	app->map->data.objectGroups.clear();
 	app->enemy->CleanUp();
 
-	app->scene->SetUp(level);		//Load specified map
+	app->gameScene->SetUp(level);		//Load specified map
 	app->collisions->LoadFromMap();		//Load Collisions
 	app->player->ResetPlayer();	//Reset Player
 
@@ -233,8 +233,8 @@ bool FadeToBlack::SwitchScenes(char* scene)
 	{
 		if (scene == "TitleScene")
 		{
-			app->scene->CleanUp();
-			app->scene->active = false;
+			app->gameScene->CleanUp();
+			app->gameScene->active = false;
 			app->titleScene->active = true;
 			app->gameOverScene->active = false;
 			app->logoScene->active = false;
@@ -246,8 +246,8 @@ bool FadeToBlack::SwitchScenes(char* scene)
 		}
 		if (scene == "GameOverScene")
 		{
-			app->scene->CleanUp();
-			app->scene->active = false;
+			app->gameScene->CleanUp();
+			app->gameScene->active = false;
 			app->titleScene->active = false;
 			app->gameOverScene->active = true;
 			app->logoScene->active = false;
@@ -259,8 +259,8 @@ bool FadeToBlack::SwitchScenes(char* scene)
 		}
 		if (scene == "LogoScene")
 		{
-			app->scene->CleanUp();
-			app->scene->active = false;
+			app->gameScene->CleanUp();
+			app->gameScene->active = false;
 			app->titleScene->active = false;
 			app->gameOverScene->active = false;
 			app->logoScene->active = true;
@@ -272,7 +272,7 @@ bool FadeToBlack::SwitchScenes(char* scene)
 		}
 		if (scene == "Scene")
 		{
-			app->scene->active = true;
+			app->gameScene->active = true;
 			app->titleScene->active = false;
 			app->gameOverScene->active = false;
 			app->logoScene->active = false;
@@ -281,7 +281,7 @@ bool FadeToBlack::SwitchScenes(char* scene)
 			app->pickups->active = true;
 			//app->enemy->active = true;
 			app->map->active = true;
-			app->scene->firstGame = false;
+			app->gameScene->firstGame = false;
 		}
 
 		activeScene = scene;

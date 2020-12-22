@@ -11,7 +11,7 @@
 #include "Map.h"
 #include "Input.h"
 #include "Collisions.h"
-#include "Scene.h"
+#include "GameScene.h"
 #include "FadeToBlack.h"
 #include <math.h>
 #include <thread>         
@@ -255,7 +255,7 @@ bool EntityPlayer::Update(float dt)
 
 		if (checkpointTimer == 0.0f && app->input->GetKey(SDL_SCANCODE_KP_1) == KEY_DOWN)
 		{
-			app->scene->LoadCheckpoint();
+			app->gameScene->LoadCheckpoint();
 			app->audio->PlayFx(checkSound);
 			checkpointTimer += dt;
 		}
@@ -408,7 +408,7 @@ void EntityPlayer::ShowShieldUI(bool active)
 		{
 			if (showShieldUi)
 			{
-				app->render->DrawTexture(app->scene->shieldCdTex, -app->render->camera.x + 245, -app->render->camera.y + app->render->camera.h - 67);
+				app->render->DrawTexture(app->gameScene->shieldCdTex, -app->render->camera.x + 245, -app->render->camera.y + app->render->camera.h - 67);
 			}
 			else if(showShieldCd)
 			{
@@ -442,7 +442,7 @@ bool EntityPlayer::CleanUp()
 //Setting up the player on start
 bool EntityPlayer::SummonPlayer()
 {
-	player.position = { app->scene->checkpointPos.x, app->scene->checkpointPos.y - app->player->player.hitboxHeight };
+	player.position = { app->gameScene->checkpointPos.x, app->gameScene->checkpointPos.y - app->player->player.hitboxHeight };
 	//player.position.y = ;
 
 	player.playerHitbox = { (int)player.position.x, (int)player.position.y, player.hitboxWidth, player.hitboxHeight };
@@ -588,15 +588,15 @@ void EntityPlayer::OnCollision(Collider* A, Collider* B)
 		// ------------ Player Colliding with checkpoint ------------------
 		if (A->type == ObjectType::PLAYER && B->type == ObjectType::CHECKPOINT)
 		{
-			app->scene->checkpointPos.x = B->rect.x;
-			app->scene->checkpointPos.y = B->rect.y;
+			app->gameScene->checkpointPos.x = B->rect.x;
+			app->gameScene->checkpointPos.y = B->rect.y;
 
 			B->toDelete = true;
 			app->audio->PlayFx(checkSound);
 		}
 	}
 
-	if (app->scene->levelCompleted)
+	if (app->gameScene->levelCompleted)
 	{
 		// ------------ Player Colliding with the goal ------------------
 		if (A->type == ObjectType::PLAYER && B->type == ObjectType::GOAL) 
@@ -714,57 +714,57 @@ void EntityPlayer::SetCamera()
 		yAxis = (-player.position.y) + (app->win->screenSurface->h * .5);
 
 		//Checks camera x limits
-		if (app->render->camera.x <= app->scene->cameraRect.x && app->render->camera.x >= (app->scene->cameraRect.w + app->win->screenSurface->w))
+		if (app->render->camera.x <= app->gameScene->cameraRect.x && app->render->camera.x >= (app->gameScene->cameraRect.w + app->win->screenSurface->w))
 		{
 			app->render->camera.x = (int)xAxis;
 		}
 
-		if (app->render->camera.x >= app->scene->cameraRect.x && player.position.x < (app->win->screenSurface->w / 2) + 1)
+		if (app->render->camera.x >= app->gameScene->cameraRect.x && player.position.x < (app->win->screenSurface->w / 2) + 1)
 		{
-			app->render->camera.x = app->scene->cameraRect.x - 1;
+			app->render->camera.x = app->gameScene->cameraRect.x - 1;
 		}
-		else if (player.position.x > (-(app->scene->cameraRect.w) - (app->win->screenSurface->w / 2)))
+		else if (player.position.x > (-(app->gameScene->cameraRect.w) - (app->win->screenSurface->w / 2)))
 		{
-			app->render->camera.x = app->scene->cameraRect.w + app->win->screenSurface->w + 2;
+			app->render->camera.x = app->gameScene->cameraRect.w + app->win->screenSurface->w + 2;
 		}
 
 		//Checks camera y limits
-		if (app->render->camera.y <= app->scene->cameraRect.y && app->render->camera.y >= (app->scene->cameraRect.h + app->win->screenSurface->h))
+		if (app->render->camera.y <= app->gameScene->cameraRect.y && app->render->camera.y >= (app->gameScene->cameraRect.h + app->win->screenSurface->h))
 		{
 			app->render->camera.y = (int)yAxis;
 		}
 
-		if (app->render->camera.y >= app->scene->cameraRect.y)
+		if (app->render->camera.y >= app->gameScene->cameraRect.y)
 		{
-			app->render->camera.y = app->scene->cameraRect.y;
+			app->render->camera.y = app->gameScene->cameraRect.y;
 		}
-		else if (app->render->camera.y < (app->scene->cameraRect.h + app->win->screenSurface->h))
+		else if (app->render->camera.y < (app->gameScene->cameraRect.h + app->win->screenSurface->h))
 		{
-			app->render->camera.y = app->scene->cameraRect.h + app->win->screenSurface->h;;
+			app->render->camera.y = app->gameScene->cameraRect.h + app->win->screenSurface->h;;
 		}
 	}
 }
 
 void EntityPlayer::TakeLife()
 {
-	app->scene->showUI = false;
+	app->gameScene->showUI = false;
 	app->projectile->active = false;
 	app->audio->PlayFx(deathSound);
-	if (app->scene->playerLives > 0)
+	if (app->gameScene->playerLives > 0)
 	{
 		app->fadeToBlack->FadeToBlackPlayerOnly(1.0f);
-		app->scene->playerLives--;
-		LOG("Lives: %d", app->scene->playerLives);
+		app->gameScene->playerLives--;
+		LOG("Lives: %d", app->gameScene->playerLives);
 		int newScore;
 		srand(time(NULL));
 		newScore = (rand() % 250) + 300;
-		if (app->scene->GetScore() - newScore > 0)
+		if (app->gameScene->GetScore() - newScore > 0)
 		{
-			app->scene->AddScore(-newScore);
+			app->gameScene->AddScore(-newScore);
 		}
 		else
 		{
-			app->scene->SetScore(0);
+			app->gameScene->SetScore(0);
 		}
 		
 	}
@@ -779,14 +779,14 @@ void EntityPlayer::TakeLife()
 
 void EntityPlayer::AddLife()
 {
-	if (app->scene->playerLives < app->scene->maxLives)
+	if (app->gameScene->playerLives < app->gameScene->maxLives)
 	{
-		app->scene->playerLives++;
+		app->gameScene->playerLives++;
 	}
 	int newScore;
 	srand(time(NULL));
 	newScore = (rand() % 300) + 150;
-	app->scene->AddScore(newScore);
+	app->gameScene->AddScore(newScore);
 	addLife = false;
 }
 
@@ -824,7 +824,7 @@ void EntityPlayer::Ascend(float time)
 	case Ascending::ASCENDED:
 	{
 		player.ascending = false;
-		app->fadeToBlack->DoFadeToBlack(app->scene->currentLevel + 1);
+		app->fadeToBlack->DoFadeToBlack(app->gameScene->currentLevel + 1);
 		currentStep = Ascending::NONE;
 	}
 	}
