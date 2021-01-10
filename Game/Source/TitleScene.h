@@ -2,6 +2,9 @@
 #define __TITLESCENE_H__
 
 #include "Module.h"
+#include "Button.h"
+
+class GuiElements;
 
 struct SDL_Texture;
 
@@ -31,6 +34,11 @@ public:
 
 	// Called before quitting
 	bool CleanUp();
+
+	virtual bool MouseClick(GuiElements* control)
+	{
+		return true;
+	}
 
 public:
 

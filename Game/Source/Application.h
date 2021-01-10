@@ -28,6 +28,7 @@ class Pickups;
 class Collisions;
 class EntityEnemy;
 class Projectile;
+class GuiManager;
 class FadeToBlack;
 class Application
 {
@@ -111,6 +112,7 @@ public:
 	EntityEnemy* enemy;
 	Projectile* projectile;
 	FadeToBlack* fadeToBlack;
+	GuiManager* guiManager;
 
 	uint frameCap;								// Stores the frames per second cap to be applied.
 	uint initFrameCap;						// Stores the original frame cap at application start.

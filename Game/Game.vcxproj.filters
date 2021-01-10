@@ -70,6 +70,21 @@
     <ClCompile Include="Source\GameScene.cpp">
       <Filter>Scenes</Filter>
     </ClCompile>
+    <ClCompile Include="Source\GuiManager.cpp">
+      <Filter>Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\GuiElements.cpp">
+      <Filter>Gui</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Button.cpp">
+      <Filter>Gui</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Entity.cpp">
+      <Filter>Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\EntityManager.cpp">
+      <Filter>Modules</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Application.h">
@@ -162,6 +177,21 @@
     <ClInclude Include="Source\GameScene.h">
       <Filter>Scenes</Filter>
     </ClInclude>
+    <ClInclude Include="Source\GuiManager.h">
+      <Filter>Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\GuiElements.h">
+      <Filter>Gui</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Button.h">
+      <Filter>Gui</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Entity.h">
+      <Filter>Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\EntityManager.h">
+      <Filter>Modules</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Core">
@@ -196,6 +226,9 @@
     </Filter>
     <Filter Include="External\PugiXml">
       <UniqueIdentifier>{a2546d06-df3d-4279-a437-ef77ed0e51e8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Gui">
+      <UniqueIdentifier>{4bf94b91-2f3c-468d-9d0a-bcf19d93b457}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

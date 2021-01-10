@@ -14,6 +14,8 @@
 #include "GameOverScene.h"
 #include "LogoScene.h"
 
+#include "GuiManager.h"
+
 #include "Map.h"
 #include "Pathfinding.h"
 #include "EntityPlayer.h"
@@ -55,6 +57,7 @@ Application::Application(int argc, char* args[]) : argc(argc), args(args)
 	fadeToBlack = new FadeToBlack();
 	enemy = new EntityEnemy();
 	projectile = new Projectile();
+	//guiManager = new GuiManager();
 
 	// Ordered for awake / Start / Update
 	// Reverse order of CleanUp
@@ -76,7 +79,7 @@ Application::Application(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(projectile);
 	AddModule(fadeToBlack);
 	AddModule(collisions);
-
+	//AddModule(guiManager);
 
 	// render last to swap buffer
 	AddModule(render);
